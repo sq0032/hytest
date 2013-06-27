@@ -1,5 +1,7 @@
 # Django settings for djangotest project.
 
+import os
+PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -72,10 +74,6 @@ STATICFILES_DIRS = (
 	# Put strings here, like "/home/html/static" or "C:/www/django/static".
 	# Always use forward slashes, even on Windows.
 	# Don't forget to use absolute paths, not relative paths.
-	#"C:/Users/SUPER/workspace/djangotest/static",
-	#("css", "C:\Users\SUPER\workspace\djangotest\djangotest\static\css"),
-	#("js", "C:\Users\SUPER\workspace\djangotest\djangotest\static\js"),
-	#("images", "C:\Users\SUPER\workspace\djangotest\djangotest\static\images"),
 )
 
 # List of finder classes that know how to find static files in
@@ -115,7 +113,8 @@ TEMPLATE_DIRS = (
 	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
 	# Always use forward slashes, even on Windows.
 	# Don't forget to use absolute paths, not relative paths.
-	"C:/Users/SUPER/workspace/djangotest/templates",
+	os.path.join(PROJECT_PATH, 'templates'),
+	#"C:/Users/SUPER/workspace/djangotest/templates",
 )
 
 INSTALLED_APPS = (
@@ -129,7 +128,7 @@ INSTALLED_APPS = (
 	'django.contrib.admin',
 	# Uncomment the next line to enable admin documentation:
 	# 'django.contrib.admindocs',
-	'polls'
+	'accounts'
 )
 
 # A sample logging configuration. The only tangible logging
