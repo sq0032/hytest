@@ -12,9 +12,10 @@ class JSONResponse(HttpResponse):
 
 from django.contrib.auth import authenticate, login, logout
 
-def login(request):
-	username = request.POST.get('username')
-	password = request.POST.get('password')
+def login_view(request):
+	username = request.GET.get('email')
+	password = request.GET.get('password')
+	print username
 	user = authenticate(username=username, password=password)
 	if user is not None:
 		if user.is_active:
@@ -32,10 +33,18 @@ def logout_view(request):
 	return JSONResponse(data)
 
 def loginCheck(request):
-	print request.user
 	if request.user.is_authenticated():
 		data = {'status':'OK'}
 	else:
 		data = {'status':'ERROR'}
 	return JSONResponse(data)
-	
+
+def user_view(request):
+	if request.user.is_authenticated():
+		username = request.user.username
+		email = request.user.email
+		user = {'username':username,email:email}
+		data = {'status':'OK','user': user}
+	else:
+		data = {'status':'ERROR'}
+	return JSONResponse(data)

@@ -2,6 +2,7 @@
 
 import os
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -159,3 +160,6 @@ LOGGING = {
 		},
 	}
 }
+
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
+							'accounts.backends.EmailAuthBackend',)
