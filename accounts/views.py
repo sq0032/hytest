@@ -27,6 +27,8 @@ def login_view(request):
 		data = {'status': 'ERROR'}
 	return JSONResponse(data)
 
+#comment
+
 def logout_view(request):
 	logout(request)
 	data = {'status':'OK'}
