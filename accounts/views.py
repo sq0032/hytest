@@ -15,6 +15,7 @@ from django.contrib.auth import authenticate, login, logout
 #comment
 
 #debug1
+#comment branch1
 
 def login_view(request):
 	username = request.GET.get('email')
