@@ -12,16 +12,11 @@ class JSONResponse(HttpResponse):
 
 from django.contrib.auth import authenticate, login, logout
 
-#comment
-
-#debug1
-#comment branch1
-
 def login_view(request):
-	username = request.GET.get('email')
+	email = request.GET.get('email')
 	password = request.GET.get('password')
-	print username
-	user = authenticate(username=username, password=password)
+	user = authenticate(username=email, password=password)
+	print dir(user)
 	if user is not None:
 		if user.is_active:
 			login(request, user)
@@ -31,8 +26,6 @@ def login_view(request):
 	else:
 		data = {'status': 'ERROR'}
 	return JSONResponse(data)
-
-#comment
 
 def logout_view(request):
 	logout(request)
@@ -46,12 +39,45 @@ def loginCheck(request):
 		data = {'status':'ERROR'}
 	return JSONResponse(data)
 
-def user_view(request):
-	if request.user.is_authenticated():
-		username = request.user.username
-		email = request.user.email
-		user = {'username':username,email:email}
-		data = {'status':'OK','user': user}
+def user_i_view(request):
+	user = request.user
+	'''
+	print dir(user)
+	if user.is_authenticated():
+		is_auth = True
+		status=200
 	else:
-		data = {'status':'ERROR'}
-	return JSONResponse(data)
+		is_auth = False
+		status=200
+	'''
+	uid = user.id
+	name = user.get_username()
+	email = user.email
+	user = {'id':uid,'name':name,'email':email}
+
+	return JSONResponse(user)
+
+from django.http import HttpResponseNotFound
+from django.contrib.auth.models import User
+
+def user_view(request,user_id):
+	if request.method == "GET":
+		try:
+			user = User.objects.get(id=id)
+			name = user.get_username()
+			email = user.email
+			user = {'id':id,'name':name,'email':email}
+			return JSONResponse(user)
+		except User.DoesNotExist:
+			return HttpResponseNotFound()
+	elif request.method == "POST":
+		print user_id
+		return HttpResponseNotFound()
+	elif request.method == "PUT":
+		return HttpResponseNotFound()
+	elif request.method == "DELETE":
+		return HttpResponseNotFound()
+	else:
+		return HttpResponseNotFound()
+
+		
