@@ -1,31 +1,35 @@
 from django.http import HttpResponse
-import json
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+#from django.views.decorators.csrf import csrf_exempt
+
+from rest_framework.renderers import JSONRenderer
+#from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import api_view
+from accounts.serializers import UserSerializer
 
 class JSONResponse(HttpResponse):
-	def __init__(self, data, status=200):
-		serialized = json.dumps(data)
-		super(JSONResponse, self).__init__(
-			content=serialized,
-			content_type='application/json',
-			status=status
-		)
-
-from django.contrib.auth import authenticate, login, logout
-
+	def __init__(self, data, **kwargs):
+		content = JSONRenderer().render(data)
+		kwargs['content_type'] = 'application/json'
+		super(JSONResponse, self).__init__(content, **kwargs)
+		
+@api_view(['GET'])
 def login_view(request):
 	email = request.GET.get('email')
 	password = request.GET.get('password')
 	user = authenticate(username=email, password=password)
-	print dir(user)
 	if user is not None:
 		if user.is_active:
 			login(request, user)
-			data = {'status': 'OK'}
+			serializer = UserSerializer(user)
+			return Response(serializer.data)
 		else:
-			data = {'status': 'NO_ACTIVE'}
+			return Response(status=status.HTTP_401_UNAUTHORIZED)
 	else:
-		data = {'status': 'ERROR'}
-	return JSONResponse(data)
+		return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 def logout_view(request):
 	logout(request)
@@ -39,45 +43,42 @@ def loginCheck(request):
 		data = {'status':'ERROR'}
 	return JSONResponse(data)
 
+import string
+import random
+@api_view(['GET'])
+def captcha(request):
+	captcha = ''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(6))
+	request.session['captcha'] = captcha
+	return HttpResponse(captcha)
+
+@api_view(['GET'])
 def user_i_view(request):
 	user = request.user
-	'''
-	print dir(user)
-	if user.is_authenticated():
-		is_auth = True
-		status=200
+	if user.is_anonymous():
+		return Response({'name':'guest'})
 	else:
-		is_auth = False
-		status=200
-	'''
-	uid = user.id
-	name = user.get_username()
-	email = user.email
-	user = {'id':uid,'name':name,'email':email}
+		serializer = UserSerializer(user)
+		return Response(serializer.data)
 
-	return JSONResponse(user)
 
-from django.http import HttpResponseNotFound
-from django.contrib.auth.models import User
+@api_view(['POST'])
+def createUser(request):
+	serializer = UserSerializer(data=request.DATA)
+	if serializer.is_valid():
+		user = serializer.object
+		password = request.DATA.get('password')
+		user.set_password(password)
+		user.save()
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
+	return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def user_view(request,user_id):
-	if request.method == "GET":
+'''
+class userDetail(APIView):
+	def get(self, request, user_id):
 		try:
-			user = User.objects.get(id=id)
-			name = user.get_username()
-			email = user.email
-			user = {'id':id,'name':name,'email':email}
-			return JSONResponse(user)
+			user = User.objects.get(id=user_id)
+			serializer = UserSerializer(user)
+			return Response(serializer.data)
 		except User.DoesNotExist:
-			return HttpResponseNotFound()
-	elif request.method == "POST":
-		print user_id
-		return HttpResponseNotFound()
-	elif request.method == "PUT":
-		return HttpResponseNotFound()
-	elif request.method == "DELETE":
-		return HttpResponseNotFound()
-	else:
-		return HttpResponseNotFound()
-
-		
+			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+'''

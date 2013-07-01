@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Project name</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<!--
+		<link href="less/bootstrap.less" rel="stylesheet/less">
+		-->
+		<style>
+			body {
+				padding-top: 40px; /* 60px to make the container go all the way to the bottom of the topbar */
+			}
+			#map_canvas {
+				position: absolute;
+				top: 40px;
+				left: 0px;
+				right: 0px;
+				bottom: 0px;
+				z-index: -1;
+			}
+			#loginModal {
+				*width:300px;
+				*margin-left: -150px;
+			}
+		/* Desktop large
+		------------------------- */
+		@media (min-width: 1200px) {
+
+		}
+		/* Desktop
+		------------------------- */
+		@media (max-width: 980px) {
+
+		}
+		/* Tablet to desktop
+		------------------------- */
+		@media (min-width: 768px) and (max-width: 979px) {
+		}
+		/* Tablet
+		------------------------- */
+		@media (max-width: 767px) {
+		}
+		/* Landscape phones
+		------------------------- */
+		@media (max-width: 480px) {
+		}
+		</style>
+		<link href="css/bootstrap-responsive.css" rel="stylesheet">
+		<!--
+		<link href="less/responsive.less" rel="stylesheet/less">
+		-->
+	<script type="text/javascript"
+		src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVe-jIXFr-OWQknSaDsjLyogR6Lm9goB8&sensor=false">
+	</script>
+	</head>
+	<body>
+		<div id="navBar" class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="brand" href="#">Project name</a>
+					<form class="navbar-search">
+						<input type="text" class="search-query" placeholder="搜尋">
+					</form>
+
+					<div class="nav-collapse collapse">
+						<ul id="guestNav" class="nav pull-right">
+							<li><a class="btn-loginModal" href="#loginModal" data-toggle="modal">登入</a></li>
+							<li><a class="btn-regModal" href="#regModal" data-toggle="modal">註冊</a></li>
+						</ul>
+						<ul id="userNav" class="nav pull-right">
+							<li><a class="brand userInfo" href="#">歡迎!<span class="username"></span></a></li>
+							<li><a class="btn-logout" href="#">登出</a></li>
+						</ul>
+					</div><!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+		<!-- Button to trigger modal 
+		<a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+		-->
+		
+		<!--Login modal -->
+		<div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3>會員登入</h3>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="loginEmail">Email</label>
+						<div class="controls">
+							<input type="text" id="loginEmail" placeholder="Email">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="loginPassword">密碼</label>
+						<div class="controls">
+							<input type="password" id="loginPassword" placeholder="Password">
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<label class="checkbox">
+								<input type="checkbox"> 記得我
+							</label>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">關閉</button>
+				<button class="btn btn-primary btn-login">登入</button>
+			</div>
+		</div>
+		<!--Registration modal -->
+		<div id="regModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3>會員註冊</h3>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="regEmail">帳號/Email</label>
+						<div class="controls">
+							<input type="text" id="regEmail" placeholder="ex.qq@example.com">
+							<p>使用E-mail作為您的帳號</p>
+						</div>
+						
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="regUsername">暱稱</label>
+						<div class="controls">
+							<input type="text" id="regUsername" placeholder="qqq">
+							<p>最多填入XX個字</p>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="regPassword">密碼</label>
+						<div class="controls">
+							<input type="password" id="regPassword" placeholder="Password">
+							<p>xx字以上</p>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="regCaptcha">驗證碼</label>
+						<div class="controls">
+							<p>abced</p>
+							<button class="btn btn-small"><i class="icon-refresh"></i></button>
+							<input class="input-small" type="text" id="regCaptcha" placeholder="">
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<label class="checkbox">
+								<input type="checkbox"> 我已經詳細閱讀並同意xxx服務條款
+							</label>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">關閉</button>
+				<button class="btn-reg btn btn-primary">註冊</button>
+			</div>
+		</div>
+		
+		<!-- 
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div style="background-color:#dceaf4;" class="span10">
+				aaa
+				</div>
+				<div style="background-color:#dceaf4;" class="span2">
+				bbb
+				</div>
+			</div>
+		</div>
+		 -->
+		<div class="" id="map_canvas">
+		</div> <!-- /container -->
+		
+		<!--<script src="js/less-1.3.3.min.js"></script>-->
+		<script src="http://code.jquery.com/jquery.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/underscore-min.js"></script>
+		<script src="js/backbone-min.js"></script>
+		<script type="text/javascript">
+		var _sync = Backbone.sync;
+		Backbone.sync = function(method, model, options){
+			options.beforeSend = function(xhr){
+				xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+			};
+			return _sync(method, model, options);
+		};
+		
+		var User = Backbone.Model.extend({
+			defaults : {
+				name : null,
+				email: null,
+			},
+			urlRoot:'accounts/users/'
+		});
+		
+		var loginModalView = Backbone.View.extend({
+			el: $("#loginModal"),
+			events: {
+				"show": "showModal",
+				"click .btn-login": "login",
+			},
+			initialize: function() {
+				this.$('#loginEmail').val("");
+				this.$('#loginPassword').val("");
+			},
+			showModal: function() {
+				this.$('#loginPassword').val("");
+			},
+			login: function() {
+				var self = this;
+				var navBar = this.options.navBar;
+				var email = this.$("#loginEmail").val();
+				var password = this.$("#loginPassword").val();
+				$.getJSON('accounts/login',{email:email,password:password})
+				.done(function(data){
+					var user = new User(data);
+					navBar.userMode(user);
+					self.$el.modal('hide');
+				}).fail(function(jqXHR, textStatus, errorThrown){
+					alert('帳號或密碼錯誤!');
+				});
+			},
+			render: function() {
+				
+			}
+		});
+		
+		var regModalView = Backbone.View.extend({
+			el: $("#regModal"),
+			events: {
+				"show": "showModal",
+				"click .btn-reg": "register",
+			},
+			initialize: function() {
+
+			},
+			showModal: function() {
+				this.$('#regPassword').val("");
+			},
+			register: function() {
+				var name = this.$("#regUsername").val();
+				var email = this.$("#regEmail").val();
+				var password = this.$("#regPassword").val();
+				var regUser = new User({name:name,email:email,password:password});
+				regUser.save()
+				.done(function(data){
+					alert('註冊成功!');
+					self.$el.modal('hide');
+				}).fail(function(jqXHR, textStatus, errorThrown){
+					alert('註冊失敗!');
+				});
+			},
+			render: function() {
+				
+			}
+		});
+		
+		
+		var navBarView = Backbone.View.extend({
+			el:$('#navBar'),
+			events: {
+				"click .btn-logout": "logout",
+			},
+			initialize: function() {
+				var self = this;
+				this.$userNav = this.$("#userNav");
+				this.$guestNav = this.$("#guestNav");
+				this.guestMode();
+				var loginUser = new User({id:'i'});
+				loginUser.fetch().done(function(){
+					if(loginUser.get('name') == 'guest'){
+						self.guestMode();
+					}else{
+						self.userMode(loginUser);
+					}
+					console.log(loginUser);
+				});
+				
+			},
+			logout: function(){
+				var self = this;
+				$.getJSON('accounts/logout', function(data) {
+					if(data.status === "OK"){
+						self.guestMode();
+					}
+				});
+			},
+			guestMode: function(){
+				this.$userNav.hide();
+				this.$guestNav.show();
+			},
+			userMode: function(user){
+				this.$userNav.show().find('.username').text(user.get('name'));
+				this.$guestNav.hide();
+			}
+		});
+		/*
+		var testUser2 = new User({id:2});
+		testUser2.fetch();
+		console.log(testUser2);
+		
+		var testUser = new User({name:'qq',email:'qq@qq.com',password:'password'});
+		testUser.save();
+		console.log(testUser);
+		*/
+		$.get('accounts/captcha',function(data){
+			console.log(data);
+		});
+			$(function(){
+				function initialize() {
+					var initlatlng = new google.maps.LatLng(25.056220142845, 121.54178450802);
+					var mapOptions = {
+						center: initlatlng,
+						zoom: 14,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+					};
+					var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+					var noPoi = [{
+						featureType: "poi",
+						stylers: [{ visibility: "off" }]
+					}];
+					map.setOptions({styles: noPoi});
+				}
+				//initialize();
+				
+				var navBar = new navBarView();
+				console.log(navBar);
+				var loginModal = new loginModalView({navBar:navBar});
+				console.log(loginModal);
+				var regModal = new regModalView({navBar:navBar});
+				console.log(regModal);
+				
+			});
+		</script>
+	</body>
+</html>
