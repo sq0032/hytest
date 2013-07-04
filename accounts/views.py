@@ -36,13 +36,6 @@ def logout_view(request):
 	data = {'status':'OK'}
 	return JSONResponse(data)
 
-def loginCheck(request):
-	if request.user.is_authenticated():
-		data = {'status':'OK'}
-	else:
-		data = {'status':'ERROR'}
-	return JSONResponse(data)
-
 import string
 import random
 @api_view(['GET'])
@@ -63,6 +56,10 @@ def user_i_view(request):
 
 @api_view(['POST'])
 def createUser(request):
+	captcha = request.DATA.get('captcha')
+	if not captcha == request.session.get('captcha'):
+		return Response(status=status.HTTP_400_BAD_REQUEST)
+	
 	serializer = UserSerializer(data=request.DATA)
 	if serializer.is_valid():
 		user = serializer.object
@@ -70,7 +67,23 @@ def createUser(request):
 		user.set_password(password)
 		user.save()
 		return Response(serializer.data, status=status.HTTP_201_CREATED)
-	return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	else:
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	
+@api_view(['POST'])
+def changePassword(request):
+	password = request.DATA.get('password')
+	newPassword = request.DATA.get('newpassword')
+	user = request.user
+	
+	if not user.check_password(password):
+		return Response(status=status.HTTP_400_BAD_REQUEST)
+	
+	user.set_password(newPassword)
+	user.save()
+	print 'change passowrd'
+	return Response({})
+	
 
 '''
 class userDetail(APIView):

@@ -27,17 +27,17 @@
 			}
 		/* Desktop large
 		------------------------- */
-		@media (min-width: 1200px) {
-
-		}
-		/* Desktop
-		------------------------- */
-		@media (max-width: 980px) {
-
+		@media (min-width: 980px) and (min-width: 1200px) {
+			.modal.span8 {
+				margin-left:-385px;
+			}
 		}
 		/* Tablet to desktop
 		------------------------- */
 		@media (min-width: 768px) and (max-width: 979px) {
+			.modal.span8 {
+				margin-left:-238px;
+			}
 		}
 		/* Tablet
 		------------------------- */
@@ -49,6 +49,7 @@
 		}
 		</style>
 		<link href="css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="css/bootstrap-modal.css" rel="stylesheet">
 		<!--
 		<link href="less/responsive.less" rel="stylesheet/less">
 		-->
@@ -76,7 +77,10 @@
 							<li><a class="btn-regModal" href="#regModal" data-toggle="modal">註冊</a></li>
 						</ul>
 						<ul id="userNav" class="nav pull-right">
-							<li><a class="brand userInfo" href="#">歡迎!<span class="username"></span></a></li>
+							<li><a class="btn-myCart" href="#" data-toggle="modal">購物車<i class="icon-shopping-cart"></i></a></li>
+							<li><a class="btn-myShop" href="#" data-toggle="modal">我的商店<i class="icon-home"></i></a></li>
+							<li><a class="btn-settingModal" href="#settingModal" data-toggle="modal">設定<i class="icon-wrench"></i></a></li>
+							<li><a class="userInfo" href="#"><i class="icon-user"></i><span class="username"></span></a></li>
 							<li><a class="btn-logout" href="#">登出</a></li>
 						</ul>
 					</div><!--/.nav-collapse -->
@@ -94,7 +98,7 @@
 				<h3>會員登入</h3>
 			</div>
 			<div class="modal-body">
-				<form class="form-horizontal">
+				<div class="form-horizontal">
 					<div class="control-group">
 						<label class="control-label" for="loginEmail">Email</label>
 						<div class="controls">
@@ -114,13 +118,14 @@
 							</label>
 						</div>
 					</div>
-				</form>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button class="btn" data-dismiss="modal" aria-hidden="true">關閉</button>
 				<button class="btn btn-primary btn-login">登入</button>
 			</div>
 		</div>
+		
 		<!--Registration modal -->
 		<div id="regModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
 			<div class="modal-header">
@@ -128,7 +133,7 @@
 				<h3>會員註冊</h3>
 			</div>
 			<div class="modal-body">
-				<form class="form-horizontal">
+				<div class="form-horizontal">
 					<div class="control-group">
 						<label class="control-label" for="regEmail">帳號/Email</label>
 						<div class="controls">
@@ -138,7 +143,7 @@
 						
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="regUsername">暱稱</label>
+						<label class="control-label" for="regUsername">名稱</label>
 						<div class="controls">
 							<input type="text" id="regUsername" placeholder="qqq">
 							<p>最多填入XX個字</p>
@@ -154,8 +159,8 @@
 					<div class="control-group">
 						<label class="control-label" for="regCaptcha">驗證碼</label>
 						<div class="controls">
-							<p>abced</p>
-							<button class="btn btn-small"><i class="icon-refresh"></i></button>
+							<p class="captcha"></p>
+							<button class="btn btn-small btn-captcha-refresh"><i class="icon-refresh"></i></button>
 							<input class="input-small" type="text" id="regCaptcha" placeholder="">
 						</div>
 					</div>
@@ -166,7 +171,7 @@
 							</label>
 						</div>
 					</div>
-				</form>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button class="btn" data-dismiss="modal" aria-hidden="true">關閉</button>
@@ -174,6 +179,102 @@
 			</div>
 		</div>
 		
+		<!--Setting modal -->
+		<div id="settingModal" class="modal hide fade container" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3><img src="img/setting.png" style="vertical-align:bottom;width:130px;height:130px;">帳號設定</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row" style="height:200px;">
+					<div class="span3">
+						<ul class="nav nav-list">
+							<li class="active"><a href="#">會員設定</a></li>
+							<li><a href="#">Privacy</a></li>
+						</ul>
+					</div>
+					<div class="span6">
+						<div id="accountSetting">
+							<div class="accordion">
+							<div class="accordion-group">
+								<div class="accordion-heading">
+									<a class="accordion-toggle" data-toggle="collapse" href="#collapsePhoto">照片</a>
+								</div>
+								<div id="collapsePhoto" class="accordion-body collapse">
+									<div class="accordion-inner">
+										<img src="img/setting.png" style="width: 130px; height: 130px;">
+										<button class="btn btn-primary">上傳照片</button>
+									</div>
+								</div>
+							</div>
+							<div class="accordion-group">
+								<div class="accordion-heading">
+									<a class="accordion-toggle" data-toggle="collapse" href="#collapseAccount">
+										帳號
+									</a>
+								</div>
+								<div id="collapseAccount" class="accordion-body collapse">
+									<div class="accordion-inner">
+										<div class="form-horizontal">
+											<div class="control-group">
+												<label class="control-label" for="settingEmail">帳號/Email</label>
+												<div class="controls">
+													<input type="text" id="settingEmail" placeholder="">
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label" for="settingUsername">名稱</label>
+												<div class="controls">
+													<input type="text" id="settingUsername" placeholder="">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="accordion-group">
+								<div class="accordion-heading">
+									<a class="accordion-toggle" data-toggle="collapse" href="#collapsePassword">修改密碼</a>
+								</div>
+								<div id="collapsePassword" class="accordion-body collapse">
+									<div class="accordion-inner">
+										<div class="form-horizontal">
+											<div class="control-group">
+												<label class="control-label" for="settingPassword">舊密碼</label>
+												<div class="controls">
+													<input type="password" id="settingPassword" placeholder="">
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label" for="settingNewPassword">新密碼</label>
+												<div class="controls">
+													<input type="password" id="settingNewPassword" placeholder="">
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label" for="settingNewPassword2">確認新密碼</label>
+												<div class="controls">
+													<input type="password" id="settingNewPassword2" placeholder="">
+												</div>
+											</div>
+											<div class="control-group">
+												<div class="controls">
+													<button class="btn-submit btn btn-primary">確認修改</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+					</div>
+					<div class="span2">
+						這裡放廣告
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- 
 		<div class="container-fluid">
 			<div class="row-fluid">
@@ -192,9 +293,16 @@
 		<!--<script src="js/less-1.3.3.min.js"></script>-->
 		<script src="http://code.jquery.com/jquery.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		<script src="js/bootstrap-modal.js"></script>
+		<script src="js/bootstrap-modalmanager.js"></script>
 		<script src="js/underscore-min.js"></script>
 		<script src="js/backbone-min.js"></script>
+		<script src="js/main.js"></script>
 		<script type="text/javascript">
+		
+		
+		
+		/*
 		var _sync = Backbone.sync;
 		Backbone.sync = function(method, model, options){
 			options.beforeSend = function(xhr){
@@ -202,7 +310,7 @@
 			};
 			return _sync(method, model, options);
 		};
-		
+		*/
 		var User = Backbone.Model.extend({
 			defaults : {
 				name : null,
@@ -210,6 +318,8 @@
 			},
 			urlRoot:'accounts/users/'
 		});
+		
+		var loginUser = new User({id:'i'});
 		
 		var loginModalView = Backbone.View.extend({
 			el: $("#loginModal"),
@@ -225,15 +335,16 @@
 				this.$('#loginPassword').val("");
 			},
 			login: function() {
-				var self = this;
+				var thisView = this;
 				var navBar = this.options.navBar;
 				var email = this.$("#loginEmail").val();
 				var password = this.$("#loginPassword").val();
 				$.getJSON('accounts/login',{email:email,password:password})
 				.done(function(data){
-					var user = new User(data);
-					navBar.userMode(user);
-					self.$el.modal('hide');
+					loginUser.fetch();
+					//var user = new User(data);
+					//navBar.userMode(user);
+					thisView.$el.modal('hide');
 				}).fail(function(jqXHR, textStatus, errorThrown){
 					alert('帳號或密碼錯誤!');
 				});
@@ -248,24 +359,33 @@
 			events: {
 				"show": "showModal",
 				"click .btn-reg": "register",
+				"click .btn-captcha-refresh": "getCaptcha"
 			},
 			initialize: function() {
 
 			},
 			showModal: function() {
+				this.getCaptcha();
 				this.$('#regPassword').val("");
 			},
+			getCaptcha: function(){
+				var thisView = this;
+				$.get('accounts/captcha',function(data){
+					thisView.$('.captcha').html(data);
+				});
+			},
 			register: function() {
-				var self = this;
+				var thisView = this;
 				var name = this.$("#regUsername").val();
 				var email = this.$("#regEmail").val();
 				var password = this.$("#regPassword").val();
-				var regUser = new User({name:name,email:email,password:password});
+				var captcha = this.$("#regCaptcha").val();
+				var regUser = new User({name:name,email:email,password:password,captcha:captcha});
 				regUser.save()
 				.done(function(data){
 					alert('註冊成功!');
-					self.$el.modal('hide');
-				}).fail(function(jqXHR, textStatus, errorThrown){
+					thisView.$el.modal('hide');
+				}).fail(function(){
 					alert('註冊失敗!');
 				});
 			},
@@ -274,6 +394,45 @@
 			}
 		});
 		
+		var settingView = Backbone.View.extend({
+			el:$('#settingModal'),
+			events:{
+				'click #collapsePassword .btn-submit':'changePassword'
+			},
+			initialize: function() {
+				this.listenTo(loginUser, 'change', this.updateUser);
+			},
+			changePassword: function(){
+				var thisView = this;
+				var password = this.$('#settingPassword').val();
+				var newPassword = this.$('#settingNewPassword').val();
+				var newPassword2 = this.$('#settingNewPassword2').val();
+				if (newPassword !== newPassword2){
+					alert('新密碼不相符!');
+					return
+				}
+				$.post('accounts/password',{password:password,newpassword:newPassword})
+				.done(function(data){
+					alert('修改完成!')
+					thisView.$('#settingPassword').val('');
+					thisView.$('#settingNewPassword').val('');
+					thisView.$('#settingNewPassword2').val('');
+				}).fail(function(a,b){
+					console.log(a)
+					console.log(b)
+					alert('密碼錯誤!');
+				});
+			},
+
+			updateUser: function(){
+				console.log(loginUser)
+				var email = loginUser.get('email');
+				var name = loginUser.get('name');
+				this.$('#settingEmail').val(email);
+				this.$('#settingUsername').val(name);
+			}
+		})
+		
 		
 		var navBarView = Backbone.View.extend({
 			el:$('#navBar'),
@@ -281,20 +440,20 @@
 				"click .btn-logout": "logout",
 			},
 			initialize: function() {
-				var self = this;
 				this.$userNav = this.$("#userNav");
 				this.$guestNav = this.$("#guestNav");
 				this.guestMode();
-				var loginUser = new User({id:'i'});
-				loginUser.fetch().done(function(){
-					if(loginUser.get('name') == 'guest'){
-						self.guestMode();
-					}else{
-						self.userMode(loginUser);
-					}
-					console.log(loginUser);
-				});
 				
+				this.listenTo(loginUser, 'change', this.changeMode);
+				
+			},
+			changeMode: function(){
+				if(loginUser.get('name') == 'guest'){
+					this.guestMode();
+				}else{
+					this.userMode(loginUser);
+				}
+				console.log(loginUser);
 			},
 			logout: function(){
 				var self = this;
@@ -321,10 +480,11 @@
 		var testUser = new User({name:'qq',email:'qq@qq.com',password:'password'});
 		testUser.save();
 		console.log(testUser);
-		*/
+		
 		$.get('accounts/captcha',function(data){
 			console.log(data);
 		});
+		*/
 			$(function(){
 				function initialize() {
 					var initlatlng = new google.maps.LatLng(25.056220142845, 121.54178450802);
@@ -348,6 +508,9 @@
 				console.log(loginModal);
 				var regModal = new regModalView({navBar:navBar});
 				console.log(regModal);
+				var settingModal = new settingView();
+				
+				loginUser.fetch();
 				
 			});
 		</script>
