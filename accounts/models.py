@@ -1,7 +1,17 @@
+from django.utils import timezone
+from django.db import models
+from django.contrib.auth.models import User
+
+class EmailVerification(models.Model):
+	user = models.OneToOneField(User)
+	key = models.CharField(max_length=100)
+	date_reg = models.DateTimeField(default=timezone.now)
+	
+	def __unicode__(self):
+		return self.user.username
+'''
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-
-
 class MyUserManager(BaseUserManager):
 	def create_user(self, email, username, password=None):
 		if not email:
@@ -71,3 +81,5 @@ class MyUser(AbstractBaseUser):
 		"Is the user a member of staff?"
 		# Simplest possible answer: All admins are staff
 		return self.is_admin
+	
+'''

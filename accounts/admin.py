@@ -1,3 +1,4 @@
+'''
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.models import Group
@@ -82,3 +83,9 @@ admin.site.register(MyUser, MyUserAdmin)
 # ... and, since we're not using Django's builtin permissions,
 # unregister the Group model from admin.
 admin.site.unregister(Group)
+
+'''
+from django.contrib import admin
+from accounts.models import EmailVerification
+
+admin.site.register(EmailVerification)
