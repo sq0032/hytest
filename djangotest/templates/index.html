@@ -134,40 +134,48 @@
 			</div>
 			<div class="modal-body">
 				<div class="form-horizontal">
-					<div class="control-group">
+					<div id="regEmailField" class="control-group">
 						<label class="control-label" for="regEmail">帳號/Email</label>
 						<div class="controls">
-							<input type="text" id="regEmail" placeholder="ex.qq@example.com">
-							<p>使用E-mail作為您的帳號</p>
+							<input type="text" id="regEmail" placeholder="使用E-mail作為您的帳號">
+							<span class="help-inline msg-error"></span>
 						</div>
-						
 					</div>
-					<div class="control-group">
+					<div id="regUsernameField" class="control-group">
 						<label class="control-label" for="regUsername">名稱</label>
 						<div class="controls">
-							<input type="text" id="regUsername" placeholder="qqq">
-							<p>最多填入XX個字</p>
+							<input type="text" id="regUsername" placeholder="最多填入20個字元">
+							<span class="help-inline msg-error"></span>
 						</div>
 					</div>
-					<div class="control-group">
+					<div id="regPasswordField" class="control-group">
 						<label class="control-label" for="regPassword">密碼</label>
 						<div class="controls">
-							<input type="password" id="regPassword" placeholder="Password">
-							<p>xx字以上</p>
+							<input type="password" id="regPassword" placeholder="請輸入8到16個字元">
+							<span class="help-inline msg-error"></span>
 						</div>
 					</div>
-					<div class="control-group">
+					<div id="regPasswordConfirmField" class="control-group">
+						<label class="control-label" for="regPasswordConfirm">確認密碼</label>
+						<div class="controls">
+							<input type="password" id="regPasswordConfirm" placeholder="">
+							<span class="help-inline msg-error"></span>
+						</div>
+					</div>
+					<div id="regCaptchaField" class="control-group">
 						<label class="control-label" for="regCaptcha">驗證碼</label>
 						<div class="controls">
 							<p class="captcha"></p>
 							<button class="btn btn-small btn-captcha-refresh"><i class="icon-refresh"></i></button>
 							<input class="input-small" type="text" id="regCaptcha" placeholder="">
+							<span class="help-inline msg-error"></span>
 						</div>
 					</div>
-					<div class="control-group">
+					<div id="regAgreeField" class="control-group">
 						<div class="controls">
 							<label class="checkbox">
-								<input type="checkbox"> 我已經詳細閱讀並同意xxx服務條款
+								<input id="regAgree" type="checkbox">
+								<span class="help-inline">我已經詳細閱讀並同意xxx服務條款</span>
 							</label>
 						</div>
 					</div>
@@ -175,7 +183,7 @@
 			</div>
 			<div class="modal-footer">
 				<button class="btn" data-dismiss="modal" aria-hidden="true">關閉</button>
-				<button class="btn-reg btn btn-primary">註冊</button>
+				<button id="registerBtn" data-loading-text="註冊中..." class="btn btn-primary">註冊</button>
 			</div>
 		</div>
 		
@@ -275,6 +283,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<!-- 
 		<div class="container-fluid">
 			<div class="row-fluid">
@@ -300,17 +309,7 @@
 		<script src="js/main.js"></script>
 		<script type="text/javascript">
 		
-		
-		
-		/*
-		var _sync = Backbone.sync;
-		Backbone.sync = function(method, model, options){
-			options.beforeSend = function(xhr){
-				xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
-			};
-			return _sync(method, model, options);
-		};
-		*/
+
 		var User = Backbone.Model.extend({
 			defaults : {
 				name : null,
@@ -339,12 +338,10 @@
 				var navBar = this.options.navBar;
 				var email = this.$("#loginEmail").val();
 				var password = this.$("#loginPassword").val();
-				$.getJSON('accounts/login',{email:email,password:password})
-				.done(function(data){
-					console.log(loginUser)
+				$.get('accounts/login',{email:email,password:password})
+				.done(function(){
+					console.log('login done!')
 					loginUser.fetch();
-					//var user = new User(data);
-					//navBar.userMode(user);
 					thisView.$el.modal('hide');
 				}).fail(function(jqXHR, textStatus, errorThrown){
 					alert('帳號或密碼錯誤!');
@@ -359,34 +356,180 @@
 			el: $("#regModal"),
 			events: {
 				"show": "showModal",
-				"click .btn-reg": "register",
-				"click .btn-captcha-refresh": "getCaptcha"
+				"click #registerBtn": "register",
+				"click .btn-captcha-refresh": "getCaptcha",
+				"change #regEmail": "checkEmail",
+				"change #regUsername": "checkUsername",
+				"keyup #regPassword": "checkPassword",
+				"keyup #regPasswordConfirm": "checkPasswordConfirm",
+				"keyup #regCaptcha": "clearCaptcha",
+				"click #regAgree": "clearAgree",
 			},
 			initialize: function() {
+				this.$nameField = this.$('#regUsernameField');
+				//this.$nameHelp = this.$('#regUsernameField .help-inline');
+				this.$name = this.$("#regUsername");
+				
+				this.$emailField = this.$('#regEmailField');
+				//this.$emailHelp = this.$('#regEmailField .help-inline');
+				this.$email = this.$("#regEmail");
+				
+				this.$passwordField = this.$('#regPasswordField');
+				//this.$passwordHelp = this.$('#regPasswordField .help-inline');
+				this.$password = this.$("#regPassword");
+				
+				this.$passwordConfirmField = this.$('#regPasswordConfirmField');
+				//this.$passwordConfirmHelp = this.$('#regPasswordConfirmField .help-inline');
+				this.$passwordConfirm = this.$("#regPasswordConfirm");
 
+				this.$captchaField = this.$('#regCaptchaField');
+				//this.$captchaHelp = this.$('#regCaptchaField .help-inline');
+				this.$captcha = this.$("#regCaptcha");
+				
+				this.$agreeField = this.$('#regAgreeField');
+				//this.$agreeHelp = this.$('#regCaptchaField .help-inline');
+				this.$agree = this.$("#regAgree");
+				
+				this.$regBtn = this.$('#registerBtn');
+			},
+			showError: function($field, msg){
+				$field.addClass('error');
+				if(msg){$field.find('.msg-error').text(msg);}
+			},
+			clearError: function($field){
+				$field.removeClass('error');
+				$field.find('.msg-error').text('');
+			},
+			clearAgree: function(){
+				this.clearError(this.$agreeField);
+			},
+			clearCaptcha: function(){
+				this.clearError(this.$captchaField);
+			},
+			checkEmail: function(){
+				var thisView = this;
+				var email = this.$email.val();
+				var $emailField = this.$emailField;
+				if(email.length == 0){
+					this.clearError($emailField);
+					return;
+				}
+				$.getJSON('accounts/check-email', {email: email})
+				.done(function(data){
+					if(data.status == 'ERROR'){
+						thisView.showError($emailField, data.msg);
+					}else{
+						thisView.clearError($emailField);
+					}
+				});
+			},
+			checkUsername:function(){
+				var thisView = this;
+				var name = this.$name.val();
+				var $nameField = this.$nameField;
+				if(name.length == 0){
+					this.clearError($nameField);
+					return
+				}
+				$.getJSON('accounts/check-name', {name:name}).done(function(data){
+					if(data.status == 'ERROR'){
+						thisView.showError($nameField, data.msg);
+					}else{
+						thisView.clearError($nameField);
+					}
+				});
+			},
+			checkPassword:function(){
+				var password = this.$password.val();
+				var $passwordField = this.$passwordField;
+				var length = password.length;
+				if(length > 0 && length < 8){
+					this.showError($passwordField, '密碼長度太短');
+				}else if(length > 16){
+					this.showError($passwordField, '密碼長度太長');
+				}else{
+					this.clearError($passwordField);
+				}
+			},
+			checkPasswordConfirm:function(){
+				var password = this.$password.val();
+				var passwordConfirm = this.$passwordConfirm.val();
+				var $passwordConfirmField = this.$passwordConfirmField;
+				
+				if(password != passwordConfirm){
+					this.showError($passwordConfirmField, '密碼不符');
+				}else{
+					this.clearError($passwordConfirmField);
+				}
 			},
 			showModal: function() {
 				this.getCaptcha();
-				this.$('#regPassword').val("");
+				this.$name.val("");
+				this.$email.val("");
+				this.$password.val("");
+				this.$passwordConfirm.val("");
+				this.$captcha.val();
+				this.$('.error').removeClass('error');
+				this.$('.msg-error').text('');
 			},
 			getCaptcha: function(){
-				var thisView = this;
-				$.get('accounts/captcha',function(data){
-					thisView.$('.captcha').html(data);
+				var view = this;
+				return $.get('accounts/captcha',function(data){
+					view.$('.captcha').html(data);
+					view.$captcha.val('');
+					view.clearCaptcha();
 				});
 			},
 			register: function() {
-				var thisView = this;
-				var name = this.$("#regUsername").val();
-				var email = this.$("#regEmail").val();
-				var password = this.$("#regPassword").val();
-				var captcha = this.$("#regCaptcha").val();
-				var regUser = new User({name:name,email:email,password:password,captcha:captcha});
-				regUser.save()
+				var view = this;
+				var name = this.$name.val();
+				var email = this.$email.val();
+				var password = this.$password.val();
+				var captcha = this.$captcha.val();
+				var agree = this.$agree.prop("checked");
+				
+				if(this.$('.error').length != 0){
+					return;
+				}else if(email.length == 0){
+					this.showError(this.$emailField, '請輸入帳號');
+					return;
+				}else if(name.length == 0){
+					this.showError(this.$nameField, '請輸入名稱');
+					return;
+				}else if(password.length == 0){
+					this.showError(this.$passwordField, '請輸入密碼');
+					return;
+				}else if(captcha.length == 0){
+					this.showError(this.$captchaField, '請輸入驗證碼');
+					return;
+				}else if(!agree){
+					this.showError(this.$agreeField);
+				}
+				
+				var $regBtn = this.$regBtn;
+				$regBtn.button('loading');
+				
+				$.post('accounts/create-user',{name:name,email:email,password:password,captcha:captcha},'json')
 				.done(function(data){
-					alert('註冊成功!');
-					thisView.$el.modal('hide');
+					$regBtn.button('reset');
+					console.log(data);
+					if(data.status == 'OK'){
+						view.$el.modal('hide');
+						loginUser.set('id','i').fetch();
+						return;
+					}
+					
+					for(var field in data){
+						if(field == 'captcha'){
+							view.getCaptcha();
+							view.showError(view.$captchaField, data[field]);
+						}else if(field == 'email'){
+							
+						}
+					}
+					
 				}).fail(function(){
+					$regBtn.button('reset');
 					alert('註冊失敗!');
 				});
 			},
@@ -458,12 +601,11 @@
 				console.log(loginUser);
 			},
 			logout: function(){
-				var self = this;
-				$.getJSON('accounts/logout', function(data) {
-					if(data.status === "OK"){
-						loginUser.set('id','i')
-						loginUser.fetch();
-					}
+				$.get('accounts/logout').done(function(data) {
+					loginUser.set('id','i');
+					loginUser.fetch();
+				}).fail(function(){
+					alert('登出失敗!');
 				});
 			},
 			guestMode: function(){
