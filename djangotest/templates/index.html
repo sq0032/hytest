@@ -367,109 +367,124 @@
 			},
 			initialize: function() {
 				this.$nameField = this.$('#regUsernameField');
-				//this.$nameHelp = this.$('#regUsernameField .help-inline');
 				this.$name = this.$("#regUsername");
 				
 				this.$emailField = this.$('#regEmailField');
-				//this.$emailHelp = this.$('#regEmailField .help-inline');
 				this.$email = this.$("#regEmail");
 				
 				this.$passwordField = this.$('#regPasswordField');
-				//this.$passwordHelp = this.$('#regPasswordField .help-inline');
 				this.$password = this.$("#regPassword");
 				
 				this.$passwordConfirmField = this.$('#regPasswordConfirmField');
-				//this.$passwordConfirmHelp = this.$('#regPasswordConfirmField .help-inline');
 				this.$passwordConfirm = this.$("#regPasswordConfirm");
 
 				this.$captchaField = this.$('#regCaptchaField');
-				//this.$captchaHelp = this.$('#regCaptchaField .help-inline');
 				this.$captcha = this.$("#regCaptcha");
 				
 				this.$agreeField = this.$('#regAgreeField');
-				//this.$agreeHelp = this.$('#regCaptchaField .help-inline');
 				this.$agree = this.$("#regAgree");
+				
+				this.field = {
+					name: this.$('#regUsernameField'),
+					email: this.$('#regEmailField'),
+					password: this.$('#regPasswordField'),
+					passwordConfirm: this.$('#regPasswordConfirmField'),
+					captcha: this.$('#regCaptchaField'),
+					agree: this.$('#regAgreeField')
+				}
+				
+				this.input = {
+					name: this.$('#regUsername'),
+					email: this.$('#regEmail'),
+					password: this.$('#regPassword'),
+					passwordConfirm: this.$('#regPasswordConfirm'),
+					captcha: this.$('#regCaptcha'),
+					agree: this.$('#regAgree')
+				}
 				
 				this.$regBtn = this.$('#registerBtn');
 			},
-			showError: function($field, msg){
+			showError: function(fieldName, msg){
+				var $field = this.field[fieldName];
+				if(!$field){return;}
 				$field.addClass('error');
 				if(msg){$field.find('.msg-error').text(msg);}
 			},
-			clearError: function($field){
+			clearError: function(fieldName){
+				var $field = this.field[fieldName];
 				$field.removeClass('error');
 				$field.find('.msg-error').text('');
 			},
 			clearAgree: function(){
-				this.clearError(this.$agreeField);
+				this.clearError('agree');
 			},
 			clearCaptcha: function(){
-				this.clearError(this.$captchaField);
+				this.clearError('captcha');
 			},
 			checkEmail: function(){
-				var thisView = this;
-				var email = this.$email.val();
-				var $emailField = this.$emailField;
+				var view = this;
+				var email = this.input.email.val();
 				if(email.length == 0){
-					this.clearError($emailField);
+					this.clearError('email');
 					return;
 				}
 				$.getJSON('accounts/check-email', {email: email})
 				.done(function(data){
 					if(data.status == 'ERROR'){
-						thisView.showError($emailField, data.msg);
+						view.showError('email',data.msg);
 					}else{
-						thisView.clearError($emailField);
+						view.clearError('email');
 					}
 				});
 			},
 			checkUsername:function(){
-				var thisView = this;
-				var name = this.$name.val();
+				var view = this;
+				var name = this.input.name.val();
 				var $nameField = this.$nameField;
 				if(name.length == 0){
-					this.clearError($nameField);
+					this.clearError('name');
+					return
+				}else if(name.length > 20){
+					view.showError('name', '名稱太長');
 					return
 				}
 				$.getJSON('accounts/check-name', {name:name}).done(function(data){
 					if(data.status == 'ERROR'){
-						thisView.showError($nameField, data.msg);
+						view.showError('name', data.msg);
 					}else{
-						thisView.clearError($nameField);
+						view.clearError('name');
 					}
 				});
 			},
 			checkPassword:function(){
-				var password = this.$password.val();
-				var $passwordField = this.$passwordField;
+				var password = this.input.password.val();
 				var length = password.length;
 				if(length > 0 && length < 8){
-					this.showError($passwordField, '密碼長度太短');
+					this.showError('password', '密碼長度太短');
 				}else if(length > 16){
-					this.showError($passwordField, '密碼長度太長');
+					this.showError('password', '密碼長度太長');
 				}else{
-					this.clearError($passwordField);
+					this.clearError('password');
 				}
 			},
 			checkPasswordConfirm:function(){
-				var password = this.$password.val();
-				var passwordConfirm = this.$passwordConfirm.val();
-				var $passwordConfirmField = this.$passwordConfirmField;
+				var password = this.input.password.val();
+				var passwordConfirm = this.input.passwordConfirm.val();
 				
 				if(password != passwordConfirm){
-					this.showError($passwordConfirmField, '密碼不符');
+					this.showError('passwordConfirm', '密碼不符');
 				}else{
-					this.clearError($passwordConfirmField);
+					this.clearError('passwordConfirm');
 				}
 			},
 			showModal: function() {
 				this.getCaptcha();
-				this.$name.val("");
-				this.$email.val("");
-				this.$password.val("");
-				this.$passwordConfirm.val("");
-				this.$captcha.val();
-				this.$agree.prop("checked",false);
+				this.input.name.val("");
+				this.input.email.val("");
+				this.input.password.val("");
+				this.input.passwordConfirm.val("");
+				this.input.captcha.val();
+				this.input.agree.prop("checked",false);
 				this.$('.error').removeClass('error');
 				this.$('.msg-error').text('');
 			},
@@ -477,34 +492,34 @@
 				var view = this;
 				return $.get('accounts/captcha',function(data){
 					view.$('.captcha').html(data);
-					view.$captcha.val('');
+					view.input.captcha.val('');
 					//view.clearCaptcha();
 				});
 			},
 			register: function() {
 				var view = this;
-				var name = this.$name.val();
-				var email = this.$email.val();
-				var password = this.$password.val();
-				var captcha = this.$captcha.val();
-				var agree = this.$agree.prop("checked");
+				var name = this.input.name.val();
+				var email = this.input.email.val();
+				var password = this.input.password.val();
+				var captcha = this.input.captcha.val();
+				var agree = this.input.agree.prop("checked");
 				
 				if(this.$('.error').length != 0){
 					return;
 				}else if(email.length == 0){
-					this.showError(this.$emailField, '請輸入帳號');
+					this.showError('email', '請輸入帳號');
 					return;
 				}else if(name.length == 0){
-					this.showError(this.$nameField, '請輸入名稱');
+					this.showError('name', '請輸入名稱');
 					return;
 				}else if(password.length == 0){
-					this.showError(this.$passwordField, '請輸入密碼');
+					this.showError('password', '請輸入密碼');
 					return;
 				}else if(captcha.length == 0){
-					this.showError(this.$captchaField, '請輸入驗證碼');
+					this.showError('captcha', '請輸入驗證碼');
 					return;
 				}else if(!agree){
-					this.showError(this.$agreeField);
+					this.showError('agree');
 					return;
 				}
 				
@@ -521,13 +536,11 @@
 						return;
 					}
 					
-					for(var field in data){
-						if(field == 'captcha'){
+					for(var fieldName in data){
+						if(fieldName == 'captcha'){
 							view.getCaptcha();
-							view.showError(view.$captchaField, data[field]);
-						}else if(field == 'email'){
-							
 						}
+						view.showError(fieldName, data[fieldName]);
 					}
 					
 				}).fail(function(){

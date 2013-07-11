@@ -63,10 +63,6 @@ def checkEmail(request):
 @require_GET
 def checkUsername(request):
 	name = request.GET.get('name')
-	
-	if len(name) > 20:
-		return JSONResponse({'status':'ERROR','msg':'名稱太長'})
-	
 	try:
 		User.objects.get(username=name)
 		return JSONResponse({'status':'ERROR','msg':'名稱已存在'})
@@ -92,7 +88,7 @@ def user_i_view(request):
 @require_POST
 def createUser(request):
 	captcha = request.POST.get('captcha')
-	username = request.POST.get('name');
+	name = request.POST.get('name');
 	password = request.POST.get('password');
 	email = request.POST.get('email');
 	
@@ -100,20 +96,54 @@ def createUser(request):
 	if captcha is None or captcha != request.session.get('captcha'):
 		if 'captcha' in request.session:
 			del request.session['captcha']
-		return JSONResponse({'status':'ERROR', 'captcha':'驗證碼錯誤'})
+		ret['captcha'] = '驗證碼錯誤'
 	
-	#if username = 
+	if name is None or len(name) < 1:
+		ret['name'] = '名稱錯誤'
+	elif len(name) > 20:
+		ret['name'] = '名稱太長'
+		
+	if password is None:
+		ret['password'] = '密碼錯誤'
+	elif len(password) < 8:
+		ret['password'] = '密碼太短'
+	elif len(password) > 16:
+		ret['password'] = '密碼太長'
 	
-	#try:
-	user = User(username=username,email=email)
-	user.set_password(password)
-	user.save()
+	try:
+		validate_email(email)
+	except ValidationError:
+		ret['email'] = '非合法帳號'
+		
+	try:
+		User.objects.get(email=email)
+		ret['email'] = '帳號已存在'
+	except User.DoesNotExist:
+		pass
+	
+	try:
+		User.objects.get(username=name)
+		ret['name'] = '名稱已存在'
+	except User.DoesNotExist:
+		pass
+	
+	if ret:
+		ret['status'] = 'ERROR'
+		return JSONResponse(ret)
+	
+	try:
+		user = User(username=name,email=email)
+		user.set_password(password)
+		user.save()
+	except:
+		#未預期錯誤
+		return JSONResponse({'status':'ERROR'})
+		
 	user = authenticate(username=email, password=password)
 	if user is not None:
 		login(request, user)
 	return JSONResponse({'status':'OK'},status=status.HTTP_201_CREATED)
-	#except:
-	#	return JSONResponse({},status=status.HTTP_400_BAD_REQUEST)
+	
 		
 	'''
 	key = ''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(10))
