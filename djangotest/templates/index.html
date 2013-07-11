@@ -469,6 +469,7 @@
 				this.$password.val("");
 				this.$passwordConfirm.val("");
 				this.$captcha.val();
+				this.$agree.prop("checked",false);
 				this.$('.error').removeClass('error');
 				this.$('.msg-error').text('');
 			},
@@ -477,7 +478,7 @@
 				return $.get('accounts/captcha',function(data){
 					view.$('.captcha').html(data);
 					view.$captcha.val('');
-					view.clearCaptcha();
+					//view.clearCaptcha();
 				});
 			},
 			register: function() {
@@ -504,6 +505,7 @@
 					return;
 				}else if(!agree){
 					this.showError(this.$agreeField);
+					return;
 				}
 				
 				var $regBtn = this.$regBtn;

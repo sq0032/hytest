@@ -92,15 +92,17 @@ def user_i_view(request):
 @require_POST
 def createUser(request):
 	captcha = request.POST.get('captcha')
-
+	username = request.POST.get('name');
+	password = request.POST.get('password');
+	email = request.POST.get('email');
+	
+	ret = {}
 	if captcha is None or captcha != request.session.get('captcha'):
 		if 'captcha' in request.session:
 			del request.session['captcha']
 		return JSONResponse({'status':'ERROR', 'captcha':'驗證碼錯誤'})
 	
-	username = request.POST.get('name');
-	password = request.POST.get('password');
-	email = request.POST.get('email');
+	#if username = 
 	
 	#try:
 	user = User(username=username,email=email)
