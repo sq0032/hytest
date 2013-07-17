@@ -90,11 +90,11 @@ def captcha(request):
 	draw.text((20,10),captcha,font=font,fill=(0,0,222))
 	
 	for w in xrange(120):
-	    for h in xrange(40):
-	        tmp=random.randint(0,100)
-	        if tmp>98:
-	            draw.point((w,h),fill=(0,0,0))	
-	            
+		for h in xrange(40):
+			tmp=random.randint(0,100)
+			if tmp>98:
+				draw.point((w,h),fill=(0,0,0))
+	
 	output = StringIO.StringIO()
 	im.save(output,"PNG")
 	content = output.getvalue()

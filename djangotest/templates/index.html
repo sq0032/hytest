@@ -211,7 +211,7 @@
 					<div id="regCaptchaField" class="control-group">
 						<label class="control-label" for="regCaptcha">驗證碼</label>
 						<div class="controls">
-							<p class="captcha"></p>
+							<div><img id="regCaptchaImage"></div>
 							<button class="btn btn-small btn-captcha-refresh"><i class="icon-refresh"></i></button>
 							<input class="input-small" type="text" id="regCaptcha" placeholder="">
 							<span class="help-inline msg-error"></span>
@@ -611,12 +611,9 @@
 				this.$('.msg-error').text('');
 			},
 			getCaptcha: function(){
-				var view = this;
-				return $.get('accounts/captcha',function(data){
-					view.$('.captcha').html(data);
-					view.input.captcha.val('');
-					//view.clearCaptcha();
-				});
+				var d = new Date();
+				$("#regCaptchaImage").attr("src", "accounts/captcha?"+d.getTime());
+				this.input.captcha.val('');
 			},
 			register: function() {
 				var view = this;
