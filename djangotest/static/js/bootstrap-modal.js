@@ -323,6 +323,7 @@
 			var $this = $(this),
 				data = $this.data('modal'),
 				options = $.extend({}, $.fn.modal.defaults, $this.data(), typeof option == 'object' && option);
+			console.log(options);
 
 			if (!data) $this.data('modal', (data = new Modal(this, options)));
 			if (typeof option == 'string') data[option].apply(data, [].concat(args));
@@ -332,7 +333,7 @@
 
 	$.fn.modal.defaults = {
 		keyboard: true,
-		backdrop: true,
+		backdrop: 'static',
 		loading: false,
 		show: true,
 		width: null,
@@ -343,7 +344,7 @@
 		focusOn: null,
 		replace: false,
 		resize: false,
-		attentionAnimation: 'shake',
+		attentionAnimation: false,
 		manager: 'body',
 		spinner: '<div class="loading-spinner" style="width: 200px; margin-left: -100px;"><div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div></div>'
 	};
@@ -360,7 +361,10 @@
 				href = $this.attr('href'),
 				$target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))), //strip for ie7
 				option = $target.data('modal') ? 'toggle' : $.extend({ remote: !/#/.test(href) && href }, $target.data(), $this.data());
-
+			console.log('data-api',option);
+				if(option['maxheight']){
+					option['maxHeight'] = option['maxheight'];
+				}
 			e.preventDefault();
 			$target
 				.modal(option)

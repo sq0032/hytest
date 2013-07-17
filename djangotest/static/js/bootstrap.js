@@ -854,7 +854,25 @@
         this.isShown = true
 
         this.escape()
+/*
+		if (this.options.width){
+			this.$element.css('width', this.options.width);
 
+			var that = this;
+			this.$element.css('margin-left', function () {
+				if (/%/ig.test(that.options.width)){
+					return -(parseInt(that.options.width) / 2) + '%';
+				} else {
+					return -($(this).width() / 2) + 'px';
+				}
+			});
+		} else {
+			this.$element.css('margin-left', function () {
+				console.log($(this).width());
+					return -($(this).width() / 2) + 'px';
+			});
+		}
+*/
         this.backdrop(function () {
           var transition = $.support.transition && that.$element.hasClass('fade')
 
@@ -1011,7 +1029,7 @@
   }
 
   $.fn.modal.defaults = {
-      backdrop: true
+      backdrop: 'static'
     , keyboard: true
     , show: true
   }

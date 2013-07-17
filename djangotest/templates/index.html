@@ -5,52 +5,101 @@
 		<title>Project name</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Bootstrap -->
-		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="css/bootstrap.css" rel="stylesheet" media="screen">
 		<!--
 		<link href="less/bootstrap.less" rel="stylesheet/less">
 		-->
 		<style>
-			body {
-				padding-top: 40px; /* 60px to make the container go all the way to the bottom of the topbar */
-			}
-			#map_canvas {
-				position: absolute;
-				top: 40px;
-				left: 0px;
-				right: 0px;
-				bottom: 0px;
-				z-index: -1;
-			}
-			#loginModal {
-				*width:300px;
-				*margin-left: -150px;
-			}
-		/* Desktop large
-		------------------------- */
-		@media (min-width: 980px) and (min-width: 1200px) {
-			.modal.span8 {
-				margin-left:-385px;
-			}
+		body {
+			padding-top: 40px; /* 60px to make the container go all the way to the bottom of the topbar */
 		}
-		/* Tablet to desktop
-		------------------------- */
-		@media (min-width: 768px) and (max-width: 979px) {
-			.modal.span8 {
-				margin-left:-238px;
-			}
+		#map_canvas {
+			position: absolute;
+			top: 40px;
+			left: 0px;
+			right: 0px;
+			bottom: 0px;
+			z-index: -1;
 		}
-		/* Tablet
-		------------------------- */
-		@media (max-width: 767px) {
+		#loginModal {
 		}
-		/* Landscape phones
-		------------------------- */
-		@media (max-width: 480px) {
+		
+		#settingModal {
+			*min-height:500px;
 		}
+		
+		#sellerPanel {
+			*min-height:500px;
+		}
+		
+		.list {
+			list-style: none outside none;
+			margin: 0;
+		}
+		
 		</style>
 		<link href="css/bootstrap-responsive.css" rel="stylesheet">
-		<link href="css/bootstrap-modal.css" rel="stylesheet">
+		<style>
+		
+		.modal {
+			outline: none;
+			position: absolute;
+			margin-top: 0;
+			top: 50%;
+			overflow: visible; /* allow content to popup out (i.e tooltips) */
+		}
+		
+		.modal.fade {
+			top: -100%;
+			-webkit-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;	
+			   -moz-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
+			     -o-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
+			        transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
+		}
+		
+		
+		.modal-body {
+			max-height: none;
+			overflow: visible;
+		}
+		
+		.modal.container {
+			width: 940px;
+			margin-left: -470px;
+		}
+		
+		/* Large desktop */
+		@media (min-width: 1200px) {
+			.modal.container {
+				width: 1170px;
+				margin-left: -585px;
+			}
+		}
+		 
+		/* Portrait tablet to landscape and desktop */
+		@media (min-width: 768px) and (max-width: 979px) {
+			.modal.container {
+				width: 728px;
+				margin-left: -362px;
+			}
+		}
+		 
+		/* Landscape phone to portrait tablet */
+		@media (max-width: 767px) {
+			.modal, 
+			.modal.container {
+				top: 1%;
+				right: 1%;
+				left: 1%;
+				bottom: auto;
+				width: auto !important;
+				height: auto !important;
+				margin: 0 !important;
+				padding: 0 !important;
+			}
+		</style>
 		<!--
+		<link href="css/bootstrap-modal.css" rel="stylesheet">
 		<link href="less/responsive.less" rel="stylesheet/less">
 		-->
 	<script type="text/javascript"
@@ -78,18 +127,15 @@
 						</ul>
 						<ul id="userNav" class="nav pull-right">
 							<li><a class="btn-myCart" href="#" data-toggle="modal">購物車<i class="icon-shopping-cart"></i></a></li>
-							<li><a class="btn-myShop" href="#" data-toggle="modal">我的商店<i class="icon-home"></i></a></li>
+							<li><a class="btn-myShop" href="#sellerPanel" data-toggle="modal">我的商店<i class="icon-home"></i></a></li>
 							<li><a class="btn-settingModal" href="#settingModal" data-toggle="modal">設定<i class="icon-wrench"></i></a></li>
 							<li><a class="userInfo" href="#"><i class="icon-user"></i><span class="username"></span></a></li>
-							<li><a class="btn-logout" href="#">登出</a></li>
+							<li><a id="logoutBtn" href="#">登出</a></li>
 						</ul>
 					</div><!--/.nav-collapse -->
 				</div>
 			</div>
 		</div>
-		<!-- Button to trigger modal 
-		<a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
-		-->
 		
 		<!--Login modal -->
 		<div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -193,97 +239,148 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 				<h3><img src="img/setting.png" style="vertical-align:bottom;width:130px;height:130px;">帳號設定</h3>
 			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="span3">
-						<ul class="nav nav-list">
-							<li class="active"><a href="#">會員設定</a></li>
-							<li><a href="#">Privacy</a></li>
-						</ul>
-					</div>
-					<div class="span6">
-						<div id="accountSetting">
-							<div class="accordion">
-							<div class="accordion-group">
-								<div class="accordion-heading">
-									<a class="accordion-toggle" data-toggle="collapse" href="#collapsePhoto">照片</a>
-								</div>
-								<div id="collapsePhoto" class="accordion-body collapse">
-									<div class="accordion-inner">
-										<img src="img/setting.png" style="width: 130px; height: 130px;">
-										<button class="btn btn-primary">上傳照片</button>
-									</div>
+			<div class="row">
+				<div class="span3">
+					<ul class="nav nav-list">
+						<li class="active"><a href="#">會員設定</a></li>
+						<li><a href="#">Privacy</a></li>
+					</ul>
+				</div>
+				<div class="span6 modal-body">
+					<div id="accountSetting">
+						<div class="accordion">
+						<div class="accordion-group">
+							<div class="accordion-heading">
+								<a class="accordion-toggle" data-toggle="collapse" href="#collapsePhoto">照片</a>
+							</div>
+							<div id="collapsePhoto" class="accordion-body collapse">
+								<div class="accordion-inner">
+									<img src="img/setting.png" style="width: 130px; height: 130px;">
+									<button class="btn btn-primary">上傳照片</button>
 								</div>
 							</div>
-							<div class="accordion-group">
-								<div class="accordion-heading">
-									<a class="accordion-toggle" data-toggle="collapse" href="#collapseAccount">
-										帳號
-									</a>
-								</div>
-								<div id="collapseAccount" class="accordion-body collapse">
-									<div class="accordion-inner">
-										<div class="form-horizontal">
-											<div class="control-group">
-												<label class="control-label" for="settingEmail">帳號/Email</label>
-												<div class="controls">
-													<input type="text" id="settingEmail" placeholder="">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="settingUsername">名稱</label>
-												<div class="controls">
-													<input type="text" id="settingUsername" placeholder="">
-												</div>
+						</div>
+						<div class="accordion-group">
+							<div class="accordion-heading">
+								<a class="accordion-toggle" data-toggle="collapse" href="#collapseAccount">
+									帳號
+								</a>
+							</div>
+							<div id="collapseAccount" class="accordion-body collapse">
+								<div class="accordion-inner">
+									<div class="form-horizontal">
+										<div class="control-group">
+											<label class="control-label" for="settingEmail">帳號/Email</label>
+											<div class="controls">
+												<input type="text" id="settingEmail" placeholder="">
 											</div>
 										</div>
-									</div>
-								</div>
-							</div>
-							<div class="accordion-group">
-								<div class="accordion-heading">
-									<a class="accordion-toggle" data-toggle="collapse" href="#collapsePassword">修改密碼</a>
-								</div>
-								<div id="collapsePassword" class="accordion-body collapse">
-									<div class="accordion-inner">
-										<div class="form-horizontal">
-											<div class="control-group">
-												<label class="control-label" for="settingPassword">舊密碼</label>
-												<div class="controls">
-													<input type="password" id="settingPassword" placeholder="">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="settingNewPassword">新密碼</label>
-												<div class="controls">
-													<input type="password" id="settingNewPassword" placeholder="">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="settingNewPassword2">確認新密碼</label>
-												<div class="controls">
-													<input type="password" id="settingNewPassword2" placeholder="">
-												</div>
-											</div>
-											<div class="control-group">
-												<div class="controls">
-													<button class="btn-submit btn btn-primary">確認修改</button>
-												</div>
+										<div class="control-group">
+											<label class="control-label" for="settingUsername">名稱</label>
+											<div class="controls">
+												<input type="text" id="settingUsername" placeholder="">
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+						<div class="accordion-group">
+							<div class="accordion-heading">
+								<a class="accordion-toggle" data-toggle="collapse" href="#collapsePassword">修改密碼</a>
+							</div>
+							<div id="collapsePassword" class="accordion-body collapse">
+								<div class="accordion-inner">
+									<div class="form-horizontal">
+										<div class="control-group">
+											<label class="control-label" for="settingPassword">舊密碼</label>
+											<div class="controls">
+												<input type="password" id="settingPassword" placeholder="">
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="settingNewPassword">新密碼</label>
+											<div class="controls">
+												<input type="password" id="settingNewPassword" placeholder="">
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="settingNewPassword2">確認新密碼</label>
+											<div class="controls">
+												<input type="password" id="settingNewPassword2" placeholder="">
+											</div>
+										</div>
+										<div class="control-group">
+											<div class="controls">
+												<button class="btn-submit btn btn-primary">確認修改</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="span2">
-						這裡放廣告
 					</div>
+				</div>
+				<div class="span2">
+					這裡放廣告
 				</div>
 			</div>
 		</div>
 		
+		<!--Seller Panel-->
+		<div id="sellerPanel" class="modal hide fade container" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3><img src="img/setting.png" style="vertical-align:bottom;width:130px;height:130px;">SHOP</h3>
+			</div>
+			<div class="row">
+				<div class="span3">
+					<ul class="nav nav-list">
+						<li class="active"><a href="#myShop" data-toggle="tab">我的商店</a></li>
+						<li><a href="#tab2" data-toggle="tab">我的店面</a></li>
+					</ul>
+				</div>
+				<div class="modal-body span8" style="min-height:400px;max-height:800px;">
+					<div class="tab-content">
+						<div class="tab-pane active" id="myShop">
+							<div>
+								<ul class="items list">
+									<li class="item" style="position:relative;width:100%;margin:0 0 30px 0;">
+										<div class="img"><img height="90" width="120" src="img/160x120.png"></div>
+										<div class="title" style="position:absolute;top:0px;left:180px;">品名:塑膠椅</div>
+										<div class="price" style="position:absolute;top:30px;left:180px;">價錢:100</div>
+										<div class="category" style="position:absolute;top:60px;left:180px;">分類:居家用品->椅子</div>
+										<div class="attribute" style="position:absolute;top:0px;left:360px;width:30px">
+											<span class="label label-info">二手品</span>
+											<span class="label label-info">機車可載</span>
+										</div>
+										<div class="description" style="position:absolute;top:0px;left:450px;">商品描述</div>
+									</li>
+									<li class="item" style="position:relative;width:100%;margin:0 0 30px 0;">
+										<div class="img"><img height="90" width="120" src="img/160x120.png"></div>
+										<div class="title" style="position:absolute;top:0px;left:180px;">品名:塑膠椅</div>
+										<div class="price" style="position:absolute;top:30px;left:180px;">價錢:100</div>
+										<div class="category" style="position:absolute;top:60px;left:180px;">分類:居家用品->椅子</div>
+										<div class="attribute" style="position:absolute;top:0px;left:360px;width:30px">
+											<span class="label label-info">二手品</span>
+											<span class="label label-info">機車可載</span>
+										</div>
+										<div class="description" style="position:absolute;top:0px;left:450px;">商品描述</div>
+									</li>
+									<li class="">
+										<button class="btn btn-large btn-block btn-primary" type="button">新增商品</button>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="tab-pane" id="tab2">
+							<p>One fine body…qqqqqqqqqqqqqqqq</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- 
 		<div class="container-fluid">
 			<div class="row-fluid">
@@ -301,14 +398,29 @@
 		
 		<!--<script src="js/less-1.3.3.min.js"></script>-->
 		<script src="http://code.jquery.com/jquery.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/bootstrap-modal.js"></script>
-		<script src="js/bootstrap-modalmanager.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<!-- <script src="js/bootstrap.min.js"></script> -->
+		<!--<script src="js/bootstrap-modal.js"></script>
+		<script src="js/bootstrap-modalmanager.js"></script>-->
 		<script src="js/underscore-min.js"></script>
 		<script src="js/backbone-min.js"></script>
 		<script src="js/main.js"></script>
 		<script type="text/javascript">
 		
+		function viewport()
+		{
+		var e = window
+		, a = 'inner';
+		if ( !( 'innerWidth' in window ) )
+		{
+		a = 'client';
+		e = document.documentElement || document.body;
+		}
+		return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
+		}
+		$(window).resize(function() {
+			console.log(viewport())
+		});
 
 		var User = Backbone.Model.extend({
 			defaults : {
@@ -319,6 +431,34 @@
 		});
 		
 		var loginUser = new User({id:'i'});
+		
+		var sellerPanelView = Backbone.View.extend({
+			el: $("#sellerPanel"),
+			events: {
+				"show": "showPanel",
+				"click #testBtn": "test",
+			},
+			test:function(){
+				this.$el.modal('hide');
+			},
+			initialize: function() {
+				$("#sellerPanel").modal({show:false,});
+				
+			},
+			showPanel: function(){
+				console.log('show');
+				/*
+				var view = this;
+				$("#sellerPanel").modal({height:'100px'});
+				this.$el.modal({height:'100px'});
+				
+				view.$el.modal('loading');
+				setTimeout(function(){
+					view.$el.modal('loading');
+				}, 1000);
+				*/
+			}
+		});
 		
 		var loginModalView = Backbone.View.extend({
 			el: $("#loginModal"),
@@ -366,24 +506,6 @@
 				"click #regAgree": "clearAgree",
 			},
 			initialize: function() {
-				this.$nameField = this.$('#regUsernameField');
-				this.$name = this.$("#regUsername");
-				
-				this.$emailField = this.$('#regEmailField');
-				this.$email = this.$("#regEmail");
-				
-				this.$passwordField = this.$('#regPasswordField');
-				this.$password = this.$("#regPassword");
-				
-				this.$passwordConfirmField = this.$('#regPasswordConfirmField');
-				this.$passwordConfirm = this.$("#regPasswordConfirm");
-
-				this.$captchaField = this.$('#regCaptchaField');
-				this.$captcha = this.$("#regCaptcha");
-				
-				this.$agreeField = this.$('#regAgreeField');
-				this.$agree = this.$("#regAgree");
-				
 				this.field = {
 					name: this.$('#regUsernameField'),
 					email: this.$('#regEmailField'),
@@ -596,7 +718,7 @@
 		var navBarView = Backbone.View.extend({
 			el:$('#navBar'),
 			events: {
-				"click .btn-logout": "logout",
+				"click #logoutBtn": "logout",
 			},
 			initialize: function() {
 				this.$userNav = this.$("#userNav");
@@ -663,12 +785,10 @@
 				//initialize();
 				
 				var navBar = new navBarView();
-				console.log(navBar);
 				var loginModal = new loginModalView({navBar:navBar});
-				console.log(loginModal);
 				var regModal = new regModalView({navBar:navBar});
-				console.log(regModal);
 				var settingModal = new settingView();
+				var sellerPanel = new sellerPanelView();
 				
 				loginUser.fetch();
 				
