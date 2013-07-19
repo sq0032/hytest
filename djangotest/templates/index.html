@@ -168,7 +168,7 @@
 			</div>
 			<div class="modal-footer">
 				<button class="btn" data-dismiss="modal" aria-hidden="true">關閉</button>
-				<button class="btn btn-primary btn-login">登入</button>
+				<button id="loginBtn" class="btn btn-primary">登入</button>
 			</div>
 		</div>
 		
@@ -212,7 +212,7 @@
 						<label class="control-label" for="regCaptcha">驗證碼</label>
 						<div class="controls">
 							<div><img id="regCaptchaImage"></div>
-							<button class="btn btn-small btn-captcha-refresh"><i class="icon-refresh"></i></button>
+							<button class="btn btn-small" id="refreshCaptcha"><i class="icon-refresh"></i></button>
 							<input class="input-small" type="text" id="regCaptcha" placeholder="">
 							<span class="help-inline msg-error"></span>
 						</div>
@@ -357,18 +357,7 @@
 										</div>
 										<div class="description" style="position:absolute;top:0px;left:450px;">商品描述</div>
 									</li>
-									<li class="item" style="position:relative;width:100%;margin:0 0 30px 0;">
-										<div class="img"><img height="90" width="120" src="img/160x120.png"></div>
-										<div class="title" style="position:absolute;top:0px;left:180px;">品名:塑膠椅</div>
-										<div class="price" style="position:absolute;top:30px;left:180px;">價錢:100</div>
-										<div class="category" style="position:absolute;top:60px;left:180px;">分類:居家用品->椅子</div>
-										<div class="attribute" style="position:absolute;top:0px;left:360px;width:30px">
-											<span class="label label-info">二手品</span>
-											<span class="label label-info">機車可載</span>
-										</div>
-										<div class="description" style="position:absolute;top:0px;left:450px;">商品描述</div>
-									</li>
-									<li class="">
+									<li>
 										<button class="btn btn-large btn-block btn-primary" type="button">新增商品</button>
 									</li>
 								</ul>
@@ -409,14 +398,14 @@
 		
 		function viewport()
 		{
-		var e = window
-		, a = 'inner';
-		if ( !( 'innerWidth' in window ) )
-		{
-		a = 'client';
-		e = document.documentElement || document.body;
-		}
-		return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
+			var e = window
+			, a = 'inner';
+			if ( !( 'innerWidth' in window ) )
+			{
+				a = 'client';
+				e = document.documentElement || document.body;
+			}
+			return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
 		}
 		$(window).resize(function() {
 			console.log(viewport())
@@ -464,7 +453,7 @@
 			el: $("#loginModal"),
 			events: {
 				"show": "showModal",
-				"click .btn-login": "login",
+				"click #loginBtn": "login",
 			},
 			initialize: function() {
 				this.$('#loginEmail').val("");
@@ -497,7 +486,7 @@
 			events: {
 				"show": "showModal",
 				"click #registerBtn": "register",
-				"click .btn-captcha-refresh": "getCaptcha",
+				"click #refreshCaptcha": "getCaptcha",
 				"change #regEmail": "checkEmail",
 				"change #regUsername": "checkUsername",
 				"keyup #regPassword": "checkPassword",

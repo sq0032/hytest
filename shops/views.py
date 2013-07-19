@@ -11,6 +11,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 
+from shops.serializers import ItemSerializer
+from shops.models import Item
+
 @api_view(['GET'])
-def items(request):
-	return Response()
+def items_i(request):
+	user = request.user
+	
+	items = Item.objects.filter(owner=user)
+	for item in items:
+		print item.attrs.all()
+	serializer = ItemSerializer(items,many=True)
+	return Response(serializer.data)
