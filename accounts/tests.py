@@ -26,17 +26,17 @@ class SimpleTest(TestCase):
 class accountsTest(TestCase):
 	def setUp(self):
 		super(accountsTest, self).setUp()
-		User.objects.create_user('test', 'test@gmail.com', '000000')
+		User.objects.create_user('test', 'test@gmail.com', '00000000')
 	
 	def test_login_view(self):
 		c = Client()
 		
 		#Test valid user 測試合法用戶
-		response = c.get('/accounts/login', {'email':'test@gmail.com','password':'000000'})
+		response = c.get('/accounts/login', {'email':'test@gmail.com','password':'00000000'})
 		self.assertEqual(response.status_code, 200)
 	
 		#Test wrong password 測試密碼錯誤
-		response = c.get('/accounts/login', {'email':'test@gmail.com','password':'123456'})
+		response = c.get('/accounts/login', {'email':'test@gmail.com','password':'12345678'})
 		self.assertEqual(response.status_code, 401)
 	
 		#Test non-existed user 測試未註冊帳戶
@@ -45,7 +45,7 @@ class accountsTest(TestCase):
 		
 	def test_logout_view(self):
 		c = Client()
-		
+
 		response = c.get('/accounts/logout')
 		self.assertEqual(response.status_code, 200)
 		
@@ -99,7 +99,7 @@ class accountsTest(TestCase):
 		self.assertEqual(data['name'], 'guest')
 		
 		#Test user 測試登入使用者
-		c.get('/accounts/login', {'email':'test@gmail.com','password':'000000'})
+		c.get('/accounts/login', {'email':'test@gmail.com','password':'00000000'})
 		c.get('/accounts/users/i')
 		response = c.get('/accounts/users/i')
 		self.assertEqual(response.status_code,200)
@@ -151,11 +151,26 @@ class accountsTest(TestCase):
 
 		"""
 		
-	def test_verifyEmail(self):
+#	def test_verifyEmail(self):
+#		c = Client()
+		
+	def test_changePassword(self):
 		c = Client()
 		
+		#Test successful change 測試成功修改
+		username = 'test'
+		password = '00000000'
+		c.login(username=username, password=password)
+		response = c.post('/accounts/password',{'password':password,'newpassword':'12345678'})
+		self.assertEqual(response.status_code, 200)
 		
+		#Test fail change 測試修改失敗
+		response = c.post('/accounts/password',{'password':password,'newpassword':'12345678'})
+		self.assertEqual(response.status_code, 400)
+
+		#Test illegal access 測試非法呼叫
 		
+				
 	def test_doNothing(self):
 		c = Client()
 		response = c.get('/accounts/')
