@@ -3,27 +3,55 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
 	name = models.CharField(max_length=100,unique=True)
+	parent = models.ForeignKey('self',blank=True,null=True,on_delete=models.SET_NULL)
 	def __unicode__(self):
-		return self.name
+		nameList = []
+		nameList.append(self.name)
+		parent = self.parent
+		while parent:
+			nameList.append(parent.name)
+			parent = parent.parent
+			
+		return ">".join(reversed(nameList))
 
 class Attribute(models.Model):
 	name = models.CharField(max_length=100,unique=True)
 	def __unicode__(self):
 		return self.name
 
-def item_pic_filename(instance, filename):
-	fname, dot, extension = filename.rpartition('.')
-	print instance.title
-	return 'item_pic/%s.%s' % (instance.title, extension)
-
+def item_thumbnail_path(instance, filename):
+	try:
+		extName = filename.rsplit('.',1)[1]
+	except:
+		extName = ""
+	name = instance.rid
+	return 'image/items/%s-s.%s'%(name,extName)
+	
 class Item(models.Model):
+	rid = models.CharField(max_length=40,unique=True) 
 	owner = models.ForeignKey(User)
-	name = models.CharField(max_length=100)
+	name = models.CharField(max_length=60)
 	price = models.IntegerField()
-	pic = models.ImageField(upload_to=item_pic_filename,blank=True,)
+	pic = models.ImageField(upload_to=item_thumbnail_path,blank=True,)
 	pub_date = models.DateTimeField(auto_now_add=True)
 	category = models.ForeignKey(Category)
 	attrs = models.ManyToManyField(Attribute)
-	#description = 
+	description = models.TextField(blank=True,null=True,verbose_name="Description")
 	def __unicode__(self):
-		return "%s %s"%(self.owner,self.name)
+		return "%s %s %s"%(self.owner,self.name,self.pub_date)
+
+def item_image_path(instance, filename):
+	try:
+		extName = filename.rsplit('.',1)[1]
+	except:
+		extName = ""
+	name = instance.item.rid
+	index = instance.index
+	return 'image/items/%s-%s.%s'%(name,index,extName)
+
+class ItemImage(models.Model):
+	index = models.IntegerField()
+	item = models.ForeignKey(Item,blank=True,null=True,related_name="images")
+	image = models.ImageField(upload_to=item_image_path,blank=True)
+	def __unicode__(self):
+		return "%s %s %s"%(self.item.owner, self.item.name, self.index)

@@ -1,12 +1,14 @@
 from shops.models import Item, Category, Attribute
 
 from rest_framework import serializers
+from rest_framework.serializers import PrimaryKeyRelatedField
+
 from accounts.serializers import UserSerializer
 
 class CategorySerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Category
-		fields = ('id','name')
+		fields = ('id','name','parent')
 
 class AttributeSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -14,8 +16,9 @@ class AttributeSerializer(serializers.ModelSerializer):
 		fields = ('id','name')
 
 class ItemSerializer(serializers.ModelSerializer):
-	category = CategorySerializer()
-	attrs = AttributeSerializer(many=True)
+	#category = CategorySerializer()
+	#attrs = AttributeSerializer(many=True)
+	images = PrimaryKeyRelatedField(many=True, read_only=True)
 	class Meta:
 		model = Item
-		fields = ('id','owner','name','price','pic','pub_date','category','attrs')
+		fields = ('id','rid','owner','name','price','pic','pub_date','category','attrs','description','images')

@@ -107,9 +107,11 @@ def user_i_view(request):
 	user = request.user
 	if user.is_anonymous():
 		return Response({'name':'guest'})
-	else:
-		serializer = UserSerializer(user)
-		return Response(serializer.data)
+	
+	serializer = UserSerializer(user)
+	data = serializer.data
+	data['id'] = 'i'
+	return Response(data)
 
 @require_POST
 def createUser(request):

@@ -6,12 +6,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Bootstrap -->
 		<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+		<link href="css/bootstrap-glyphicons.css" rel="stylesheet" media="screen">
 		<!--
 		<link href="less/bootstrap.less" rel="stylesheet/less">
 		-->
 		<style>
 		body {
-			padding-top: 40px; /* 60px to make the container go all the way to the bottom of the topbar */
+			padding-top: 50px; /* 60px to make the container go all the way to the bottom of the topbar */
 		}
 		#map_canvas {
 			position: absolute;
@@ -38,8 +39,8 @@
 		}
 		
 		</style>
-		<link href="css/bootstrap-responsive.css" rel="stylesheet">
-		<style>
+		<!-- <link href="css/bootstrap-responsive.css" rel="stylesheet"> -->
+		<!-- <style>
 		
 		.modal {
 			outline: none;
@@ -53,8 +54,8 @@
 			top: -100%;
 			-webkit-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;	
 			   -moz-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
-			     -o-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
-			        transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
+				 -o-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
+					transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
 		}
 		
 		
@@ -98,6 +99,34 @@
 				padding: 0 !important;
 			}
 		</style>
+		 -->
+		<style>
+		
+		@media (min-width: 1200px) {
+			.modal-dialog-large {
+				width: 1170px;
+				margin-left: -585px;
+			}
+		}
+		@media (min-width: 980px) and (max-width: 1199px) {
+			.modal-dialog-large {
+				width: 940px;
+				margin-left: -470px;
+			}
+		}
+		
+		@media (min-width: 768px) and (max-width: 979px) {
+			.modal-dialog-large {
+				width: 728px;
+				margin-left: -362px;
+			}
+		}
+		
+		@media (max-width: 767px) {
+		
+		}
+		</style>
+		<link href="css/main.css" rel="stylesheet">
 		<!--
 		<link href="css/bootstrap-modal.css" rel="stylesheet">
 		<link href="less/responsive.less" rel="stylesheet/less">
@@ -108,309 +137,434 @@
 	</head>
 	<body>
 		<div id="navBar" class="navbar navbar-inverse navbar-fixed-top">
-			<div class="navbar-inner">
-				<div class="container">
-					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="brand" href="#">Project name</a>
-					<form class="navbar-search">
-						<input type="text" class="search-query" placeholder="搜尋">
-					</form>
-
-					<div class="nav-collapse collapse">
-						<ul id="guestNav" class="nav pull-right">
-							<li><a class="btn-loginModal" href="#loginModal" data-toggle="modal">登入</a></li>
-							<li><a class="btn-regModal" href="#regModal" data-toggle="modal">註冊</a></li>
-						</ul>
-						<ul id="userNav" class="nav pull-right">
-							<li><a class="btn-myCart" href="#" data-toggle="modal">購物車<i class="icon-shopping-cart"></i></a></li>
-							<li><a class="btn-myShop" href="#sellerPanel" data-toggle="modal">我的商店<i class="icon-home"></i></a></li>
-							<li><a class="btn-settingModal" href="#settingModal" data-toggle="modal">設定<i class="icon-wrench"></i></a></li>
-							<li><a class="userInfo" href="#"><i class="icon-user"></i><span class="username"></span></a></li>
-							<li><a id="logoutBtn" href="#">登出</a></li>
-						</ul>
-					</div><!--/.nav-collapse -->
-				</div>
+			<div class="container">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Project name</a>
+				<div class="nav-collapse collapse">
+					<ul id="guestNav" class="nav navbar-nav pull-right">
+						<li><a class="btn-loginModal" href="#loginModal" data-toggle="modal">登入</a></li>
+						<li><a class="btn-regModal" href="#regModal" data-toggle="modal">註冊</a></li>
+					</ul>
+					<ul id="userNav" class="nav navbar-nav pull-right">
+						<li><a class="btn-myCart" href="#" data-toggle="modal">購物車<i class="glyphicon glyphicon-shopping-cart"></i></a></li>
+						<li><a class="btn-myShop" href="#sellerPanel" data-toggle="modal">我的商店<i class="glyphicon glyphicon-home"></i></a></li>
+						<li><a class="btn-settingModal" href="#settingModal" data-toggle="modal">設定<i class="glyphicon glyphicon-cog"></i></a></li>
+						<li><a class="userInfo" href="#"><i class="icon-user"></i><span class="username"></span></a></li>
+						<li><a id="logoutBtn" href="#">登出</a></li>
+					</ul>
+				</div><!--/.nav-collapse -->
 			</div>
 		</div>
 		
 		<!--Login modal -->
-		<div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3>會員登入</h3>
-			</div>
-			<div class="modal-body">
-				<div class="form-horizontal">
-					<div class="control-group">
-						<label class="control-label" for="loginEmail">Email</label>
-						<div class="controls">
-							<input type="text" id="loginEmail" placeholder="Email">
+		<div id="loginModal" class="modal fade" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">會員登入</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-horizontal">
+							<div class="form-group">
+								<label class="col-lg-3 control-label">Email</label>
+								<div class="col-lg-7">
+									<input type="text" class="form-control" id="loginEmail" placeholder="Email">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-3 control-label">密碼</label>
+								<div class="col-lg-7">
+									<input type="password" class="form-control" id="loginPassword" placeholder="Password">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox"> 記得我
+										</label>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="control-group">
-						<label class="control-label" for="loginPassword">密碼</label>
-						<div class="controls">
-							<input type="password" id="loginPassword" placeholder="Password">
-						</div>
+					<div class="modal-footer">
+						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">關閉</button>
+						<button class="btn btn-primary" id="loginBtn">登入</button>
 					</div>
-					<div class="control-group">
-						<div class="controls">
-							<label class="checkbox">
-								<input type="checkbox"> 記得我
-							</label>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true">關閉</button>
-				<button id="loginBtn" class="btn btn-primary">登入</button>
-			</div>
-		</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 		
 		<!--Registration modal -->
-		<div id="regModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3>會員註冊</h3>
-			</div>
-			<div class="modal-body">
-				<div class="form-horizontal">
-					<div id="regEmailField" class="control-group">
-						<label class="control-label" for="regEmail">帳號/Email</label>
-						<div class="controls">
-							<input type="text" id="regEmail" placeholder="使用E-mail作為您的帳號">
-							<span class="help-inline msg-error"></span>
+		<div id="regModal" class="modal fade" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">會員註冊</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-horizontal">
+							<div id="regEmailField" class="form-group">
+								<label class="col-lg-3 control-label">帳號/Email</label>
+								<div class="col-lg-6">
+									<input type="text" class="form-control" id="regEmail" placeholder="使用E-mail作為您的帳號">
+								</div>
+								<span class="col-lg-3 help-block msg-error"></span>
+							</div>
+							<div id="regUsernameField" class="form-group">
+								<label class="col-lg-3 control-label">名稱</label>
+								<div class="col-lg-6">
+									<input type="text" class="form-control" id="regUsername" placeholder="最多填入20個字元">
+								</div>
+								<span class="col-lg-3 help-block msg-error"></span>
+							</div>
+							<div id="regPasswordField" class="form-group">
+								<label class="col-lg-3 control-label">密碼</label>
+								<div class="col-lg-6">
+									<input type="password" class="form-control" id="regPassword" placeholder="請輸入8到16個字元">
+								</div>
+								<span class="col-lg-3 help-block msg-error"></span>
+							</div>
+							<div id="regPasswordConfirmField" class="form-group">
+								<label class="col-lg-3 control-label">確認密碼</label>
+								<div class="col-lg-6">
+									<input type="password" class="form-control" id="regPasswordConfirm" placeholder="">
+								</div>
+								<span class="col-lg-3 help-block msg-error"></span>
+							</div>
+							<div class="form-group">
+								<div class="col-lg-3 col-offset-3">
+									<img id="regCaptchaImage">
+								</div>
+								<div class="col-lg-3">
+									<button class="btn btn-default" id="refreshCaptcha"><i class="glyphicon glyphicon-refresh"></i></button>
+								</div>
+							</div>
+							<div id="regCaptchaField" class="form-group">
+								<label class="col-lg-3 control-label">驗證碼</label>
+								<div class="col-lg-6">
+									<input class="form-control" type="text" id="regCaptcha" placeholder="">
+								</div>
+								<span class="col-lg-3 help-block msg-error"></span>
+							</div>
+							<div id="regAgreeField" class="form-group">
+								<label class="col-lg-3 control-label" for="regCaptcha"></label>
+								<div class="col-lg-9">
+									<label class="checkbox">
+										<input id="regAgree" type="checkbox">
+										<span class="help-block">我已經詳細閱讀並同意xxx服務條款</span>
+									</label>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div id="regUsernameField" class="control-group">
-						<label class="control-label" for="regUsername">名稱</label>
-						<div class="controls">
-							<input type="text" id="regUsername" placeholder="最多填入20個字元">
-							<span class="help-inline msg-error"></span>
-						</div>
+					<div class="modal-footer">
+						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">關閉</button>
+						<button class="btn btn-primary" id="registerBtn" data-loading-text="註冊中...">註冊</button>
 					</div>
-					<div id="regPasswordField" class="control-group">
-						<label class="control-label" for="regPassword">密碼</label>
-						<div class="controls">
-							<input type="password" id="regPassword" placeholder="請輸入8到16個字元">
-							<span class="help-inline msg-error"></span>
-						</div>
-					</div>
-					<div id="regPasswordConfirmField" class="control-group">
-						<label class="control-label" for="regPasswordConfirm">確認密碼</label>
-						<div class="controls">
-							<input type="password" id="regPasswordConfirm" placeholder="">
-							<span class="help-inline msg-error"></span>
-						</div>
-					</div>
-					<div id="regCaptchaField" class="control-group">
-						<label class="control-label" for="regCaptcha">驗證碼</label>
-						<div class="controls">
-							<div><img id="regCaptchaImage"></div>
-							<button class="btn btn-small" id="refreshCaptcha"><i class="icon-refresh"></i></button>
-							<input class="input-small" type="text" id="regCaptcha" placeholder="">
-							<span class="help-inline msg-error"></span>
-						</div>
-					</div>
-					<div id="regAgreeField" class="control-group">
-						<div class="controls">
-							<label class="checkbox">
-								<input id="regAgree" type="checkbox">
-								<span class="help-inline">我已經詳細閱讀並同意xxx服務條款</span>
-							</label>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true">關閉</button>
-				<button id="registerBtn" data-loading-text="註冊中..." class="btn btn-primary">註冊</button>
-			</div>
-		</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
 		
 		<!--Setting modal -->
-		<div id="settingModal" class="modal hide fade container" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3><img src="img/setting.png" style="vertical-align:bottom;width:130px;height:130px;">帳號設定</h3>
-			</div>
-			<div class="row">
-				<div class="span3">
-					<ul class="nav nav-list">
-						<li class="active"><a href="#">會員設定</a></li>
-						<li><a href="#">Privacy</a></li>
-					</ul>
-				</div>
-				<div class="span6 modal-body">
-					<div id="accountSetting">
-						<div class="accordion">
-						<div class="accordion-group">
-							<div class="accordion-heading">
-								<a class="accordion-toggle" data-toggle="collapse" href="#collapsePhoto">照片</a>
+		<div id="settingModal" class="modal fade" tabindex="-1">
+			<div class="modal-dialog modal-dialog-large">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title"><img src="img/setting.png" style="vertical-align:bottom;width:130px;height:130px;">帳號設定</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-lg-2">
+								<ul class="nav nav-pills nav-stacked">
+									<li class="active"><a href="#accountSetting">會員設定</a></li>
+									<li><a href="#">Privacy</a></li>
+								</ul>
 							</div>
-							<div id="collapsePhoto" class="accordion-body collapse">
-								<div class="accordion-inner">
-									<img src="img/setting.png" style="width: 130px; height: 130px;">
-									<button class="btn btn-primary">上傳照片</button>
-								</div>
-							</div>
-						</div>
-						<div class="accordion-group">
-							<div class="accordion-heading">
-								<a class="accordion-toggle" data-toggle="collapse" href="#collapseAccount">
-									帳號
-								</a>
-							</div>
-							<div id="collapseAccount" class="accordion-body collapse">
-								<div class="accordion-inner">
-									<div class="form-horizontal">
-										<div class="control-group">
-											<label class="control-label" for="settingEmail">帳號/Email</label>
-											<div class="controls">
-												<input type="text" id="settingEmail" placeholder="">
+							<div class="col-lg-8">
+								<div id="accountSetting">
+									<div class="accordion">
+										<div class="accordion-group">
+											<div class="accordion-heading">
+												<a class="accordion-toggle" data-toggle="collapse" href="#collapsePhoto">照片</a>
+											</div>
+											<div id="collapsePhoto" class="accordion-body collapse">
+												<div class="accordion-inner">
+													<img src="img/setting.png" style="width: 130px; height: 130px;">
+													<button class="btn btn-primary">上傳照片</button>
+												</div>
 											</div>
 										</div>
-										<div class="control-group">
-											<label class="control-label" for="settingUsername">名稱</label>
-											<div class="controls">
-												<input type="text" id="settingUsername" placeholder="">
+										<div class="accordion-group">
+											<div class="accordion-heading">
+												<a class="accordion-toggle" data-toggle="collapse" href="#collapseAccount">
+													帳號
+												</a>
+											</div>
+											<div id="collapseAccount" class="accordion-body collapse">
+												<div class="accordion-inner">
+													<div class="form-horizontal">
+														<div class="form-group">
+															<label class="col-lg-3 control-label" for="settingEmail">帳號/Email</label>
+															<div class="col-lg-6">
+																<input type="text" class="form-control" id="settingEmail" placeholder="">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-lg-3 control-label" for="settingUsername">名稱</label>
+															<div class="col-lg-6">
+																<input type="text" class="form-control" id="settingUsername" placeholder="">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<div class="accordion-group">
+										<div class="accordion-heading">
+											<a class="accordion-toggle" data-toggle="collapse" href="#collapsePassword">修改密碼</a>
+										</div>
+										<div id="collapsePassword" class="accordion-body collapse">
+											<div class="accordion-inner">
+												<div class="form-horizontal">
+													<div class="form-group">
+														<label class="col-lg-3 control-label" for="settingPassword">舊密碼</label>
+														<div class="col-lg-6">
+															<input type="password" class="form-control" id="settingPassword" placeholder="">
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-lg-3 control-label" for="settingNewPassword">新密碼</label>
+														<div class="col-lg-6">
+															<input type="password" class="form-control" id="settingNewPassword" placeholder="">
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-lg-3 control-label" for="settingNewPassword2">確認新密碼</label>
+														<div class="col-lg-6">
+															<input type="password" class="form-control" id="settingNewPassword2" placeholder="">
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-lg-6 col-offset-3">
+															<button class="btn btn-primary">確認修改</button>
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div class="accordion-group">
-							<div class="accordion-heading">
-								<a class="accordion-toggle" data-toggle="collapse" href="#collapsePassword">修改密碼</a>
-							</div>
-							<div id="collapsePassword" class="accordion-body collapse">
-								<div class="accordion-inner">
-									<div class="form-horizontal">
-										<div class="control-group">
-											<label class="control-label" for="settingPassword">舊密碼</label>
-											<div class="controls">
-												<input type="password" id="settingPassword" placeholder="">
-											</div>
-										</div>
-										<div class="control-group">
-											<label class="control-label" for="settingNewPassword">新密碼</label>
-											<div class="controls">
-												<input type="password" id="settingNewPassword" placeholder="">
-											</div>
-										</div>
-										<div class="control-group">
-											<label class="control-label" for="settingNewPassword2">確認新密碼</label>
-											<div class="controls">
-												<input type="password" id="settingNewPassword2" placeholder="">
-											</div>
-										</div>
-										<div class="control-group">
-											<div class="controls">
-												<button class="btn-submit btn btn-primary">確認修改</button>
-											</div>
-										</div>
-									</div>
 								</div>
 							</div>
+							<div class="col-lg-2">
+								這裡放廣告
+							</div>
 						</div>
 					</div>
-					</div>
-				</div>
-				<div class="span2">
-					這裡放廣告
-				</div>
-			</div>
-		</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 		
 		<!--Seller Panel-->
-		<div id="sellerPanel" class="modal hide fade container" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3><img src="img/setting.png" style="vertical-align:bottom;width:130px;height:130px;">SHOP</h3>
-			</div>
-			<div class="row">
-				<div class="span3">
-					<ul class="nav nav-list">
-						<li class="active"><a href="#myShop" data-toggle="tab">我的商店</a></li>
-						<li><a href="#tab2" data-toggle="tab">我的店面</a></li>
-					</ul>
-				</div>
-				<div class="modal-body span8" style="min-height:400px;max-height:800px;">
-					<div class="tab-content">
-						<div class="tab-pane active" id="myShop">
-							<div>
-								<ul class="items list">
-									<li class="item" style="position:relative;width:100%;margin:0 0 30px 0;">
-										<div class="img"><img height="90" width="120" src="img/160x120.png"></div>
-										<div class="title" style="position:absolute;top:0px;left:180px;">品名:塑膠椅</div>
-										<div class="price" style="position:absolute;top:30px;left:180px;">價錢:100</div>
-										<div class="category" style="position:absolute;top:60px;left:180px;">分類:居家用品->椅子</div>
-										<div class="attribute" style="position:absolute;top:0px;left:360px;width:30px">
-											<span class="label label-info">二手品</span>
-											<span class="label label-info">機車可載</span>
-										</div>
-										<div class="description" style="position:absolute;top:0px;left:450px;">商品描述</div>
+		<div id="sellerPanel" class="modal fade" tabindex="-1">
+			<div class="modal-dialog modal-dialog-large">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title"><img src="img/setting.png" style="vertical-align:bottom;width:130px;height:130px;">SHOP</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-lg-2">
+								<ul class="nav nav-pills nav-stacked" id="sellerTabs">
+									<li class="active">
+										<a id="myItemsTab" href="#myItemsPanel" data-toggle="tab">我的商品</a>
 									</li>
 									<li>
-										<button class="btn btn-large btn-block btn-primary" type="button">新增商品</button>
+										<a id="myShopTab" href="#myShopPanel" data-toggle="tab">我的店面</a>
 									</li>
 								</ul>
 							</div>
+							<div class="col-lg-10" style="margin-left:0;min-height:400px;max-height:800px;">
+								<div class="tab-content">
+									<div class="tab-pane active" id="myItemsPanel">
+										<div class="btn-toolbar">
+											<div class="btn-group">
+												<button type="button" class="btn btn-primary" data-target="#createItemPanel" data-toggle="modal">新增商品<i class="glyphicon glyphicon-plus"></i></button>
+											</div>
+											<div class="btn-group" data-toggle="buttons">
+												<label id="myItemsShowList" class="btn btn-info active">
+													<input type="radio" name="myItemsDisplay"><i class="glyphicon glyphicon-th-list"></i>
+												</label>
+												<label id="myItemsShowTable" class="btn btn-info">
+													<input type="radio" name="myItemsDisplay"><i class="glyphicon glyphicon-th"></i>
+												</label>
+											</div>
+										</div>
+										<div>
+											<ul id="myItemsList" class="items items-list">
+											</ul>
+										</div>
+									</div>
+									<div class="tab-pane" id="myShopPanel">
+										<p>One fine body…qqqqqqqqqqqqqqqq</p>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="tab-pane" id="tab2">
-							<p>One fine body…qqqqqqqqqqqqqqqq</p>
-						</div>
+					</div><!-- /.modal-body -->
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<!--Create Item Panel-->
+		<div id="createItemPanel" class="modal fade" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">新增商品</h4>
 					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 
-		<div class="container-fluid">
-			<div class="row-fluid">
-				<div style="background-color:#dceaf4;" class="span10">
-				aaa
-				</div>
-				<div style="background-color:#dceaf4;" class="span2">
-				bbb
-				</div>
-			</div>
-		</div>
-		 -->
+					<div class="modal-body">
+						<div class="form-horizontal">
+							<div class="form-group">
+								<label class="col-lg-2 control-label" for="createItemPic">圖片</label>
+								<div class="col-lg-8">
+									<div id="newItemImages">
+										<div class="" style="float:left;width:100px;height:100px">
+											<input class="single" type="file" name="0">
+											<div class="preview-image"></div>
+										</div>
+										<div style="float:left;width:100px;height:100px;">
+											<input type="file" name="1">
+											<div class="preview-image"></div>
+										</div>
+										<div style="float:left;width:100px;height:100px;">
+											<input type="file" name="2">
+											<div class="preview-image"></div>
+										</div>
+										<div style="clear:both;"></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-2 control-label" for="createItemName">品名</label>
+								<div class="col-lg-8">
+									<input type="text" class="form-control" id="createItemName" placeholder="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-2 control-label" for="createItemPrice">價格</label>
+								<div class="col-lg-8">
+									<input type="text" class="form-control" id="createItemPrice" placeholder="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-2 control-label">新舊</label>
+								<div class="col-lg-8 btn-group" data-toggle="buttons">
+									<label class="btn btn-info active">
+										<input type="radio" name="conditionAttr" value="1">全新
+									</label>
+									<label class="btn btn-info">
+										<input type="radio" name="conditionAttr" value="2">二手品
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-2 control-label">尺寸</label>
+								<div class="col-lg-8 btn-group" data-toggle="buttons">
+									<label class="btn btn-info active">
+										<input type="radio" name="sizeAttr" value="3">口袋小物
+									</label>
+									<label class="btn btn-info">
+										<input type="radio" name="sizeAttr" value="4">背包可裝
+									</label>
+									<label class="btn btn-info">
+										<input type="radio" name="sizeAttr" value="5">機車可載
+									</label>
+									<label class="btn btn-info">
+										<input type="radio" name="sizeAttr" value="6">須開車
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-2 control-label">商品描述</label>
+								<div class="col-lg-8">
+									<textarea id="createItemDesc" class="form-control" rows="3"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-2 control-label">商品分類</label>
+							</div>
+							
+								<div class="row">
+									<div class="col-lg-4">
+										<select multiple="multiple" class="form-control">
+											<option>家庭用品</option>
+											<option>3C</option>
+										</select>
+									</div>
+									<div class="col-lg-4">
+										<select multiple="multiple" class="form-control">
+											<option>椅子</option>
+											<option>電腦</option>
+										</select>
+									</div>
+									<div class="col-lg-4">
+										<select multiple="multiple" class="form-control">
+											<option>??</option>
+										</select>
+									</div>
+								</div>
+
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+							<button class="btn btn-primary" id="createItemSubmit">確定</button>
+						</div>
+					</div><!-- /.modal-body -->
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
 		<div class="" id="map_canvas">
 		</div> <!-- /container -->
 		
+		<!-- The fileinput-button span is used to style the file input field as button -->
+
+		<input id="fileupload" type="file" name="files[]" multiple>
+		<!-- The global progress bar -->
+		<div id="progress" class="progress progress-success progress-striped">
+			<div class="bar"></div>
+		</div>
+		<!-- The container for the uploaded files -->
+		<div id="files" class="files"></div>
+
 		<!--<script src="js/less-1.3.3.min.js"></script>-->
 		<script src="http://code.jquery.com/jquery.js"></script>
+		
+		<script src="js/vendor/jquery.ui.widget.js"></script>
+		
+		<script src="http://blueimp.github.io/JavaScript-Load-Image/js/load-image.min.js"></script>
+		<script src="js/jquery.iframe-transport.js"></script>
+		<script src="js/jquery.fileupload.js"></script>
+		<script src="js/jquery.fileupload-process.js"></script>
+		<script src="js/jquery.fileupload-image.js"></script>
+		
 		<script src="js/bootstrap.js"></script>
 		<!-- <script src="js/bootstrap.min.js"></script> -->
-		<!--<script src="js/bootstrap-modal.js"></script>
-		<script src="js/bootstrap-modalmanager.js"></script>-->
 		<script src="js/underscore-min.js"></script>
 		<script src="js/backbone-min.js"></script>
 		<script src="js/main.js"></script>
 		<script type="text/javascript">
-		
-		function viewport()
-		{
-			var e = window
-			, a = 'inner';
-			if ( !( 'innerWidth' in window ) )
-			{
-				a = 'client';
-				e = document.documentElement || document.body;
-			}
-			return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
-		}
-		$(window).resize(function() {
-			console.log(viewport())
-		});
 
+		
 		var User = Backbone.Model.extend({
 			defaults : {
 				name : null,
@@ -419,33 +573,172 @@
 			urlRoot:'accounts/users/'
 		});
 		
-		var loginUser = new User({id:'i'});
+		var Item = Backbone.Model.extend({
+			urlRoot:'shops/items/'
+		});
+		
+		var Items = Backbone.Collection.extend({
+			model : Item,
+		});
+		
+		var loginUser = new User();
+		loginUser.url  = 'accounts/users/i';
+		
+		var myItems = new Items();
+		myItems.url = 'shops/sellers/i/items/';
+		
+		var createItemPanelView = Backbone.View.extend({
+			el: $("#createItemPanel"),
+			events: {
+				"show.bs.modal": "showPanel",
+				"click #createItemSubmit": "submit"
+			},
+			initialize: function() {
+				var that = this;
+				this.files = {};
+				this.itemImages = this.$("#newItemImages");
+				this.itemImages.find('input:file').fileupload({
+					autoUpload: false,
+					singleFileUploads:true,
+					previewMaxWidth: 100,
+					previewMaxHeight: 75,
+				}).on('fileuploadadd',function(e, data){
+					var index = $(this).attr('name');
+					that.files[index] = data;
+					console.log(that.files);
+				}).on('fileuploadprocessalways',function(e,data){
+					var index = data.index,
+						file = data.files[index];
+					$(this).parent().find(".preview-image").empty().append(file.preview);
+				});
+				
+				
+				this.itemPreview = this.$('#itemPreview');
+				this.createItemName = this.$('#createItemName');
+				this.createItemPrice = this.$('#createItemPrice');
+				this.createItemDesc = this.$('#createItemDesc');
+				this.itemConditionAttr = this.$('input:radio[name=conditionAttr]');
+				this.itemSizeAttr = this.$('input:radio[name=sizeAttr]');
+				/*
+				this.ItemPic = this.$("#createItemPic").fileupload({
+					autoUpload: false,
+					singleFileUploads:true,
+					progressall: function (e, data) {
+						var progress = parseInt(data.loaded / data.total * 100, 10);
+						$('#progress .bar').css('width',progress + '%');
+					},
+					disableImageResize: /Android(?!.*Chrome)|Opera/
+						.test(window.navigator.userAgent),
+					previewMaxWidth: 100,
+					previewMaxHeight: 75,
+					previewCrop: true
+				}).on('fileuploadadd',function(e, data){
+					that.files.push(data);
+					console.log()
+				}).on('fileuploadprocessalways',function(e, data){
+					var index = data.index,
+						file = data.files[index];
+					that.itemPreview.append($('<div class="col-lg-2">').append($('<a href="#" class="thumbnail">').append(file.preview)));
+					console.log(data)
+				});
+				*/
+				
+			},
+			showPanel:function(){
+				//this.itemPreview.empty();
+				this.createItemName.val('');
+				this.createItemPrice.val('');
+				this.createItemDesc.val('');
+				this.itemConditionAttr.parent().removeClass('active');
+				this.itemConditionAttr.filter('[value=1]').prop('checked', true).parent().addClass('active');
+				this.itemSizeAttr.parent().removeClass('active');
+				this.itemSizeAttr.filter('[value=3]').prop('checked', true).parent().addClass('active');
+				this.itemImages.find(".preview-image").empty();
+				this.files = {};
+				
+			},
+			submit:function(){
+				console.log(this);
+				var that = this;
+				var name = this.createItemName.val();
+				var price = parseInt(this.createItemPrice.val());
+				var description = this.createItemDesc.val();
+				var conditionAttr = this.itemConditionAttr.filter(':checked').val();
+				var sizeAttr = this.itemSizeAttr.filter(':checked').val();
+				var attrs = [parseInt(conditionAttr),parseInt(sizeAttr)];
+				var newItem = new Item();
+				
+				newItem.set({name:name,
+							price:price,
+							description:description,
+							attrs:attrs,
+							//attrs:[],
+							category:1
+							});
+				
+				newItem.save()
+				.done(function(){
+					var item_id = newItem.get('id');
+					for(var i in that.files){
+						that.files[i].url = 'shops/upload/items/'+item_id+'/image/'+i;
+						console.log(that.files[i]);
+						that.files[i].submit();
+					}
+					that.files = {};
+					//這裡記得改
+					that.$el.modal('hide');
+					myItems.fetch();
+				});
+			}
+		});
 		
 		var sellerPanelView = Backbone.View.extend({
 			el: $("#sellerPanel"),
 			events: {
-				"show": "showPanel",
-				"click #testBtn": "test",
-			},
-			test:function(){
-				this.$el.modal('hide');
+				"show.bs.modal": "showPanel",
+				"show.bs.tab #myItemsTab": "showItemsPanel",
+				"show.bs.tab #myShopTab": "showShopPanel",
+				"click #myItemsShowList": "listItems",
+				"click #myItemsShowTable": "tableItems",
 			},
 			initialize: function() {
-				$("#sellerPanel").modal({show:false,});
-				
+				this.listenTo(myItems, 'sync', this.updateItems);
+				this.$myItemsPanel = this.$('#myItemsPanel');
+				this.$myItemsList = this.$('#myItemsList');
 			},
-			showPanel: function(){
+			tableItems:function(){
+				this.$myItemsList.removeClass('items-list').addClass('items-table');
+			},
+			listItems:function(){
+				this.$myItemsList.removeClass('items-table').addClass('items-list');
+			},
+			showItemsPanel:function(event){
+				event.stopPropagation();
+				myItems.fetch();
+			},
+			updateItems:function(){
+				var $myItemsList = this.$myItemsList.empty();
+				myItems.each(function(item){
+					var $li = $('<li>').addClass('item');
+					$('<div class="img">').html('<img style="height:100px" src="'+item.get('pic')+'">').appendTo($li);
+					$('<div>').addClass('title').text(item.get('name')).appendTo($li);
+					$('<div>').addClass('price').text(item.get('price')).appendTo($li);
+					$('<div>').addClass('category').text(item.get('category').name).appendTo($li);
+					var $attrs = $('<div>').addClass('attribute').appendTo($li);
+					var attrs = item.get('attrs');
+					for(var i in attrs){
+						$('<span>').addClass('label label-info').text(attrs[i]).appendTo($attrs);
+					}
+					var $desc = $('<div>').addClass('description').text(item.get('description')).appendTo($li); 
+					$myItemsList.append($li);
+				});
+			},
+			showShopPanel:function(event){
+				event.stopPropagation();
+			},
+			showPanel: function(event){
+				myItems.fetch();
 				console.log('show');
-				/*
-				var view = this;
-				$("#sellerPanel").modal({height:'100px'});
-				this.$el.modal({height:'100px'});
-				
-				view.$el.modal('loading');
-				setTimeout(function(){
-					view.$el.modal('loading');
-				}, 1000);
-				*/
 			}
 		});
 		
@@ -475,16 +768,13 @@
 				}).fail(function(jqXHR, textStatus, errorThrown){
 					alert('帳號或密碼錯誤!');
 				});
-			},
-			render: function() {
-				
 			}
 		});
 		
 		var regModalView = Backbone.View.extend({
 			el: $("#regModal"),
 			events: {
-				"show": "showModal",
+				"show.bs.modal": "showModal",
 				"click #registerBtn": "register",
 				"click #refreshCaptcha": "getCaptcha",
 				"change #regEmail": "checkEmail",
@@ -518,12 +808,12 @@
 			showError: function(fieldName, msg){
 				var $field = this.field[fieldName];
 				if(!$field){return;}
-				$field.addClass('error');
+				$field.addClass('has-error');
 				if(msg){$field.find('.msg-error').text(msg);}
 			},
 			clearError: function(fieldName){
 				var $field = this.field[fieldName];
-				$field.removeClass('error');
+				$field.removeClass('has-error');
 				$field.find('.msg-error').text('');
 			},
 			clearAgree: function(){
@@ -640,7 +930,7 @@
 					console.log(data);
 					if(data.status == 'OK'){
 						view.$el.modal('hide');
-						loginUser.set('id','i').fetch();
+						loginUser.fetch();
 						return;
 					}
 					
@@ -725,7 +1015,6 @@
 			},
 			logout: function(){
 				$.get('accounts/logout').done(function(data) {
-					loginUser.set('id','i');
 					loginUser.fetch();
 				}).fail(function(){
 					alert('登出失敗!');
@@ -775,6 +1064,7 @@
 				var regModal = new regModalView({navBar:navBar});
 				var settingModal = new settingView();
 				var sellerPanel = new sellerPanelView();
+				var createItemPanel = new createItemPanelView();
 				
 				loginUser.fetch();
 				
