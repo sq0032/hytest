@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
 	name = models.CharField(max_length=100,unique=True)
-	parent = models.ForeignKey('self',blank=True,null=True,on_delete=models.SET_NULL)
+	parent = models.ForeignKey('self',blank=True,null=True,on_delete=models.SET_NULL,related_name="child")
 	def __unicode__(self):
 		nameList = []
 		nameList.append(self.name)

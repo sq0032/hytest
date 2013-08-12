@@ -502,27 +502,8 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">商品分類</label>
 							</div>
-							
-								<div class="row">
-									<div class="col-lg-4">
-										<select multiple="multiple" class="form-control">
-											<option>家庭用品</option>
-											<option>3C</option>
-										</select>
-									</div>
-									<div class="col-lg-4">
-										<select multiple="multiple" class="form-control">
-											<option>椅子</option>
-											<option>電腦</option>
-										</select>
-									</div>
-									<div class="col-lg-4">
-										<select multiple="multiple" class="form-control">
-											<option>??</option>
-										</select>
-									</div>
-								</div>
-
+							<div class="row" id="createItemCategory">
+							</div>
 						</div>
 						<div class="modal-footer">
 							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
@@ -612,13 +593,32 @@
 					$(this).parent().find(".preview-image").empty().append(file.preview);
 				});
 				
-				
 				this.itemPreview = this.$('#itemPreview');
 				this.createItemName = this.$('#createItemName');
 				this.createItemPrice = this.$('#createItemPrice');
 				this.createItemDesc = this.$('#createItemDesc');
 				this.itemConditionAttr = this.$('input:radio[name=conditionAttr]');
 				this.itemSizeAttr = this.$('input:radio[name=sizeAttr]');
+				this.createItemCategory = this.$('#createItemCategory');
+				this.categorys = [];
+				$.getJSON('shops/item-categorys').done(function(data){
+					var category;
+					for(var i in data){
+						category = data[i];
+						that.categorys[category.id] = category;
+					}					
+				});
+				
+				
+				
+				/*
+					<div class="col-lg-4">
+						<select size="5" class="form-control">
+							<option>椅子</option>
+							<option>電腦</option>
+						</select>
+					</div>
+				*/
 				/*
 				this.ItemPic = this.$("#createItemPic").fileupload({
 					autoUpload: false,
@@ -645,7 +645,7 @@
 				
 			},
 			showPanel:function(){
-				//this.itemPreview.empty();
+				var that = this;
 				this.createItemName.val('');
 				this.createItemPrice.val('');
 				this.createItemDesc.val('');
@@ -654,8 +654,40 @@
 				this.itemSizeAttr.parent().removeClass('active');
 				this.itemSizeAttr.filter('[value=3]').prop('checked', true).parent().addClass('active');
 				this.itemImages.find(".preview-image").empty();
-				this.files = {};
+				this.createItemCategory.empty().val(null);
 				
+				var select = $('<select>').attr('size','5').addClass('form-control');
+				for(var i in this.categorys){
+					var category = this.categorys[i];
+					if(category.parent === null){
+						select.append($('<option>').attr('value',category.id).html(category.name));
+					}
+				}
+				$('<div>').addClass("col-lg-4").append(select).appendTo(this.createItemCategory);
+				
+				this.createItemCategory.change(function(event){
+					var $target = $(event.target);
+					var selected_id = $target.val();
+					
+					var child = that.categorys[selected_id].child;
+					if(child.length == 0){
+						//this.val = selected_id;
+						that.createItemCategory.val(selected_id);
+						return;
+					}
+					$target.parent().nextAll().remove();
+					that.createItemCategory.val(null);
+					
+					var select = $('<select>').attr('size','5').addClass('form-control');
+					for(var i in child){
+						var id = child[i];
+						var category = that.categorys[id];
+						select.append($('<option>').attr('value',category.id).html(category.name));
+					}
+					$('<div>').addClass("col-lg-4").append(select).appendTo(this);
+				});
+				
+				this.files = {};
 			},
 			submit:function(){
 				console.log(this);
@@ -666,18 +698,17 @@
 				var conditionAttr = this.itemConditionAttr.filter(':checked').val();
 				var sizeAttr = this.itemSizeAttr.filter(':checked').val();
 				var attrs = [parseInt(conditionAttr),parseInt(sizeAttr)];
+				var category = this.createItemCategory.val();
 				var newItem = new Item();
 				
 				newItem.set({name:name,
 							price:price,
 							description:description,
 							attrs:attrs,
-							//attrs:[],
-							category:1
+							category:category
 							});
 				
-				newItem.save()
-				.done(function(){
+				newItem.save().done(function(){
 					var item_id = newItem.get('id');
 					for(var i in that.files){
 						that.files[i].url = 'shops/upload/items/'+item_id+'/image/'+i;
@@ -723,7 +754,7 @@
 					$('<div class="img">').html('<img style="height:100px" src="'+item.get('pic')+'">').appendTo($li);
 					$('<div>').addClass('title').text(item.get('name')).appendTo($li);
 					$('<div>').addClass('price').text(item.get('price')).appendTo($li);
-					$('<div>').addClass('category').text(item.get('category').name).appendTo($li);
+					$('<div>').addClass('category').text(item.get('category')).appendTo($li);
 					var $attrs = $('<div>').addClass('attribute').appendTo($li);
 					var attrs = item.get('attrs');
 					for(var i in attrs){
@@ -756,7 +787,7 @@
 				this.$('#loginPassword').val("");
 			},
 			login: function() {
-				var thisView = this;
+				var that = this;
 				var navBar = this.options.navBar;
 				var email = this.$("#loginEmail").val();
 				var password = this.$("#loginPassword").val();
@@ -764,7 +795,7 @@
 				.done(function(){
 					console.log('login done!')
 					loginUser.fetch();
-					thisView.$el.modal('hide');
+					that.$el.modal('hide');
 				}).fail(function(jqXHR, textStatus, errorThrown){
 					alert('帳號或密碼錯誤!');
 				});

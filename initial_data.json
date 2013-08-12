@@ -1,0 +1,70 @@
+[
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "super", 
+        "first_name": "", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2013-08-03T14:53:20.336Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$fTnmJgD3nFpI$tPaAwfcc8LlQXkeQ5KYaurr5HoL2ypwZOs6urdI7Rm4=", 
+        "email": "", 
+        "date_joined": "2013-08-03T14:53:01.989Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "shops.category", 
+    "fields": {
+        "name": "qwe", 
+        "parent": null
+    }
+},
+{
+    "pk": 1, 
+    "model": "shops.attribute", 
+    "fields": {
+        "name": "\u5168\u65b0\u54c1"
+    }
+},
+{
+    "pk": 2, 
+    "model": "shops.attribute", 
+    "fields": {
+        "name": "\u4e8c\u624b\u54c1"
+    }
+},
+{
+    "pk": 3, 
+    "model": "shops.attribute", 
+    "fields": {
+        "name": "\u53e3\u888b\u5c0f\u7269"
+    }
+},
+{
+    "pk": 4, 
+    "model": "shops.attribute", 
+    "fields": {
+        "name": "\u80cc\u5305\u53ef\u88dd"
+    }
+},
+{
+    "pk": 5, 
+    "model": "shops.attribute", 
+    "fields": {
+        "name": "\u6a5f\u8eca\u53ef\u8f09"
+    }
+},
+{
+    "pk": 6, 
+    "model": "shops.attribute", 
+    "fields": {
+        "name": "\u9808\u958b\u8eca"
+    }
+}
+]

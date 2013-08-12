@@ -8,6 +8,7 @@ urlpatterns = patterns('',
 	#url(r'^items/$', views.createItem),
 	url(r'^upload/items/(?P<item_id>\d+)/image/(?P<index>\d+)$', views.uploadItemImage),
 	url(r'^items/$', views.ItemsList.as_view()),
+	url(r'^item-categorys$', views.getItemCategorys),
 	#url(r'^items/(?P<id>[0-9]+)/$', views.ItemsList.as_view()),
 	url(r'^.*$','django.views.defaults.page_not_found')
 )

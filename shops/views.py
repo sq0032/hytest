@@ -10,6 +10,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from shops.serializers import CategorySerializer
+from shops.models import Category
 
 from shops.serializers import AttributeSerializer
 from shops.models import Attribute
@@ -17,6 +19,7 @@ from shops.models import Attribute
 from shops.serializers import ItemSerializer
 from shops.models import Item
 from shops.models import ItemImage
+
 
 class JSONResponse(HttpResponse):
 	def __init__(self, data, **kwargs):
@@ -71,5 +74,13 @@ class ItemsList(APIView):
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def getItemCategorys(request):
+	categorys = Category.objects.all()
+	s = CategorySerializer(categorys,many=True)
+	#categorys = Category.objects.filter(parent=None)
+	#child = Category.objects.get(id=3)
+	#categorys = Category.objects.filter(child=child)
 	
-	
+	return Response(s.data)
