@@ -172,7 +172,7 @@ def createUser(request):
 		login(request, user)
 	return JSONResponse({'status':'OK'},status=status.HTTP_201_CREATED)
 
-
+"""
 @require_POST
 def sendVerifyEmail(request):
 	user = request.user
@@ -191,7 +191,7 @@ def sendVerifyEmail(request):
 	msg.send()
 
 	return
-
+"""
 
 def verifyEmail(request):
 	key = request.GET.get('key')
