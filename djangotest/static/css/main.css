@@ -5,6 +5,7 @@
 #myItemsPanel{
 	width:100%;
 }
+
 .items{
 	list-style-type: none;
 	margin:0;
@@ -19,6 +20,7 @@
 	position:relative;
 	height:100px;
 	margin:0 0 20px 0;
+	padding:5px;
 	border: 1px solid #EEEEEE;
 }
 
@@ -70,6 +72,7 @@
 	width:180px;
 	height:180px;
 	margin:0px 20px 20px 0px;
+	padding:5px;
 	border: 1px solid #EEEEEE;
 }
 

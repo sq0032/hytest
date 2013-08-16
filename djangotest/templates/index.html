@@ -505,11 +505,11 @@
 							<div class="row" id="createItemCategory">
 							</div>
 						</div>
-						<div class="modal-footer">
-							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
-							<button class="btn btn-primary" id="createItemSubmit">確定</button>
-						</div>
 					</div><!-- /.modal-body -->
+					<div class="modal-footer">
+						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+						<button class="btn btn-primary" id="createItemSubmit">確定</button>
+					</div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
@@ -609,16 +609,6 @@
 					}					
 				});
 				
-				
-				
-				/*
-					<div class="col-lg-4">
-						<select size="5" class="form-control">
-							<option>椅子</option>
-							<option>電腦</option>
-						</select>
-					</div>
-				*/
 				/*
 				this.ItemPic = this.$("#createItemPic").fileupload({
 					autoUpload: false,
@@ -760,7 +750,19 @@
 					for(var i in attrs){
 						$('<span>').addClass('label label-info').text(attrs[i]).appendTo($attrs);
 					}
-					var $desc = $('<div>').addClass('description').text(item.get('description')).appendTo($li); 
+					$('<div>').addClass('description').text(item.get('description')).appendTo($li);
+					$('<button class="close">&times;</button>').click(function(){
+						console.log(item);
+						confirm('確定要刪除"'+item.get('name')+'"?',function(result){
+							if(result){
+								item.destroy().done(function(){
+									myItems.fetch();
+								});
+								
+							}
+						});
+					}).appendTo($li);
+					
 					$myItemsList.append($li);
 				});
 			},
@@ -1021,7 +1023,6 @@
 			}
 		})
 		
-		
 		var navBarView = Backbone.View.extend({
 			el:$('#navBar'),
 			events: {
@@ -1060,6 +1061,45 @@
 				this.$guestNav.hide();
 			}
 		});
+		
+		
+		function confirm(message,func){
+			var $modal= $(
+				'<div class="modal fade" tabindex="-1">\
+					<div class="modal-dialog">\
+						<div class="modal-content">\
+							<div class="modal-header">\
+								<h4 class="modal-title">確認</h4>\
+							</div>\
+							<div class="modal-body">\
+								<div class="btn-confirm-message"></div>\
+							</div>\
+							<div class="modal-footer">\
+								<button class="btn btn-default btn-confirm-cancel">取消</button>\
+								<button class="btn btn-primary btn-confirm-ok">確定</button>\
+							</div>\
+						</div>\
+					</div>\
+				</div>').modal('show');
+			console.log($modal);
+			var $msg = $modal.find('.btn-confirm-message').text(message);
+			var $ok = $modal.find('.btn-confirm-ok').click(function(){
+				$modal.on('hidden.bs.modal',function(){
+					$modal.remove();
+					$modal = null;
+				}).modal('hide');
+				func(true);
+			});
+			
+			var $cancel = $modal.find('.btn-confirm-cancel').click(function(){
+				$modal.on('hidden.bs.modal',function(){
+					$modal.remove();
+					$modal = null;
+				}).modal('hide');
+				func(false);
+			});
+		}
+		
 		/*
 		var testUser2 = new User({id:2});
 		testUser2.fetch();

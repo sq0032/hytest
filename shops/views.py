@@ -63,7 +63,7 @@ def randomID(length):
 
 class ItemsList(APIView):
 	def get(self, request, format=None):
-		return Response({})
+		return Response(status=status.HTTP_204_NO_CONTENT)
 
 	def post(self, request, format=None):
 		data = request.DATA
@@ -74,6 +74,18 @@ class ItemsList(APIView):
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	
+class ItemsDetail(APIView):
+	def delete(self, request, id, format=None):
+		user = request.user
+		try:
+			item = Item.objects.get(id=id)
+			if item.owner.id != user.id:
+				return Response(status=status.HTTP_401_UNAUTHORIZED)
+		except Item.DoesNotExist:
+			return Response(status=status.HTTP_404_NOT_FOUND)
+		item.delete()
+		return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
 def getItemCategorys(request):
