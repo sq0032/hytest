@@ -3,26 +3,66 @@
     "pk": 1, 
     "model": "auth.user", 
     "fields": {
-        "username": "super", 
+        "username": "admin", 
         "first_name": "", 
         "last_name": "", 
         "is_active": true, 
         "is_superuser": true, 
-        "is_staff": true, 
-        "last_login": "2013-08-03T14:53:20.336Z", 
+        "is_staff": false, 
+        "last_login": "2013-08-16T18:14:10Z", 
         "groups": [], 
         "user_permissions": [], 
-        "password": "pbkdf2_sha256$10000$fTnmJgD3nFpI$tPaAwfcc8LlQXkeQ5KYaurr5HoL2ypwZOs6urdI7Rm4=", 
+        "password": "pbkdf2_sha256$10000$2rEl1gMQhu3y$hwVxxOeBM7cUGaG8tkZnb45QVoA9wYrbsh3b6uXt95s=", 
         "email": "", 
-        "date_joined": "2013-08-03T14:53:01.989Z"
+        "date_joined": "2013-08-16T18:14:10Z"
     }
 },
 {
     "pk": 1, 
     "model": "shops.category", 
     "fields": {
-        "name": "qwe", 
+        "name": "3C\u7522\u54c1\u53ca\u5bb6\u96fb", 
         "parent": null
+    }
+},
+{
+    "pk": 2, 
+    "model": "shops.category", 
+    "fields": {
+        "name": "\u65e5\u5e38\u7528\u54c1", 
+        "parent": null
+    }
+},
+{
+    "pk": 3, 
+    "model": "shops.category", 
+    "fields": {
+        "name": "\u6905\u5b50", 
+        "parent": 2
+    }
+},
+{
+    "pk": 4, 
+    "model": "shops.category", 
+    "fields": {
+        "name": "\u76f8\u6a5f", 
+        "parent": 1
+    }
+},
+{
+    "pk": 5, 
+    "model": "shops.category", 
+    "fields": {
+        "name": "\u5851\u81a0\u6905", 
+        "parent": 3
+    }
+},
+{
+    "pk": 6, 
+    "model": "shops.category", 
+    "fields": {
+        "name": "\u6728\u982d\u6905", 
+        "parent": 3
     }
 },
 {
