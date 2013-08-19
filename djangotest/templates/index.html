@@ -321,45 +321,50 @@
 																<input type="text" class="form-control" id="settingUsername" placeholder="">
 															</div>
 														</div>
+														<div class="form-group">
+															<div class="col-lg-6 col-offset-3">
+																<button class="btn btn-primary">寄發認證信</button>
+															</div>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-									<div class="accordion-group">
-										<div class="accordion-heading">
+										<div class="accordion-group">
+											<div class="accordion-heading">
 											<a class="accordion-toggle" data-toggle="collapse" href="#collapsePassword">修改密碼</a>
 										</div>
-										<div id="collapsePassword" class="accordion-body collapse">
-											<div class="accordion-inner">
-												<div class="form-horizontal">
-													<div class="form-group">
-														<label class="col-lg-3 control-label" for="settingPassword">舊密碼</label>
-														<div class="col-lg-6">
-															<input type="password" class="form-control" id="settingPassword" placeholder="">
+											<div id="collapsePassword" class="accordion-body collapse">
+												<div class="accordion-inner">
+													<div class="form-horizontal">
+														<div class="form-group">
+															<label class="col-lg-3 control-label" for="settingPassword">舊密碼</label>
+															<div class="col-lg-6">
+																<input type="password" class="form-control" id="settingPassword" placeholder="">
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-lg-3 control-label" for="settingNewPassword">新密碼</label>
-														<div class="col-lg-6">
-															<input type="password" class="form-control" id="settingNewPassword" placeholder="">
+														<div class="form-group">
+															<label class="col-lg-3 control-label" for="settingNewPassword">新密碼</label>
+															<div class="col-lg-6">
+																<input type="password" class="form-control" id="settingNewPassword" placeholder="">
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-lg-3 control-label" for="settingNewPassword2">確認新密碼</label>
-														<div class="col-lg-6">
-															<input type="password" class="form-control" id="settingNewPassword2" placeholder="">
+														<div class="form-group">
+															<label class="col-lg-3 control-label" for="settingNewPassword2">確認新密碼</label>
+															<div class="col-lg-6">
+																<input type="password" class="form-control" id="settingNewPassword2" placeholder="">
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<div class="col-lg-6 col-offset-3">
-															<button class="btn btn-primary">確認修改</button>
+														<div class="form-group">
+															<div class="col-lg-6 col-offset-3">
+																<button class="btn btn-primary">確認修改</button>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
 								</div>
 							</div>
 							<div class="col-lg-2">
@@ -1040,7 +1045,8 @@
 		var settingView = Backbone.View.extend({
 			el:$('#settingModal'),
 			events:{
-				'click #collapsePassword .btn-submit':'changePassword'
+				'click #collapsePassword .btn-submit':'changePassword',
+				'click #collapseAccount .btn-submit':'sendVerifyEmail',
 			},
 			initialize: function() {
 				this.listenTo(loginUser, 'change:name', this.updateUser);
@@ -1066,7 +1072,12 @@
 					alert('密碼錯誤!');
 				});
 			},
-
+			sendVerifyEmail: function(){
+				$.post('accounts/send-verify-email',{})
+				.done(function(){
+					alert('認證信已發送');
+				});
+			},
 			updateUser: function(){
 				console.log(loginUser)
 				var email = loginUser.get('email');

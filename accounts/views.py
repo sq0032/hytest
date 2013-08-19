@@ -177,10 +177,10 @@ def createUser(request):
 	return JSONResponse({'status':'OK'},status=status.HTTP_201_CREATED)
 
 
-@require_GET
 @login_required
 def sendVerifyEmail(request):
 	
+	print(request.user)
 	try:
 		user = User.objects.get(username=request.user)
 	except User.DoesNotExist:
