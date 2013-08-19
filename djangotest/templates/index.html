@@ -1022,6 +1022,7 @@
 					if(data.status == 'OK'){
 						view.$el.modal('hide');
 						loginUser.fetch();
+						msgbox('註冊成功!! 認證信已發送至'+email);
 						return;
 					}
 					
@@ -1163,6 +1164,35 @@
 				func(false);
 			});
 		}
+		
+		
+		function msgbox(message){
+			var $modal= $(
+				'<div class="modal fade" tabindex="-1">\
+					<div class="modal-dialog">\
+						<div class="modal-content">\
+							<div class="modal-header">\
+								<h4 class="modal-title">確認</h4>\
+							</div>\
+							<div class="modal-body">\
+								<div class="btn-confirm-message"></div>\
+							</div>\
+							<div class="modal-footer">\
+								<button class="btn btn-primary btn-confirm-ok">確定</button>\
+							</div>\
+						</div>\
+					</div>\
+				</div>').modal('show');
+			console.log($modal);
+			var $msg = $modal.find('.btn-confirm-message').text(message);
+			var $ok = $modal.find('.btn-confirm-ok').click(function(){
+				$modal.on('hidden.bs.modal',function(){
+					$modal.remove();
+					$modal = null;
+				}).modal('hide');
+			});
+		}
+		
 		
 		/*
 		var testUser2 = new User({id:2});
