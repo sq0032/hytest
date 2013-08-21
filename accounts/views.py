@@ -184,7 +184,7 @@ def sendVerifyEmail(request):
 	try:
 		user = User.objects.get(username=request.user)
 	except User.DoesNotExist:
-		return("使用者不存在")
+		return(u'使用者不存在')
 	
 	email= user.email
 	key = randomString(10)
@@ -192,7 +192,7 @@ def sendVerifyEmail(request):
 	try:
 		emailVeri = user.emailverification
 		emailVeri.key = key;
-		print('try')
+		print('try')	
 	except:
 		emailVeri = EmailVerification(user=user, key=key)
 		print('except')
@@ -211,7 +211,7 @@ def sendVerifyEmail(request):
 	try:
 		msg.send()
 	except:
-		return HttpResponse("認證信發出失敗")
+		return HttpResponse(u'認證信發出失敗')
 		
 	return HttpResponse(u'認證信已發送至:'+email)
 
