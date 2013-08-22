@@ -1,24 +1,6 @@
 [
 {
     "pk": 1, 
-    "model": "auth.user", 
-    "fields": {
-        "username": "admin", 
-        "first_name": "", 
-        "last_name": "", 
-        "is_active": true, 
-        "is_superuser": true, 
-        "is_staff": false, 
-        "last_login": "2013-08-16T18:14:10Z", 
-        "groups": [], 
-        "user_permissions": [], 
-        "password": "pbkdf2_sha256$10000$2rEl1gMQhu3y$hwVxxOeBM7cUGaG8tkZnb45QVoA9wYrbsh3b6uXt95s=", 
-        "email": "", 
-        "date_joined": "2013-08-16T18:14:10Z"
-    }
-},
-{
-    "pk": 1, 
     "model": "shops.category", 
     "fields": {
         "name": "3C\u7522\u54c1\u53ca\u5bb6\u96fb", 
@@ -105,6 +87,37 @@
     "model": "shops.attribute", 
     "fields": {
         "name": "\u9808\u958b\u8eca"
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "admin", 
+        "first_name": "", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": false, 
+        "last_login": "2013-08-16T18:14:10Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$2rEl1gMQhu3y$hwVxxOeBM7cUGaG8tkZnb45QVoA9wYrbsh3b6uXt95s=", 
+        "email": "", 
+        "date_joined": "2013-08-16T18:14:10Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "admin.logentry", 
+    "fields": {
+        "action_flag": 1, 
+        "action_time": "2013-08-22T07:02:04.605Z", 
+        "object_repr": "Lv1", 
+        "object_id": "1", 
+        "change_message": "", 
+        "user": 1, 
+        "content_type": 2
     }
 }
 ]

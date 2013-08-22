@@ -3,7 +3,7 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMultiAlternatives
@@ -216,19 +216,26 @@ def sendVerifyEmail(request):
 	return HttpResponse(u'認證信已發送至:'+email)
 
 
+@login_required
 def verifyEmail(request):
 	key = request.GET.get('key')
+	#Check if the key exists
 	try:
 		emailVeri = EmailVerification.objects.get(key=key)
 	except EmailVerification.DoesNotExist:
-		return HttpResponse("認證成功", content_type="text/plain")
-	print emailVeri
-	user = emailVeri.user
-	user.is_active = True
-	user.save()
-	emailVeri.delete()
-	return HttpResponse("認證成功", content_type="text/plain")
-
+		return HttpResponse(u'無效認證信', content_type="text/plain")
+	
+	#Check if the key owner and the request owner is the same person
+	if emailVeri.user.username == request.user.username:
+		#If yes, add the user into 'Lv1' group
+		user = User.objects.get(username = request.user)
+		g = Group.objects.get(name = 'Lv1')
+		g.user_set.add(user)
+		emailVeri.delete()
+		return HttpResponse(u'認證成功')
+	else:
+		#if not, deny this request
+		return HttpResponse(u'使用者與認證信收件者不同')
 
 @require_POST
 def changePassword(request):
@@ -243,6 +250,15 @@ def changePassword(request):
 	user.save()
 	print 'change passowrd'
 	return HttpResponse()
+	
+@login_required
+def grouptest(request):
+	user = User.objects.get(username = request.user)
+	g = Group.objects.get(name = 'Lv1')
+	g.user_set.add(user)
+
+	return HttpResponse()
+	
 	
 '''
 class userDetail(APIView):
