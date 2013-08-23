@@ -17,7 +17,7 @@ class Verification(models.Model):
 	is_namecardverified = models.BooleanField(default=False)
 	
 	def __unicode__(self):
-		return "email:%s phone:%s namecard:%s" % (str(self.is_emailveified), str(self.is_phoneverified), str(self.is_namecardverified))
+		return "user:%s %s,%s,%s" % (self.user.username, str(self.is_emailveified), str(self.is_phoneverified), str(self.is_namecardverified))
 
 '''
 from django.db import models

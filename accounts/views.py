@@ -122,7 +122,7 @@ def createUser(request):
 	name = request.POST.get('name');
 	password = request.POST.get('password');
 	email = request.POST.get('email');
-	
+	print('POST.get')
 	ret = {}
 	if captcha is None or captcha != request.session.get('captcha'):
 		if 'captcha' in request.session:
@@ -167,12 +167,15 @@ def createUser(request):
 		user = User(username=name,email=email)
 		user.set_password(password)
 		user.save()
+		print('add new user')
 		#連結使用者認證資料
 		veri = Verification(user = user)
 		veri.save()
+		print('connect verification')
 		#附予新使用者群組Lv0(無權限)
 		g = Group.objects.get(name = 'Lv0')
 		g.user_set.add(user)
+		print('add user to Lv0 group')
 	except:
 		#未預期錯誤
 		return JSONResponse({'status':'ERROR'})
@@ -241,6 +244,11 @@ def verifyEmail(request):
 		g = Group.objects.get(name = 'Lv1')
 		g.user_set.add(user)
 		emailVeri.delete()
+		#and set the user's is_emailverified field as true
+		#並把該使用者的is_emailverified欄位設定為true
+		veri = Verification.objects.get(user = user)
+		veri.is_emailverified = True
+		veri.save()
 		return HttpResponse(u'認證成功')
 	else:
 		#if not, deny this request

@@ -91,24 +91,6 @@
 },
 {
     "pk": 1, 
-    "model": "auth.user", 
-    "fields": {
-        "username": "admin", 
-        "first_name": "", 
-        "last_name": "", 
-        "is_active": true, 
-        "is_superuser": true, 
-        "is_staff": false, 
-        "last_login": "2013-08-16T18:14:10Z", 
-        "groups": [1,2,3,4], 
-        "user_permissions": [], 
-        "password": "pbkdf2_sha256$10000$yy4XQdESgM9t$CPa37jDF5wuXXaTLQKLnSrOMZtvewBRo7XyY3IrmiDk=", 
-        "email": "", 
-        "date_joined": "2013-08-16T18:14:10Z"
-    }
-},
-{
-    "pk": 1, 
     "model": "admin.logentry", 
     "fields": {
         "action_flag": 1, 
@@ -157,16 +139,6 @@
         "change_message": "", 
         "user": 1, 
         "content_type": 2
-    }
-},
-{
-    "pk": 1, 
-    "model": "accounts.verification", 
-    "fields": {
-        "is_emailveified": true,
-        "is_phoneverified": true, 
-        "is_namecardverified": true, 
-        "user": 1
     }
 }
 ]
