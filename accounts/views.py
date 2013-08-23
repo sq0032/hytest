@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from accounts.serializers import UserSerializer
-from accounts.models import EmailVerification
+from accounts.models import EmailVerification, Verification
 
 #產生驗證圖形用
 from PIL import Image, ImageFont, ImageDraw
@@ -163,9 +163,16 @@ def createUser(request):
 		return JSONResponse(ret)
 	
 	try:
+		#新增使用者
 		user = User(username=name,email=email)
 		user.set_password(password)
 		user.save()
+		#連結使用者認證資料
+		veri = Verification(user = user)
+		veri.save()
+		#附予新使用者群組Lv0(無權限)
+		g = Group.objects.get(name = 'Lv0')
+		g.user_set.add(user)
 	except:
 		#未預期錯誤
 		return JSONResponse({'status':'ERROR'})
