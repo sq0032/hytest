@@ -226,15 +226,17 @@ def sendVerifyEmail(request):
 @login_required
 def verifyEmail(request):
 	key = request.GET.get('key')
-	#Check if the key exists
+	#Check if the key exists 確認認證碼是否存在
 	try:
 		emailVeri = EmailVerification.objects.get(key=key)
 	except EmailVerification.DoesNotExist:
 		return HttpResponse(u'無效認證信', content_type="text/plain")
 	
 	#Check if the key owner and the request owner is the same person
+	#確認認證碼擁有者是否與發送要求者為同一人
 	if emailVeri.user.username == request.user.username:
 		#If yes, add the user into 'Lv1' group
+		#如果是，把該使用者群組升至Lv1
 		user = User.objects.get(username = request.user)
 		g = Group.objects.get(name = 'Lv1')
 		g.user_set.add(user)
@@ -242,6 +244,7 @@ def verifyEmail(request):
 		return HttpResponse(u'認證成功')
 	else:
 		#if not, deny this request
+		#若不是則報錯
 		return HttpResponse(u'使用者與認證信收件者不同')
 
 @require_POST
