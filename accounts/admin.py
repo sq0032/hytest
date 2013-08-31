@@ -86,6 +86,8 @@ admin.site.unregister(Group)
 
 '''
 from django.contrib import admin
-from accounts.models import EmailVerification
+from accounts.models import EmailVerification, Verification, Booleantest
 
 admin.site.register(EmailVerification)
+admin.site.register(Verification)
+admin.site.register(Booleantest)
