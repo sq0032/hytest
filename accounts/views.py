@@ -287,58 +287,6 @@ def changePassword(request):
 	print 'change passowrd'
 	return HttpResponse()
 
-'''	
-from accounts.models import Booleantest
-def test(request):
-	
-	b = Booleantest.objects.create()
-	b.email = True
-	b.save()
-	return HttpResponse()	
-'''	
-	
-
-def emailverificationtest(request):
-	text = ''
-	
-	try:
-		User.objects.create(username='test', email='test@gmail.com', password='00000000')
-	except:
-		#traceback.print_exc()
-		text=text+'create error'
-		print('create error')
-	
-	try:
-		user = User.objects.get(username = 'test')
-	except:
-		traceback.print_exc()
-		text=text+', connot get user'
-		print('connot get user')
-		
-	try:
-		#veri = Verification(user = user)
-		veri = Verification.objects.create(user=user)
-	except:
-		veri = user.verification
-		traceback.print_exc()
-		text=text+', connot get verification data'
-		print('connot get verification data')
-	
-	try:	
-		veri.email = True
-		print veri.email
-		print veri
-		veri.save()
-		print veri
-	except:
-		traceback.print_exc()
-		text=text+', connot set is_emailverified'
-		print('connot set is_emailverified')
-
-	return HttpResponse(text)
-
-
-	
 	
 '''
 class userDetail(APIView):
