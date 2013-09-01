@@ -55,3 +55,15 @@ class ItemImage(models.Model):
 	image = models.ImageField(upload_to=item_image_path,blank=True)
 	def __unicode__(self):
 		return "%s %s %s"%(self.item.owner, self.item.name, self.index)
+	
+class Shop(models.Model):
+	name = models.CharField(max_length=50)
+	address = models.CharField(max_length=100)
+	address_des = models.CharField(max_length=50)
+	latitute = models.FloatField()
+	longtitute = models.FloatField()
+	description = models.TextField(blank=True,null=True)
+	owner = models.ForeignKey(User)
+	items = models.ManyToManyField(Item)
+	def __unicode__(self):
+		return "%s (%s)"%(self.owner.name,self.name)

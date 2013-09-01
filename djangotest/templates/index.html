@@ -4,15 +4,10 @@
 		<meta charset="utf-8">
 		<title>Project name</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<!-- Bootstrap -->
 		<link href="css/bootstrap.css" rel="stylesheet" media="screen">
-		<link href="css/bootstrap-glyphicons.css" rel="stylesheet" media="screen">
-		<!--
-		<link href="less/bootstrap.less" rel="stylesheet/less">
-		-->
 		<style>
 		body {
-			padding-top: 50px; /* 60px to make the container go all the way to the bottom of the topbar */
+			padding-top: 50px;
 		}
 		#map_canvas {
 			position: absolute;
@@ -38,119 +33,47 @@
 			margin: 0;
 		}
 		
-		</style>
-		<!-- <link href="css/bootstrap-responsive.css" rel="stylesheet"> -->
-		<!-- <style>
-		
-		.modal {
-			outline: none;
-			position: absolute;
-			margin-top: 0;
-			top: 50%;
-			overflow: visible; /* allow content to popup out (i.e tooltips) */
-		}
-		
-		.modal.fade {
-			top: -100%;
-			-webkit-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;	
-			   -moz-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
-				 -o-transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
-					transition: opacity 0.3s linear, top 0.3s ease-out, bottom 0.3s ease-out, margin-top 0.3s ease-out;
-		}
-		
-		
-		.modal-body {
-			max-height: none;
-			overflow: visible;
-		}
-		
-		.modal.container {
-			width: 940px;
-			margin-left: -470px;
-		}
-		
-		/* Large desktop */
-		@media (min-width: 1200px) {
-			.modal.container {
-				width: 1170px;
-				margin-left: -585px;
-			}
-		}
-		 
-		/* Portrait tablet to landscape and desktop */
-		@media (min-width: 768px) and (max-width: 979px) {
-			.modal.container {
-				width: 728px;
-				margin-left: -362px;
-			}
-		}
-		 
-		/* Landscape phone to portrait tablet */
-		@media (max-width: 767px) {
-			.modal, 
-			.modal.container {
-				top: 1%;
-				right: 1%;
-				left: 1%;
-				bottom: auto;
-				width: auto !important;
-				height: auto !important;
-				margin: 0 !important;
-				padding: 0 !important;
-			}
-		</style>
-		 -->
-		<style>
-		
 		@media (min-width: 1200px) {
 			.modal-dialog-large {
 				width: 1170px;
-				margin-left: -585px;
 			}
 		}
 		@media (min-width: 980px) and (max-width: 1199px) {
 			.modal-dialog-large {
 				width: 940px;
-				margin-left: -470px;
 			}
 		}
 		
 		@media (min-width: 768px) and (max-width: 979px) {
 			.modal-dialog-large {
 				width: 728px;
-				margin-left: -362px;
 			}
 		}
 		
 		@media (max-width: 767px) {
-		
 		}
 		</style>
-		<link href="css/main.css" rel="stylesheet">
-		<!--
-		<link href="css/bootstrap-modal.css" rel="stylesheet">
-		<link href="less/responsive.less" rel="stylesheet/less">
-		-->
-	<script type="text/javascript"
-		src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVe-jIXFr-OWQknSaDsjLyogR6Lm9goB8&sensor=false">
-	</script>
+	<link href="css/main.css" rel="stylesheet">
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVe-jIXFr-OWQknSaDsjLyogR6Lm9goB8&sensor=false"></script>
 	</head>
 	<body>
 		<div id="navBar" class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">Project name</a>
-				<div class="nav-collapse collapse">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Project name</a>
+				</div>
+				<div class="navbar-collapse collapse">
 					<ul id="guestNav" class="nav navbar-nav pull-right">
 						<li><a class="btn-loginModal" href="#loginModal" data-toggle="modal">登入</a></li>
 						<li><a class="btn-regModal" href="#regModal" data-toggle="modal">註冊</a></li>
 					</ul>
 					<ul id="userNav" class="nav navbar-nav pull-right">
-						<li><a class="btn-myCart" href="#" data-toggle="modal">購物車<i class="glyphicon glyphicon-shopping-cart"></i></a></li>
+						<li><a class="btn-myCart" href="#" data-toggle="modal">購物車<span class="glyphicon glyphicon-shopping-cart"></span></a></li>
 						<li><a class="btn-myShop" href="#sellerPanel" data-toggle="modal">我的商店<i class="glyphicon glyphicon-home"></i></a></li>
 						<li><a class="btn-settingModal" href="#settingModal" data-toggle="modal">設定<i class="glyphicon glyphicon-cog"></i></a></li>
 						<li><a class="userInfo" href="#"><i class="icon-user"></i><span class="username"></span></a></li>
@@ -236,7 +159,7 @@
 								<span class="col-lg-3 help-block msg-error"></span>
 							</div>
 							<div class="form-group">
-								<div class="col-lg-3 col-offset-3">
+								<div class="col-lg-3 col-lg-offset-3">
 									<img id="regCaptchaImage">
 								</div>
 								<div class="col-lg-3">
@@ -325,41 +248,41 @@
 												</div>
 											</div>
 										</div>
-									<div class="accordion-group">
-										<div class="accordion-heading">
-											<a class="accordion-toggle" data-toggle="collapse" href="#collapsePassword">修改密碼</a>
-										</div>
-										<div id="collapsePassword" class="accordion-body collapse">
-											<div class="accordion-inner">
-												<div class="form-horizontal">
-													<div class="form-group">
-														<label class="col-lg-3 control-label" for="settingPassword">舊密碼</label>
-														<div class="col-lg-6">
-															<input type="password" class="form-control" id="settingPassword" placeholder="">
+										<div class="accordion-group">
+											<div class="accordion-heading">
+												<a class="accordion-toggle" data-toggle="collapse" href="#collapsePassword">修改密碼</a>
+											</div>
+											<div id="collapsePassword" class="accordion-body collapse">
+												<div class="accordion-inner">
+													<div class="form-horizontal">
+														<div class="form-group">
+															<label class="col-lg-3 control-label" for="settingPassword">舊密碼</label>
+															<div class="col-lg-6">
+																<input type="password" class="form-control" id="settingPassword" placeholder="">
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-lg-3 control-label" for="settingNewPassword">新密碼</label>
-														<div class="col-lg-6">
-															<input type="password" class="form-control" id="settingNewPassword" placeholder="">
+														<div class="form-group">
+															<label class="col-lg-3 control-label" for="settingNewPassword">新密碼</label>
+															<div class="col-lg-6">
+																<input type="password" class="form-control" id="settingNewPassword" placeholder="">
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-lg-3 control-label" for="settingNewPassword2">確認新密碼</label>
-														<div class="col-lg-6">
-															<input type="password" class="form-control" id="settingNewPassword2" placeholder="">
+														<div class="form-group">
+															<label class="col-lg-3 control-label" for="settingNewPassword2">確認新密碼</label>
+															<div class="col-lg-6">
+																<input type="password" class="form-control" id="settingNewPassword2" placeholder="">
+															</div>
 														</div>
-													</div>
-													<div class="form-group">
-														<div class="col-lg-6 col-offset-3">
-															<button class="btn btn-primary">確認修改</button>
+														<div class="form-group">
+															<div class="col-lg-6 col-lg-offset-3">
+																<button class="btn btn-primary">確認修改</button>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
 								</div>
 							</div>
 							<div class="col-lg-2">
@@ -396,7 +319,7 @@
 									<div class="tab-pane active" id="myItemsPanel">
 										<div class="btn-toolbar">
 											<div class="btn-group">
-												<button type="button" class="btn btn-primary" data-target="#createItemPanel" data-toggle="modal">新增商品<i class="glyphicon glyphicon-plus"></i></button>
+												<button type="button" class="btn btn-primary" data-target="#createItemPanel" data-toggle="modal">新增商品 <span class="glyphicon glyphicon-plus"></span></button>
 											</div>
 											<div class="btn-group" data-toggle="buttons">
 												<label id="myItemsShowList" class="btn btn-info active">
@@ -413,7 +336,16 @@
 										</div>
 									</div>
 									<div class="tab-pane" id="myShopPanel">
-										<p>One fine body…qqqqqqqqqqqqqqqq</p>
+										<div class="btn-toolbar">
+											<div class="btn-group">
+												<button type="button" class="btn btn-primary">??<span class="glyphicon glyphicon-plus"></span></button>
+											</div>
+										</div>
+										<div>
+											<div>
+												
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -519,16 +451,6 @@
 		
 		<div class="" id="map_canvas">
 		</div> <!-- /container -->
-		
-		<!-- The fileinput-button span is used to style the file input field as button -->
-
-		<input id="fileupload" type="file" name="files[]" multiple>
-		<!-- The global progress bar -->
-		<div id="progress" class="progress progress-success progress-striped">
-			<div class="bar"></div>
-		</div>
-		<!-- The container for the uploaded files -->
-		<div id="files" class="files"></div>
 
 		<!--<script src="js/less-1.3.3.min.js"></script>-->
 		<script src="http://code.jquery.com/jquery.js"></script>
@@ -550,10 +472,6 @@
 
 		
 		var User = Backbone.Model.extend({
-			defaults : {
-				name : null,
-				email: null,
-			},
 			urlRoot:'accounts/users/'
 		});
 		
@@ -569,7 +487,7 @@
 		loginUser.url  = 'accounts/users/i';
 		
 		var myItems = new Items();
-		myItems.url = 'shops/sellers/i/items/';
+		myItems.url = 'shops/items/i/';
 		
 		var createItemPanelView = Backbone.View.extend({
 			el: $("#createItemPanel"),
@@ -584,7 +502,6 @@
 			},
 			initialize: function() {
 				var that = this;
-				<!--field-->
 				this.field = {
 					name: this.$('#createItemNameField'),
 					price: this.$('#createItemPriceField'),
@@ -742,26 +659,33 @@
 				var sizeAttr = this.itemSizeAttr.filter(':checked').val();
 				var attrs = [parseInt(conditionAttr),parseInt(sizeAttr)];
 				var category = this.createItemCategory.val();
-				var newItem = new Item();
 				
-				newItem.set({name:name,
-							price:price,
-							description:description,
-							attrs:attrs,
-							category:category
-							});
+				var newItem = new Item();
+				newItem.set({
+					name:name,
+					price:price,
+					description:description,
+					attrs:attrs,
+					category:category
+				});
 				
 				newItem.save().done(function(){
 					var item_id = newItem.get('id');
+					var dfs = []
 					for(var i in that.files){
 						that.files[i].url = 'shops/upload/items/'+item_id+'/image/'+i;
 						console.log(that.files[i]);
-						that.files[i].submit();
+						dfs.push(that.files[i].submit())
 					}
+					console.log(dfs);
 					that.files = {};
-					//這裡記得改
 					that.$el.modal('hide');
-					myItems.fetch();
+					newItem.set({'name':newItem.get('name')+"(上傳圖片中)"});
+					myItems.add(newItem);
+					$.when.apply($, dfs).done(function(){
+						myItems.fetch();
+					});
+					
 				});
 			}
 		});
@@ -777,6 +701,7 @@
 			},
 			initialize: function() {
 				this.listenTo(myItems, 'sync', this.updateItems);
+				this.listenTo(myItems, 'add', this.updateItems);
 				this.$myItemsPanel = this.$('#myItemsPanel');
 				this.$myItemsList = this.$('#myItemsList');
 			},
@@ -930,10 +855,10 @@
 				var $nameField = this.$nameField;
 				if(name.length == 0){
 					this.clearError('name');
-					return
+					return;
 				}else if(name.length > 20){
 					view.showError('name', '名稱太長');
-					return
+					return;
 				}
 				$.getJSON('accounts/check-name', {name:name}).done(function(data){
 					if(data.status == 'ERROR'){
@@ -1010,8 +935,10 @@
 				var $regBtn = this.$regBtn;
 				$regBtn.button('loading');
 				
+				$regBtn.prop('disabled', true);
 				$.post('accounts/create-user',{name:name,email:email,password:password,captcha:captcha},'json')
 				.done(function(data){
+					$regBtn.prop('disabled', false);
 					$regBtn.button('reset');
 					console.log(data);
 					if(data.status == 'OK'){
@@ -1028,6 +955,7 @@
 					}
 					
 				}).fail(function(){
+					$regBtn.prop('disabled', false);
 					$regBtn.button('reset');
 					alert('註冊失敗!');
 				});
@@ -1043,7 +971,7 @@
 				'click #collapsePassword .btn-submit':'changePassword'
 			},
 			initialize: function() {
-				this.listenTo(loginUser, 'change:name', this.updateUser);
+				this.listenTo(loginUser, 'change', this.updateUser);
 			},
 			changePassword: function(){
 				var thisView = this;
@@ -1086,7 +1014,7 @@
 				this.$guestNav = this.$("#guestNav");
 				this.guestMode();
 				
-				this.listenTo(loginUser, 'change:name', this.changeMode);
+				this.listenTo(loginUser, 'change', this.changeMode);
 				
 			},
 			changeMode: function(){
@@ -1181,7 +1109,7 @@
 					}];
 					map.setOptions({styles: noPoi});
 				}
-				//initialize();
+				initialize();
 				
 				var navBar = new navBarView();
 				var loginModal = new loginModalView({navBar:navBar});
