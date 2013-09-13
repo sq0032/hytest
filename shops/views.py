@@ -4,7 +4,9 @@ from django.http import HttpResponse
 
 from django.contrib.auth.models import User
 from django.views.decorators.http import require_http_methods, require_GET, require_POST
- 
+from django.core.context_processors import csrf
+from django.shortcuts import render_to_response
+
 from rest_framework.renderers import JSONRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -26,6 +28,13 @@ class JSONResponse(HttpResponse):
 		content = JSONRenderer().render(data)
 		kwargs['content_type'] = 'application/json'
 		super(JSONResponse, self).__init__(content, **kwargs)
+
+@require_GET
+def index(request):
+	c = {}
+	c.update(csrf(request))
+	print csrf(request)
+	return render_to_response("index.html", c)
 
 @api_view(['GET'])
 def items_i(request):

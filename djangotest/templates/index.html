@@ -6,17 +6,28 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="css/bootstrap.css" rel="stylesheet" media="screen">
 		<style>
-		body {
-			padding-top: 50px;
-		}
-		#map_canvas {
+		
+		.main-panels .tab-pane{
 			position: absolute;
-			top: 40px;
+			top: 71px;
 			left: 0px;
 			right: 0px;
 			bottom: 0px;
 			z-index: -1;
 		}
+		
+		.main-nav > li > a {
+			border-radius: 0;
+			font-size: 16px;
+			padding:15px 0 15px 0;
+			width:90px;
+			text-align:center;
+		}
+		
+		#navBar {
+			border-bottom: 1px solid #428BCA;;
+		}
+		
 		#loginModal {
 		}
 		
@@ -51,35 +62,140 @@
 		}
 		
 		@media (max-width: 767px) {
+			.main-panels .tab-pane{
+				top: 51px;
+				z-index: -1;
+			}
+			
+			.main-nav > li > a {
+				padding:10px 0 10px 0;
+				font-size: 18px;
+				line-height: 30px;
+				width:50px;
+			}
+			
+			.container {
+				padding-left: 0;
+				padding-right: 0;
+			}
+			
+			.navbar-nav > li {
+				float: left;
+			}
+			
+			.navbar-nav {
+				margin: 0;
+			}
+			.modal {
+			 overflow:hidden;
+			}
+			
+			.modal-dialog {
+				position: absolute;
+				top: 10px;
+				bottom: 10px;
+				right: 10px;
+				left: 10px;
+				padding:0;
+			}
+			
+			.modal-content {
+				height:100%
+			}
+			
+			.modal-header {
+				position: absolute;
+				top: 0;
+				right: 0;
+				left: 0;
+				height:60px
+			}
+			
+			.modal-body {
+				position: absolute;
+				top: 60px;
+				right: 0;
+				left: 0;
+				bottom:60px;
+			}
+			
+			.modal-footer {
+				margin:0;
+				padding:0;
+				position: absolute;
+				height:60px;
+				right: 0;
+				left: 0;
+				bottom:0;
+			}
+			
+			.close {
+				font-size:40px;
+			}
 		}
 		</style>
 	<link href="css/main.css" rel="stylesheet">
-	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDVe-jIXFr-OWQknSaDsjLyogR6Lm9goB8&sensor=false"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 	</head>
 	<body>
-		<div id="navBar" class="navbar navbar-inverse navbar-fixed-top">
+		<div id="navBar" style="background-color:#FFFFFF" class="navbar navbar-fixed-top">
 			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="#">Project name</a>
+				<div>
+					<a class="navbar-brand" href="#">YOUCON</a>
+					<ul id="userNav" class="main-nav nav nav-pills navbar-nav pull-right" style="display:none;">
+						<li class="active">
+							<a href="#mapPanel" data-toggle="tab">
+								<span class="glyphicon glyphicon-map-marker"></span>
+								<span class="hidden-xs">地圖</span>
+							</a>
+						</li>
+						<li>
+							<a href="#tracePanel" data-toggle="tab">
+								<span class="glyphicon glyphicon-list-alt"></span>
+								<span class="hidden-xs">追蹤清單</span>
+							</a>
+						</li>
+						<li>
+							<a href="#sellerPanel" data-toggle="tab">
+								<span class="glyphicon glyphicon-home"></span>
+								<span class="hidden-xs">我的商店</span>
+							</a>
+						</li>
+						<li>
+							<a data-toggle="collapse" data-parent="userNav" href="#accountCollapse">
+								<span class="glyphicon glyphicon-user"></span>
+								<span id="navUsername" class="hidden-xs"></span>
+							</a>
+						</li>
+					</ul>
+					<ul id="guestNav" class="main-nav nav navbar-nav pull-right">
+						<li>
+							<a href="#regModal" data-toggle="modal">
+								<div class="hidden-xs">
+									<span class="glyphicon glyphicon-user"></span>
+									<div>註冊</div>
+								</div>
+								<div class="visible-xs" >註冊</div>
+							</a>
+						</li>
+						<li>
+							<a href="#loginModal" data-toggle="modal">
+								<div class="hidden-xs">
+									<span class="glyphicon glyphicon-log-in"></span>
+									<div>登入</div>
+								</div>
+								<div class="visible-xs" >登入</div>
+							</a>
+						</li>
+					</ul>
+					<div style="clear:both"></div>
 				</div>
-				<div class="navbar-collapse collapse">
-					<ul id="guestNav" class="nav navbar-nav pull-right">
-						<li><a class="btn-loginModal" href="#loginModal" data-toggle="modal">登入</a></li>
-						<li><a class="btn-regModal" href="#regModal" data-toggle="modal">註冊</a></li>
-					</ul>
-					<ul id="userNav" class="nav navbar-nav pull-right">
-						<li><a class="btn-myCart" href="#" data-toggle="modal">購物車<span class="glyphicon glyphicon-shopping-cart"></span></a></li>
-						<li><a class="btn-myShop" href="#sellerPanel" data-toggle="modal">我的商店<i class="glyphicon glyphicon-home"></i></a></li>
-						<li><a class="btn-settingModal" href="#settingModal" data-toggle="modal">設定<i class="glyphicon glyphicon-cog"></i></a></li>
-						<li><a class="userInfo" href="#"><i class="icon-user"></i><span class="username"></span></a></li>
-						<li><a id="logoutBtn" href="#">登出</a></li>
-					</ul>
-				</div><!--/.nav-collapse -->
+			</div>
+			<div id="accountCollapse" class="collapse container">
+				<ul style="background-color:#FFFFFF" class="nav nav-stacked pull-right">
+					<li><a class="btn-settingModal" href="#settingModal" data-toggle="modal">設定<i class="glyphicon glyphicon-cog"></i></a></li>
+					<li><a id="logoutBtn" href="#">登出</a></li>
+				</ul>
 			</div>
 		</div>
 		
@@ -300,15 +416,16 @@
 		</div><!-- /.modal -->
 		
 		<!--Seller Panel-->
-		<div id="sellerPanel" class="modal fade" tabindex="-1">
+		<div id="sellerPanel2" class="modal fade" tabindex="-1">
 			<div class="modal-dialog modal-dialog-large">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title"><img src="img/setting.png" style="vertical-align:bottom;width:130px;height:130px;">SHOP</h4>
+						<div></div>
 					</div>
 					<div class="modal-body">
-						<div class="row">
+						<div style="display:none;" class="row">
 							<div class="col-lg-2">
 								<ul class="nav nav-pills nav-stacked" id="sellerTabs">
 									<li class="active">
@@ -356,6 +473,13 @@
 							</div>
 						</div>
 					</div><!-- /.modal-body -->
+					<div class="modal-footer">
+						<!--<div style="float:left;height:100%;width:25%;border-right:1px solid #ddd;"></div>
+						<div style="float:left;height:100%;width:25%;border-right:1px solid #ddd;"></div>
+						<div style="float:left;height:100%;width:25%;border-right:1px solid #ddd;"></div>
+						<div style="float:left;height:100%;width:25%;">
+						</div>-->
+					</div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
@@ -454,9 +578,83 @@
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 		
-		<div class="" id="map_canvas">
-		</div> <!-- /container -->
-
+		<div id="shopModal" class="modal fade" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4><span class="glyphicon glyphicon-edit"></span>編輯店面資訊</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-horizontal">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">商店名稱</label>
+								<div class="col-sm-7">
+									<input type="text" class="form-control" id="shopName" placeholder="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">商店地址</label>
+								<div class="col-sm-7">
+									<input type="text" class="form-control" id="shopAddress" placeholder="">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-7 col-sm-offset-3" style="height:300px;" id="shopMap"></div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">商店介紹</label>
+								<div class="col-sm-7">
+									<textarea class="form-control" rows="3"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default">
+							取消
+						</button>
+						<button type="button" class="btn btn-primary">
+							確認
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="main-panels tab-content">
+			<div class="tab-pane fade" id="mapPanel">
+			</div>
+			<div class="tab-pane fade" id="tracePanel">
+			</div>
+			<div class="tab-pane active fade in" id="sellerPanel">
+				<div class="container">
+					<div sytle="text-align:center;">
+						<div class="btn-group">
+							<button type="button" class="btn btn-default">
+								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-play"></span>
+								開始營業
+							</button>
+							<button type="button" class="btn btn-default" href="#shopModal" data-toggle="modal">
+								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-edit"></span>
+								編輯店面
+							</button>
+							<button type="button" class="btn btn-default" href="#createItemPanel" data-toggle="modal">
+								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-cloud-upload"></span>
+								商品上架
+							</button>
+							<button type="button" class="btn btn-default">
+								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-exclamation-sign"></span>
+								最新消息
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		{% csrf_token %}
 		<!--<script src="js/less-1.3.3.min.js"></script>-->
 		<script src="http://code.jquery.com/jquery.js"></script>
 		
@@ -475,7 +673,6 @@
 		<script src="js/main.js"></script>
 		<script type="text/javascript">
 
-		
 		var User = Backbone.Model.extend({
 			urlRoot:'accounts/users/'
 		});
@@ -493,6 +690,29 @@
 		
 		var myItems = new Items();
 		myItems.url = 'shops/items/i/';
+		
+		var shopModalView = Backbone.View.extend({
+			el: $("#shopModal"),
+			events: {
+			},
+			initialize: function(){
+				var latlng = new google.maps.LatLng(23.973875,120.982024);
+				var mapOptions = {
+					zoom: 10,
+					center: latlng,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				
+				this.map = new google.maps.Map(this.$('#shopMap')[0],mapOptions);
+				this.marker = new google.maps.Marker({
+					draggable:true,
+					position: latlng,
+					title:"台灣 Taiwan",
+					map:this.map
+				}); 
+			}
+			
+		});
 		
 		var createItemPanelView = Backbone.View.extend({
 			el: $("#createItemPanel"),
@@ -1067,7 +1287,7 @@
 				this.$guestNav.show();
 			},
 			userMode: function(user){
-				this.$userNav.show().find('.username').text(user.get('name'));
+				this.$userNav.show().find('#navUsername').text(user.get('name'));
 				this.$guestNav.hide();
 			}
 		});
@@ -1138,21 +1358,29 @@
 			});
 		}
 		
-		
-		/*
-		var testUser2 = new User({id:2});
-		testUser2.fetch();
-		console.log(testUser2);
-		
-		var testUser = new User({name:'qq',email:'qq@qq.com',password:'password'});
-		testUser.save();
-		console.log(testUser);
-		
-		$.get('accounts/captcha',function(data){
-			console.log(data);
-		});
-		*/
 			$(function(){
+			
+
+				/*
+				$("#shopAddress").change(function(){
+					//重新定位地圖位置與標記點位置
+					var address = $(this).val();
+					var geocoder = new google.maps.Geocoder();
+					geocoder.geocode(
+						{'address':address},
+						function (results,status) {
+							if(status==google.maps.GeocoderStatus.OK) {
+								console.log(results[0].geometry.location);
+								var LatLng = results[0].geometry.location;
+								map.setCenter(LatLng);  //將地圖中心定位到查詢結果
+								marker.setPosition(LatLng); //將標記點定位到查詢結果
+								marker.setTitle(address); //重新設定標記點的title
+								//$("#SearchLatLng").html("【您輸入的地址位置】緯度：" + LatLng.lat() + "經度：" + LatLng.lng());
+							}
+						}
+					); 
+				});
+				*/
 				function initialize() {
 					var initlatlng = new google.maps.LatLng(25.056220142845, 121.54178450802);
 					var mapOptions = {
@@ -1160,12 +1388,14 @@
 						zoom: 14,
 						mapTypeId: google.maps.MapTypeId.ROADMAP
 					};
-					var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+					var map = new google.maps.Map(document.getElementById("mapPanel"), mapOptions);
 					var noPoi = [{
 						featureType: "poi",
 						stylers: [{ visibility: "off" }]
 					}];
 					map.setOptions({styles: noPoi});
+					
+					
 				}
 				initialize();
 				
@@ -1175,7 +1405,7 @@
 				var settingModal = new settingView();
 				var sellerPanel = new sellerPanelView();
 				var createItemPanel = new createItemPanelView();
-				
+				var shopMadal = new shopModalView();
 				loginUser.fetch();
 				
 			});

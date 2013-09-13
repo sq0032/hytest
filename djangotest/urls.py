@@ -10,7 +10,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
 	# Examples:
 	# url(r'^$', 'djangotest.views.home', name='home'),
-	# url(r'^djangotest/', include('djangotest.foo.urls')),
 
 	# Uncomment the admin/doc line below to enable admin documentation:
 	# url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -27,7 +26,8 @@ urlpatterns = patterns('',
 	
 	url(r'^accounts/', include('accounts.urls')),
 	url(r'^shops/', include('shops.urls')),
-	url(r'^$', TemplateView.as_view(template_name="index.html")),
+	url(r'^$', 'djangotest.views.index'),
+	#url(r'^$', TemplateView.as_view(template_name="index.html")),
 	url(r'^2$', TemplateView.as_view(template_name="index2.html")),
 	
 )
