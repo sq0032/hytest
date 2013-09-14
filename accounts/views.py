@@ -116,6 +116,8 @@ def user_i_view(request):
 	data['id'] = 'i'
 	return Response(data)
 
+import traceback
+
 @require_POST
 def createUser(request):
 	captcha = request.POST.get('captcha')
