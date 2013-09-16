@@ -161,11 +161,28 @@
 								<span class="hidden-xs">我的商店</span>
 							</a>
 						</li>
-						<li>
-							<a data-toggle="collapse" data-parent="userNav" href="#accountCollapse">
+						<li class="dropdown">
+							
+							<a class="dropdow-toggle" data-toggle="dropdown" href="#">
 								<span class="glyphicon glyphicon-user"></span>
 								<span id="navUsername" class="hidden-xs"></span>
 							</a>
+							<ul class="dropdown-menu pull-right" role="menu">
+								<li><a data-toggle="tab" href="#settingPanel">設定<i class="glyphicon glyphicon-cog"></i></a></li>
+								<li><a id="logoutBtn" href="#">登出</a></li>
+							</ul>
+							
+							
+							<!--
+							<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+								Dropdown<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu pull-right" role="menu">
+								<li><a data-toggle="tab" href="#action1">Action</a></li>
+								<li><a data-toggle="tab" href="#action2">Another Action</a></li>
+								<li><a data-toggle="tab" href="#action3">Something else here</a></li>
+							</ul>
+							-->
 						</li>
 					</ul>
 					<ul id="guestNav" class="main-nav nav navbar-nav pull-right">
@@ -191,12 +208,7 @@
 					<div style="clear:both"></div>
 				</div>
 			</div>
-			<div id="accountCollapse" class="collapse container">
-				<ul style="background-color:#FFFFFF" class="nav nav-stacked pull-right">
-					<li><a class="btn-settingModal" href="#settingModal" data-toggle="modal">設定<i class="glyphicon glyphicon-cog"></i></a></li>
-					<li><a id="logoutBtn" href="#">登出</a></li>
-				</ul>
-			</div>
+
 		</div>
 		
 		<!--Login modal -->
@@ -621,10 +633,36 @@
 			</div>
 		</div>
 		
+		<!-- Q&A Why Email Verification Modal -->
+		<div class="modal fade" id="infoEmailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">為什麼要信箱認證?</h4>
+					</div>
+					<div class="modal-body">
+						<img src="http://www.marketingpugetsound.com/wp-content/uploads/2013/01/Email-icon-square.png" class="img-rounded" width="200px" height="200px">				
+						<dl>
+						  <dt>信箱認證之後你可以...</dt>
+						  <dd>透過站內聊天系統與賣家聯繫</dd>
+						  <dd>保護你的帳號，忘記密碼時可由認證信箱取得新密碼‧</dd>
+						</dl>				
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+						<button type="button" class="btn btn-primary">寄發認證信</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->		
+		
 		<div class="main-panels tab-content">
 			<div class="tab-pane fade" id="mapPanel">
+				<p>mapPanel</p>
 			</div>
 			<div class="tab-pane fade" id="tracePanel">
+				<p>tracePanel</p>
 			</div>
 			<div class="tab-pane active fade in" id="sellerPanel">
 				<div class="container">
@@ -648,6 +686,105 @@
 							</button>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div id="settingPanel" class="tab-pane fade">
+			<!--Setting Panel -->
+				<div style="border-bottom: 1px solid #E5E5E5; margin-bottom: 10px;">
+					<h2 style="margin-bottom: 0px">帳號設定</h2>
+				</div>
+				<div id="accountsetting" style="background-color: white; padding-left: 10px; padding-right: 10px">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">照片</h3>
+							<a class="account-edit glyphicon glyphicon-edit" id="photo-edit" style="color: black">Edit</a>
+						</div>
+						<div class="panel-body"> 
+							<div class="col-lg-10" id="oldphoto">
+								<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAAB9CAYAAACPgGwlAAACCklEQVR4nO3XMW7EIBQA0dz/KHR0bujoXLr3EbgCqT5yNl4lhSWbnSmmQdoviyew96u11o3V190PYKKb6Ca6iW6im+gmuolOTnRgogMTHZjowEQHJjow0YGJDkx0YKIDEx2Y6MBEByY6MNGBiQ5MdGCiAxMdmOjARAcmOjDRgYkOTHRgogMTHZjowEQHJjow0YGJDkx0YKIDEx2Y6MBEByY6MNGBiQ5MdGCiAxMdmOjARAcmOjDRgYkObDr0WmtPKf1a37atp5R6rXWs5Zx7SqmnlPq+74+Y/4SmQg+QM5QACJRaa88599ZaL6X0ZVlun/+UpkEPkNj8d1iBknPupZTeWuvruo7TuCzL+H0pZaxfNf/uffo49G3bBlSsx7UbG/8Xyr7vP3CPJ/eK+Xfv00ehR68oOedeax2Y/0GJk3t2JV8x/+lNjR6n8LV4375DiRln7+4r5j+9qdGPvZ7EUsrph9bxKzylNOCumj9DH4ve2vlfquO1HvDrul42f4amQzfRTXQT3UQ30bGJDkx0YKIDEx2Y6MBEByY6MNGBiQ5MdGCiAxMdmOjARAcmOjDRgYkOTHRgogMTHZjowEQHJjow0YGJDkx0YKIDEx2Y6MBEByY6MNGBiQ5MdGCiAxMdmOjARAcmOjDRgYkOTHRgogMTHZjowEQHJjow0YGJDkx0YKIDEx2Y6MC+Ac7AmJBH0NO6AAAAAElFTkSuQmCC" alt="..." class="img-thumbnail">
+							</div>
+							<div class="col-lg-10" id="newphoto" style="display: none">
+								<button type="submit" class="btn btn-primary btn-sm"  style="margin-top: 10px">上傳照片</button>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">帳號/Email</h3>
+							<a class="account-edit glyphicon glyphicon-edit" id="Email-edit" style="color: black">Edit</a>
+						</div>
+						<div class="panel-body"> 
+							<div class="col-lg-10" id="oldEmail">
+								<p class="form-control-static">sq0032@gmail.com</p>
+							</div>
+							<div class="form-horizontal" id="newEmail" style="display: none">
+								<div class="form-group">
+									<label class="col-lg-3 control-label" for="settingEmail">新Email帳號</label>
+									<div class="col-lg-6">
+										<input type="email" class="form-control" id="settingEmail" placeholder="New Email">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-lg-offset-3 col-lg-3">
+										<button type="submit" class="btn btn-primary btn-sm">修改Email</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<p class="text-danger">信箱未認證<a data-toggle="modal" href="#infoEmailModal" style="float: right">為什麼要認證?</a></p>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">名稱</h3>
+							<a class="account-edit glyphicon glyphicon-edit" id="name-edit" style="color: black">Edit</a>
+						</div>
+						<div class="panel-body"> 
+							<div class="col-lg-10" id="oldname">
+								<p class="form-control-static">sq0032</p>
+							</div>	
+							<div class="col-lg-10" id="newname" style="display: none">
+								<p>名稱為網路身分識別所用，因此不提供使用者修改‧</p>
+							</div>				
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">密碼</h3>
+							<a class="account-edit glyphicon glyphicon-edit" id="password-edit" style="color: black">Edit</a>
+						</div>
+						<div class="panel-body"> 
+							<div class="col-lg-10" id="oldpass">
+								<p class="form-control-static">********</p>
+							</div>
+							<div class="form-horizontal" id="newpass" style="display: none">
+								<div class="form-group">
+									<label class="col-lg-3 control-label" for="settingPassword">舊密碼</label>
+									<div class="col-lg-6">
+										<input type="password" class="form-control" id="settingPassword" placeholder="">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-3 control-label" for="settingNewPassword">新密碼</label>
+									<div class="col-lg-6">
+										<input type="password" class="form-control" id="settingNewPassword" placeholder="">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-3 control-label" for="settingNewPassword2">確認新密碼</label>
+									<div class="col-lg-6">
+										<input type="password" class="form-control" id="settingNewPassword2" placeholder="">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-lg-offset-3 col-lg-10">
+										<button type="submit" class="btn btn-primary btn-sm">修改密碼</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
 				</div>
 			</div>
 		</div>
