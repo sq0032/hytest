@@ -18,7 +18,7 @@ from rest_framework.decorators import api_view
 from accounts.serializers import UserSerializer
 from accounts.models import EmailVerification, Verification
 
-#產生驗證圖形用
+#圖形驗證碼
 from PIL import Image, ImageFont, ImageDraw
 import StringIO
 
@@ -80,7 +80,7 @@ def captcha(request):
 	captcha = randomString(6)
 	request.session['captcha'] = captcha
 
-	font_type=r'arial.ttf'
+	font_type='arial.ttf'
 	font_size=20
 	
 	try:
@@ -115,6 +115,8 @@ def user_i_view(request):
 	data = serializer.data
 	data['id'] = 'i'
 	return Response(data)
+
+import traceback
 
 @require_POST
 def createUser(request):
@@ -201,20 +203,20 @@ def sendVerifyEmail(request):
 	try:
 		user = User.objects.get(username=request.user)
 	except User.DoesNotExist:
-		return(u'使用者不存在')
+		return('使用者不存在')
 	
 	email= user.email
 	key = randomString(10)
 
 	try:
 		#If the user already have one, then only update the key value
-		#若該使用者已有資料，則僅修改Key值
+		#若該使用者已有key，則修改Key值
 		emailVeri = user.emailverification
 		emailVeri.key = key;
 		print('try')	
 	except:
 		#If not, create new data to store email-verification key
-		#新增一組認證碼資料		
+		#若沒有，則新增認證碼
 		emailVeri = EmailVerification(user=user, key=key)
 		print('except')
 		
@@ -232,9 +234,9 @@ def sendVerifyEmail(request):
 	try:
 		msg.send()
 	except:
-		return HttpResponse(u'認證信發出失敗')
+		return HttpResponse('認證信發送失敗')
 		
-	return HttpResponse(u'認證信已發送至:'+email)
+	return HttpResponse('認證信已發出至：'+email)
 
 
 @login_required
@@ -261,14 +263,15 @@ def verifyEmail(request):
 			veri = user.verification
 			veri.email= True
 			veri.save()
-			return HttpResponse(u'認證成功')
+			return HttpResponse('認證成功')
 		except:
-			print(u'認證欄位錯誤')
+			traceback.print_exc()
+			print('欄位有誤')
 			return HttpResponse(u'認證失敗')
 	else:
 		#if not, deny this request
-		#若不是則報錯
-		return HttpResponse(u'使用者與認證信收件者不同')
+		#若為錯
+		return HttpResponse('使用者與認證信收件者不同')
 
 @require_POST
 def changePassword(request):
