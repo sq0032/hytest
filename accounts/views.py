@@ -18,7 +18,8 @@ from rest_framework.decorators import api_view
 from accounts.serializers import UserSerializer
 from accounts.models import EmailVerification, Verification
 
-#?��?驗�??�形??from PIL import Image, ImageFont, ImageDraw
+#產生驗證圖形用
+from PIL import Image, ImageFont, ImageDraw
 import StringIO
 
 import string
@@ -56,11 +57,11 @@ def checkEmail(request):
 	try:
 		validate_email(email)
 	except ValidationError:
-		return JSONResponse({'status':'ERROR','msg':'?��?法帳??})
+		return JSONResponse({'status':'ERROR','msg':'非合法帳號'})
 	
 	try:
 		User.objects.get(email=email)
-		return JSONResponse({'status':'ERROR','msg':'帳�?已�???})
+		return JSONResponse({'status':'ERROR','msg':'帳號已存在'})
 	except User.DoesNotExist:
 		return JSONResponse({'status':'OK'})
 
@@ -69,7 +70,7 @@ def checkUsername(request):
 	name = request.GET.get('name')
 	try:
 		User.objects.get(username=name)
-		return JSONResponse({'status':'ERROR','msg':'?�稱已�???})
+		return JSONResponse({'status':'ERROR','msg':'名稱已存在'})
 	except User.DoesNotExist:
 		return JSONResponse({'status':'OK'})
 
@@ -126,15 +127,15 @@ def createUser(request):
 	if captcha is None or captcha != request.session.get('captcha'):
 		if 'captcha' in request.session:
 			del request.session['captcha']
-		ret['captcha'] = '驗�?碼錯�?
+		ret['captcha'] = '驗證碼錯誤'
 	
 	if name is None or len(name) < 1:
-		ret['name'] = '?�稱?�誤'
+		ret['name'] = '名稱錯誤'
 	elif len(name) > 20:
-		ret['name'] = '?�稱太長'
+		ret['name'] = '名稱太長'
 		
 	if password is None:
-		ret['password'] = '密碼?�誤'
+		ret['password'] = '密碼錯誤'
 	elif len(password) < 8:
 		ret['password'] = '密碼太短'
 	elif len(password) > 16:
@@ -143,17 +144,17 @@ def createUser(request):
 	try:
 		validate_email(email)
 	except ValidationError:
-		ret['email'] = '?��?法帳??
+		ret['email'] = '非合法帳號'
 		
 	try:
 		User.objects.get(email=email)
-		ret['email'] = '帳�?已�???
+		ret['email'] = '帳號已存在'
 	except User.DoesNotExist:
 		pass
 	
 	try:
 		User.objects.get(username=name)
-		ret['name'] = '?�稱已�???
+		ret['name'] = '名稱已存在'
 	except User.DoesNotExist:
 		pass
 	
@@ -162,7 +163,8 @@ def createUser(request):
 		return JSONResponse(ret)
 	
 	try:
-		#?��?使用??		user = User(username=name,email=email)
+		#新增使用者
+		user = User(username=name,email=email)
 		user.set_password(password)
 		user.save()
 	except:
@@ -170,18 +172,18 @@ def createUser(request):
 		return JSONResponse({'status':'ERROR'})
 		
 	try:
-		#???使用?��?證�???		veri = Verification(user = user)
+		#連結使用者認證資料
+		veri = Verification(user = user)
 		veri.save()
 	except:
 		print('cannot connect verification data')
 		return JSONResponse({'status':'ERROR'})
 	
 	try:
-		#?��??�使?��?群�?Lv0(?��???
+		#附予新使用者群組Lv0(無權限)
 		g = Group.objects.get(name = 'Lv0')
 		g.user_set.add(user)
 	except:
-		traceback.print_exc()
 		print('cannot add user to an initial group')
 		return JSONResponse({'status':'ERROR'})
 	
@@ -199,73 +201,74 @@ def sendVerifyEmail(request):
 	try:
 		user = User.objects.get(username=request.user)
 	except User.DoesNotExist:
-		return(u'使用?��?存在')
+		return(u'使用者不存在')
 	
 	email= user.email
 	key = randomString(10)
 
 	try:
 		#If the user already have one, then only update the key value
-		#?�該使用?�已?��??��??��?修改Key??		emailVeri = user.emailverification
+		#若該使用者已有資料，則僅修改Key值
+		emailVeri = user.emailverification
 		emailVeri.key = key;
 		print('try')	
 	except:
 		#If not, create new data to store email-verification key
-		#?��?�??認�?碼�???	
+		#新增一組認證碼資料		
 		emailVeri = EmailVerification(user=user, key=key)
 		print('except')
 		
 	emailVeri.save()
 	
 	url = 'http://127.0.0.1:8000/accounts/verify?key=%s'%(key)
-	subject = '?�員信箱認�?(測試)'
+	subject = '會員信箱認證(測試)'
 	from_email = '測試測試<mark.humanwell@gmail.com>'
 	to = email
 	text_content = url
-	html_content = '<html><body><a href="%s">確�?信箱%s</a></body></html>'%(url,url)
+	html_content = '<html><body><a href="%s">確認信箱%s</a></body></html>'%(url,url)
 	msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
 	msg.attach_alternative(html_content, "text/html")
 
 	try:
 		msg.send()
 	except:
-		return HttpResponse(u'認�?信發?�失??)
+		return HttpResponse(u'認證信發出失敗')
 		
-	return HttpResponse(u'認�?信已?��???'+email)
+	return HttpResponse(u'認證信已發送至:'+email)
 
 
 @login_required
 def verifyEmail(request):
 	key = request.GET.get('key')
-	#Check if the key exists 確�?認�?碼是?��???	try:
+	#Check if the key exists 確認認證碼是否存在
+	try:
 		emailVeri = EmailVerification.objects.get(key=key)
 	except EmailVerification.DoesNotExist:
-		return HttpResponse(u'?��?認�?�?, content_type="text/plain")
+		return HttpResponse(u'無效認證信', content_type="text/plain")
 	
 	#Check if the key owner and the request owner is the same person
-	#確�?認�?碼�??��??�否?�發?��?求�??��?�?��
+	#確認認證碼擁有者是否與發送要求者為同一人
 	if emailVeri.user.username == request.user.username:
 		#If yes, add the user into 'Lv1' group
-		#如�??��??�該使用?�群組�??�Lv1
+		#如果是，把該使用者群組升至Lv1
 		user = User.objects.get(username = request.user)
 		g = Group.objects.get(name = 'Lv1')
 		g.user_set.add(user)
 		emailVeri.delete()
 		#and set the user's is_emailverified field as true
-		#並�?該使?��??�is_emailverified欄�?設�??�true
+		#並把該使用者的is_emailverified欄位設定為true
 		try:
 			veri = user.verification
 			veri.email= True
 			veri.save()
-			return HttpResponse(u'認�??��?')
+			return HttpResponse(u'認證成功')
 		except:
-			traceback.print_exc()
-			print(u'認�?欄�??�誤')
-			return HttpResponse(u'認�?失�?')
+			print(u'認證欄位錯誤')
+			return HttpResponse(u'認證失敗')
 	else:
 		#if not, deny this request
-		#?��??��??�錯
-		return HttpResponse(u'使用?��?認�?信收件�?不�?')
+		#若不是則報錯
+		return HttpResponse(u'使用者與認證信收件者不同')
 
 @require_POST
 def changePassword(request):

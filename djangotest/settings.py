@@ -132,6 +132,7 @@ INSTALLED_APPS = (
 	# 'django.contrib.admindocs',
 	'accounts',
 	'shops',
+	'items',
 	'rest_framework'
 )
 

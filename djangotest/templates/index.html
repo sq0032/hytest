@@ -31,6 +31,10 @@
 		#loginModal {
 		}
 		
+		#shopMap {
+			height:300px;
+		}
+		
 		#settingModal {
 			*min-height:500px;
 		}
@@ -117,11 +121,10 @@
 				right: 0;
 				left: 0;
 				bottom:60px;
+				overflow:auto
 			}
 			
 			.modal-footer {
-				margin:0;
-				padding:0;
 				position: absolute;
 				height:60px;
 				right: 0;
@@ -131,6 +134,11 @@
 			
 			.close {
 				font-size:40px;
+			}
+			
+			#shopMap {
+				width:80%;
+				height:200px;
 			}
 		}
 		</style>
@@ -175,7 +183,7 @@
 									<span class="glyphicon glyphicon-user"></span>
 									<div>註冊</div>
 								</div>
-								<div class="visible-xs" >註冊</div>
+								<div class="visible-xs">註冊</div>
 							</a>
 						</li>
 						<li>
@@ -184,7 +192,7 @@
 									<span class="glyphicon glyphicon-log-in"></span>
 									<div>登入</div>
 								</div>
-								<div class="visible-xs" >登入</div>
+								<div class="visible-xs">登入</div>
 							</a>
 						</li>
 					</ul>
@@ -193,7 +201,7 @@
 			</div>
 			<div id="accountCollapse" class="collapse container">
 				<ul style="background-color:#FFFFFF" class="nav nav-stacked pull-right">
-					<li><a class="btn-settingModal" href="#settingModal" data-toggle="modal">設定<i class="glyphicon glyphicon-cog"></i></a></li>
+					<li><a href="#settingPanel" data-toggle="tab">設定<i class="glyphicon glyphicon-cog"></i></a></li>
 					<li><a id="logoutBtn" href="#">登出</a></li>
 				</ul>
 			</div>
@@ -589,31 +597,34 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">商店名稱</label>
 								<div class="col-sm-7">
-									<input type="text" class="form-control" id="shopName" placeholder="">
+									<input type="text" class="form-control" id="shopName" placeholder="" autocomplete="off">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">商店地址</label>
 								<div class="col-sm-7">
-									<input type="text" class="form-control" id="shopAddress" placeholder="">
+									<input type="text" class="form-control" id="shopAddress" placeholder="" autocomplete="off">
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="col-sm-7 col-sm-offset-3" style="height:300px;" id="shopMap"></div>
+								<div class="col-sm-7 col-sm-offset-3">
+									<div id="shopMap">
+									</div>
+								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">商店介紹</label>
 								<div class="col-sm-7">
-									<textarea class="form-control" rows="3"></textarea>
+									<textarea class="form-control" rows="3" id="shopDesc"></textarea>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default">
+						<button type="button" data-dismiss="modal" class="btn btn-default">
 							取消
 						</button>
-						<button type="button" class="btn btn-primary">
+						<button id="shopSubmitBtn" type="button" class="btn btn-primary">
 							確認
 						</button>
 					</div>
@@ -622,13 +633,16 @@
 		</div>
 		
 		<div class="main-panels tab-content">
-			<div class="tab-pane fade" id="mapPanel">
+			<div class="tab-pane active fade in" id="mapPanel">
 			</div>
 			<div class="tab-pane fade" id="tracePanel">
 			</div>
-			<div class="tab-pane active fade in" id="sellerPanel">
+			<div class="tab-pane fade" id="settingPanel">
+				setting panel
+			</div>
+			<div class="tab-pane fade" id="sellerPanel">
 				<div class="container">
-					<div sytle="text-align:center;">
+					<div id="sellerShopPanel" sytle="text-align:center;">
 						<div class="btn-group">
 							<button type="button" class="btn btn-default">
 								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-play"></span>
@@ -678,40 +692,161 @@
 		});
 		
 		var Item = Backbone.Model.extend({
-			urlRoot:'shops/items/'
+			urlRoot:'items/'
 		});
 		
 		var Items = Backbone.Collection.extend({
-			model : Item,
+			model:Item
 		});
+		
+		var Shop = Backbone.Model.extend({
+			urlRoot:'shops/'
+		});
+		
+		var Shops = Backbone.Collection.extend({
+			model:Shop
+		});
+		
+		var myShop = new Shop();
 		
 		var loginUser = new User();
 		loginUser.url  = 'accounts/users/i';
+		loginUser.login = function(email, password){
+			var dfd = $.Deferred();
+			$.get('accounts/login',{email:email,password:password}).done(function(){
+				loginUser.fetch().done(function(){
+					dfd.resolve();
+					loginUser.trigger('login');
+				}).fail(function(){
+					dfd.reject();
+				});
+			}).fail(function(){
+				dfd.reject();
+			});
+			return dfd.promise();
+		}
+		
+		loginUser.on('sync',function(){
+			if(loginUser.get('shops').length==0){
+				//沒有商店??
+			}else{
+				myShop.set('id',loginUser.get('shops')[0]);
+			}
+		});
 		
 		var myItems = new Items();
-		myItems.url = 'shops/items/i/';
+		myItems.url = 'items/i/';
 		
 		var shopModalView = Backbone.View.extend({
 			el: $("#shopModal"),
 			events: {
+				"shown.bs.modal": "shown",
+				"show.bs.modal": "show",
+				"keyup #shopAddress": "getLatLng",
+				"click #shopSubmitBtn": "submit"
 			},
 			initialize: function(){
+				var $shopName = this.$shopName = this.$("#shopName");
+				var $shopAddress = this.$shopAddress = this.$("#shopAddress");
+				var $shopDesc = this.$shopDesc = this.$("#shopDesc");
+				
+				var geocoder = this.geocoder = new google.maps.Geocoder();
+			
 				var latlng = new google.maps.LatLng(23.973875,120.982024);
 				var mapOptions = {
-					zoom: 10,
+					zoom: 14,
 					center: latlng,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
 				
 				this.map = new google.maps.Map(this.$('#shopMap')[0],mapOptions);
-				this.marker = new google.maps.Marker({
+				
+				var marker = this.marker = new google.maps.Marker({
 					draggable:true,
 					position: latlng,
-					title:"台灣 Taiwan",
+					title:"台灣",
 					map:this.map
-				}); 
+				});
+				
+				google.maps.event.addListener(this.marker, 'mouseup', function() {
+					var latlng = marker.getPosition(); 
+					geocoder.geocode(
+						{latLng:latlng},
+						function (results,status) {
+							if(status==google.maps.GeocoderStatus.OK) {
+								$shopAddress.val(results[0].formatted_address);
+							}
+						}
+					);
+				});
+			},
+			submit:function(){
+				var that = this;
+				var name = this.$shopName.val();
+				var address = this.$shopAddress.val();
+				var description = this.$shopDesc.val();
+				var latlng = this.marker.getPosition();
+				var latitute = latlng.lat();
+				var longtitute = latlng.lng();
+				myShop.set({
+					name:name,
+					address:address,
+					description:description,
+					latitute:latitute,
+					longtitute:longtitute
+				});
+				myShop.save().done(function(){
+					alert('修改成功');
+					that.$el.modal('hide');
+				}).fail(function(){
+					alert('資料錯誤');
+				});
+			},
+			getLatLng:function(){
+				var address = this.$shopAddress.val();
+				if(this.address && (this.address == address)){
+					return;
+				}
+				this.address = address;
+				
+				var that = this;
+				if(this.timer){
+					clearTimeout(this.timer);
+				}
+				this.timer = setTimeout(function(){
+					that.geocoder.geocode(
+						{address:address},
+						function (results,status) {
+							if(status==google.maps.GeocoderStatus.OK) {
+								var LatLng = results[0].geometry.location;
+								that.map.setCenter(LatLng);
+								that.marker.setPosition(LatLng);
+								that.marker.setTitle(address);
+							}
+						}
+					);
+					that.timer = null;
+				},1000);
+			},
+			show:function(){
+				var that = this;
+				myShop.fetch().done(function(){
+					that.$shopName.val(myShop.get('name'));
+					that.$shopAddress.val(myShop.get('address'));
+					that.$shopDesc.val(myShop.get('description'));
+					var latlng = new google.maps.LatLng(myShop.get('latitute'),myShop.get('longtitute'));
+					that.marker.setPosition(latlng);
+				}).fail(function(){
+					var latlng = new google.maps.LatLng(23.973875,120.982024);
+					that.marker.setPosition(latlng);
+				});
+				
+			},
+			shown:function(){
+				google.maps.event.trigger(this.map, "resize");
+				var latlng = this.marker.getPosition();
+				this.map.setCenter(latlng);
 			}
-			
 		});
 		
 		var createItemPanelView = Backbone.View.extend({
@@ -757,7 +892,7 @@
 				this.createItemCategory = this.$('#createItemCategory');
 				this.categorys = [];
 				
-				$.getJSON('shops/item-categorys').done(function(data){
+				$.getJSON('item-categorys').done(function(data){
 					var category;
 					for(var i in data){
 						category = data[i];
@@ -1010,17 +1145,15 @@
 			},
 			login: function() {
 				var that = this;
-				var navBar = this.options.navBar;
 				var email = this.$("#loginEmail").val();
 				var password = this.$("#loginPassword").val();
-				$.get('accounts/login',{email:email,password:password})
+				loginUser.login(email,password)
 				.done(function(){
-					console.log('login done!')
-					loginUser.fetch();
 					that.$el.modal('hide');
 				}).fail(function(jqXHR, textStatus, errorThrown){
 					alert('帳號或密碼錯誤!');
 				});
+				this.$('#loginPassword').val("");
 			}
 		});
 		
@@ -1360,27 +1493,6 @@
 		
 			$(function(){
 			
-
-				/*
-				$("#shopAddress").change(function(){
-					//重新定位地圖位置與標記點位置
-					var address = $(this).val();
-					var geocoder = new google.maps.Geocoder();
-					geocoder.geocode(
-						{'address':address},
-						function (results,status) {
-							if(status==google.maps.GeocoderStatus.OK) {
-								console.log(results[0].geometry.location);
-								var LatLng = results[0].geometry.location;
-								map.setCenter(LatLng);  //將地圖中心定位到查詢結果
-								marker.setPosition(LatLng); //將標記點定位到查詢結果
-								marker.setTitle(address); //重新設定標記點的title
-								//$("#SearchLatLng").html("【您輸入的地址位置】緯度：" + LatLng.lat() + "經度：" + LatLng.lng());
-							}
-						}
-					); 
-				});
-				*/
 				function initialize() {
 					var initlatlng = new google.maps.LatLng(25.056220142845, 121.54178450802);
 					var mapOptions = {
@@ -1394,10 +1506,9 @@
 						stylers: [{ visibility: "off" }]
 					}];
 					map.setOptions({styles: noPoi});
-					
-					
 				}
 				initialize();
+				//google.maps.event.addDomListener(window, 'load', initialize);
 				
 				var navBar = new navBarView();
 				var loginModal = new loginModalView({navBar:navBar});
