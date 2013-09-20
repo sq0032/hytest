@@ -10,21 +10,33 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-
 from shops.serializers import ShopSerializer
 from shops.models import Shop
+
+from items.serializers import ItemSerializer
 
 class JSONResponse(HttpResponse):
 	def __init__(self, data, **kwargs):
 		content = JSONRenderer().render(data)
 		kwargs['content_type'] = 'application/json'
 		super(JSONResponse, self).__init__(content, **kwargs)
+		
+@api_view(['GET'])
+def shopItems(request,shop_id):
+	user = request.user
+	shop = Shop.objects.get(id=shop_id)
+	if shop.owner.id != user.id:
+		return Response(status=status.HTTP_401_UNAUTHORIZED)
+	print shop_id
+	print shop.items.all()
+	serializer = ItemSerializer(shop.items.all(),many=True)
+	return Response(serializer.data)
 
 class ShopsList(APIView):
 	#商店清單(未完成)
 	def get(self, request, format=None):
 		return Response(status=status.HTTP_204_NO_CONTENT)
-	#建立新商店
+	#建立新商店(權限尚未完成)
 	def post(self, request, format=None):
 		user = request.user
 		data = request.DATA

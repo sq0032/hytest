@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Project name</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
 		<link href="css/bootstrap.css" rel="stylesheet" media="screen">
 		<style>
 		
@@ -25,14 +25,48 @@
 		}
 		
 		#navBar {
-			border-bottom: 1px solid #428BCA;;
-		}
-		
-		#loginModal {
+			border-bottom: 1px solid #428BCA;
 		}
 		
 		#shopMap {
 			height:300px;
+		}
+		
+		.shop-box {
+			border: 1px solid #DDDDDD;
+		}
+		
+		.item-box-showcase {
+			border: 1px solid #DDDDDD;
+		}
+		
+		.item-box {
+			border: 1px solid #DDDDDD;
+			margin-bottom: 10px;
+		}
+		
+		#sellerShopBox {
+			position:absolute;
+			top:70px;
+			right:15px;
+			left:15px;
+		}
+		
+		#sellerShowCase {
+			position:absolute;
+			top:140px;
+			right:15px;
+			left:15px;
+			bottom:10px;
+		}
+		
+		#sellerItemsList {
+			overflow:auto;
+			position:absolute;
+			top:40px;
+			right:10px;
+			left:10px;
+			bottom:10px;
 		}
 		
 		#settingModal {
@@ -90,47 +124,6 @@
 			.navbar-nav {
 				margin: 0;
 			}
-			.modal {
-			 overflow:hidden;
-			}
-			
-			.modal-dialog {
-				position: absolute;
-				top: 10px;
-				bottom: 10px;
-				right: 10px;
-				left: 10px;
-				padding:0;
-			}
-			
-			.modal-content {
-				height:100%
-			}
-			
-			.modal-header {
-				position: absolute;
-				top: 0;
-				right: 0;
-				left: 0;
-				height:60px
-			}
-			
-			.modal-body {
-				position: absolute;
-				top: 60px;
-				right: 0;
-				left: 0;
-				bottom:60px;
-				overflow:auto
-			}
-			
-			.modal-footer {
-				position: absolute;
-				height:60px;
-				right: 0;
-				left: 0;
-				bottom:0;
-			}
 			
 			.close {
 				font-size:40px;
@@ -149,7 +142,7 @@
 		<div id="navBar" style="background-color:#FFFFFF" class="navbar navbar-fixed-top">
 			<div class="container">
 				<div>
-					<a class="navbar-brand" href="#">YOUCON</a>
+					<a class="navbar-brand" style="position:absolute;" href="#">YOUCON</a>
 					<ul id="userNav" class="main-nav nav nav-pills navbar-nav pull-right" style="display:none;">
 						<li class="active"> <!-- Map Tab -->
 							<a href="#mapPanel" data-toggle="tab">
@@ -519,30 +512,6 @@
 			</div>
 		</div>
 		
-		<!-- Q&A Why Email Verification Modal -->
-		<div id="infoEmailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title">為什麼要信箱認證?</h4>
-					</div>
-					<div class="modal-body">
-						<img src="http://www.marketingpugetsound.com/wp-content/uploads/2013/01/Email-icon-square.png" class="img-rounded" width="200px" height="200px">				
-						<dl>
-							<dt>信箱認證之後你可以...</dt>
-							<dd>透過站內聊天系統與賣家聯繫</dd>
-							<dd>保護你的帳號，忘記密碼時可由認證信箱取得新密碼‧</dd>
-						</dl>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
-						<button id="sendVerifyEmail" type="button" class="btn btn-primary">寄發認證信</button>
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-		
 		<!--Setting modal -->
 		<div id="settingModal" class="modal fade" tabindex="-1">
 			<div class="modal-dialog modal-dialog-large">
@@ -657,16 +626,39 @@
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->			
 		
+		<!-- Q&A Why Email Verification Modal -->
+		<div id="infoEmailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">為什麼要信箱認證?</h4>
+					</div>
+					<div class="modal-body">
+						<img src="http://www.marketingpugetsound.com/wp-content/uploads/2013/01/Email-icon-square.png" class="img-rounded" width="200px" height="200px">				
+						<dl>
+							<dt>信箱認證之後你可以...</dt>
+							<dd>透過站內聊天系統與賣家聯繫</dd>
+							<dd>保護你的帳號，忘記密碼時可由認證信箱取得新密碼‧</dd>
+						</dl>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+						<button id="sendVerifyEmail" type="button" class="btn btn-primary">寄發認證信</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
 		<!-- Main Panels -->
 		<div class="main-panels tab-content">
 			<div class="tab-pane active fade in" id="mapPanel"> <!-- Map Panels -->
 				<p>mapPanel</p>
 			</div>
 			<div class="tab-pane fade" id="tracePanel"> <!-- Trace Panel -->
-				<p>tracePanel</p>
 			</div>
 			<div class="tab-pane fade" id="sellerPanel"> <!-- Seller Panel -->
-				<div class="container">
+				<div class="container" style="position:relative;height:100%">
 					<div id="sellerShopPanel" sytle="text-align:center;">
 						<div class="btn-group">
 							<button type="button" class="btn btn-default"> <!-- 開始營業 -->
@@ -686,6 +678,17 @@
 								最新消息
 							</button>
 						</div>
+						<div id="sellerShopBox">
+							
+						</div>
+						<div id="sellerShowCase" class="item-box-showcase">
+							<div>
+								tool bar
+							</div>
+							<div id="sellerItemsList">
+								
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -693,17 +696,17 @@
 				<div>
 					<div class="user-option">
 						<a href="#settingModal" data-toggle="modal">
-							<button id="testbtn" type="button">帳號設定</button>
+							<button type="button">帳號設定</button>
 						</a>
 					</div>
 					<div class="user-option">
 						<a href="#">
-							<button id="testbtn" type="button">交易紀錄</button>
+							<button type="button">交易紀錄</button>
 						</a>
 					</div>
 					<div class="user-option">
 						<a href="#">
-							<button id="testbtn" type="button">我的評價</button>
+							<button type="button">我的評價</button>
 						</a>
 					</div>
 				<div>
@@ -746,15 +749,9 @@
 		var Shop = Backbone.Model.extend({
 			urlRoot:'shops/'
 		});
-		
-		var Shops = Backbone.Collection.extend({
-			model:Shop
-		});
-		
-		var myShop = new Shop();
-		
+
 		var loginUser = new User();
-		loginUser.url  = 'accounts/users/i';
+		loginUser.url = 'accounts/users/i';
 		loginUser.login = function(email, password){
 			var dfd = $.Deferred();
 			$.get('accounts/login',{email:email,password:password}).done(function(){
@@ -770,16 +767,66 @@
 			return dfd.promise();
 		}
 		
-		loginUser.on('sync',function(){
-			if(loginUser.get('shops').length==0){
-				//沒有商店??
-			}else{
-				myShop.set('id',loginUser.get('shops')[0]);
+		var myShop = new Shop();
+		
+		var myShopItems = new Items();
+		
+		var itemBoxView = Backbone.View.extend({
+			className: "item-box",
+			events: {
+			},
+			initialize: function() {
+				this.listenTo(this.model, "change", this.render);
+				this.$el.append(
+					'<div class="item-box-name"></div>\
+					<div class="item-box-price"></div>\
+					<div class="item-box-description"></div>\
+					<div class="item-box-attrs"></div>\
+					<div class="item-box-category"></div>');
+			},
+			render: function() {
+				var name = this.model.get('name');
+				var price = this.model.get('price');
+				var description = this.model.get('description');
+				var attrs = this.model.get('attrs');
+				var category = this.model.get('category');
+				this.$('.item-box-name').text(name);
+				this.$('.item-box-price').text(name);
+				this.$('.item-box-description').text(description);
+				this.$('.item-box-attrs').text(attrs);
+				this.$('.item-box-category').text(category);
 			}
 		});
 		
-		var myItems = new Items();
-		myItems.url = 'items/i/';
+		var itemBoxListView = Backbone.View.extend({
+			className: "item-box-list",
+			events: {
+			},
+			initialize: function() {
+				this.listenTo(this.collection, "change", this.render);
+			},
+			render: function(){
+				
+			}
+		})
+		
+		var shopBoxView = Backbone.View.extend({
+			className: "shop-box",
+			events: {
+			},
+			initialize: function() {			
+				this.listenTo(this.model, "change", this.render);
+				this.$el.append('<div class="shop-box-name"></div><div class="shop-box-address"></div><div class="shop-box-description"></div>');
+			},
+			render: function() {
+				var name = this.model.get('name');
+				var address = this.model.get('address');
+				var description = this.model.get('description');
+				this.$('.shop-box-name').text(name);
+				this.$('.shop-box-address').text(address);
+				this.$('.shop-box-description').text(description);
+			}
+		});
 		
 		var shopModalView = Backbone.View.extend({
 			el: $("#shopModal"),
@@ -843,6 +890,7 @@
 					alert('修改成功');
 					that.$el.modal('hide');
 				}).fail(function(){
+					myShop.fetch();
 					alert('資料錯誤');
 				});
 			},
@@ -1111,20 +1159,51 @@
 			}
 		});
 		
+		var mapPanelView = Backbone.View.extend({
+			el: $("#mapPanel"),
+			events:{
+				'shown': "shown",
+			},
+			initialize:function(){
+				var latlng = new google.maps.LatLng(25.056220142845, 121.54178450802);
+				var mapOptions = {
+					center: latlng,
+					zoom: 14,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				this.map = new google.maps.Map(this.el, mapOptions);
+				var noPoi = [{
+					featureType: "poi",
+					stylers: [{ visibility: "off" }]
+				}];
+				this.map.setOptions({styles: noPoi});
+			},
+			shown:function(){
+				google.maps.event.trigger(this.map, "resize");
+			}
+		});
+		
 		var sellerPanelView = Backbone.View.extend({
 			el: $("#sellerPanel"),
 			events: {
-				"show.bs.modal": "showPanel",
-				"show.bs.tab #myItemsTab": "showItemsPanel",
-				"show.bs.tab #myShopTab": "showShopPanel",
-				"click #myItemsShowList": "listItems",
-				"click #myItemsShowTable": "tableItems",
+				'show': "show",
+				//"click #myItemsShowList": "listItems",
+				//"click #myItemsShowTable": "tableItems"
 			},
 			initialize: function() {
-				this.listenTo(myItems, 'sync', this.updateItems);
-				this.listenTo(myItems, 'add', this.updateItems);
-				this.$myItemsPanel = this.$('#myItemsPanel');
-				this.$myItemsList = this.$('#myItemsList');
+				//this.listenTo(myShop, 'sync', this.updateItems);
+				//this.listenTo(myItems, 'sync', this.updateItems);
+				//this.listenTo(myItems, 'add', this.updateItems);
+				this.listenTo(myShopItems, 'sync', this.syncShopItems);
+				
+				//this.$myItemsPanel = this.$('#myItemsPanel');
+				//this.$myItemsList = this.$('#myItemsList');
+				
+				this.$sellerItemsList = this.$('#sellerItemsList');
+				this.$sellerShopBox = this.$('#sellerShopBox');
+				
+				this.shopBox = new shopBoxView({model:myShop});
+				this.$sellerShopBox.append(this.shopBox.$el);
 			},
 			tableItems:function(){
 				this.$myItemsList.removeClass('items-list').addClass('items-table');
@@ -1132,9 +1211,21 @@
 			listItems:function(){
 				this.$myItemsList.removeClass('items-table').addClass('items-list');
 			},
-			showItemsPanel:function(event){
+			/*showItemsPanel:function(event){
 				event.stopPropagation();
 				myItems.fetch();
+			},*/
+			syncShopItems:function(){
+				var that = this;
+				this.itemBoxList = [];
+				this.$sellerItemsList.empty();
+				myShopItems.each(function(item){
+					console.log(item);
+					var itemBox= new itemBoxView({model:item})
+					item.trigger('change');
+					that.itemBoxList.push(itemBox);
+					that.$sellerItemsList.append(itemBox.el);
+				});
 			},
 			updateItems:function(){
 				var $myItemsList = this.$myItemsList.empty();
@@ -1165,12 +1256,16 @@
 					$myItemsList.append($li);
 				});
 			},
-			showShopPanel:function(event){
-				event.stopPropagation();
-			},
-			showPanel: function(event){
-				myItems.fetch();
-				console.log('show');
+			show:function(){
+				/*
+				var that = this;
+				myShop.fetch().done(function(){
+					//var itemIDs = myShop.get('items');
+					var shopItems = that.shopItems = new Items();
+					shopItems.url = 'shops/'+myShop.get('id')+'/items/';
+					shopItems.fetch();
+				});
+				*/
 			}
 		});
 		
@@ -1446,7 +1541,6 @@
 				alert('change photo');
 			},
 			updateUser: function(){
-				console.log(loginUser)
 				var email = loginUser.get('email');
 				var name = loginUser.get('name');
 				this.$('#oldemail').text(email);
@@ -1458,38 +1552,36 @@
 			el:$('#navBar'),
 			events: {
 				"click #logoutBtn": "logout",
+				'show.bs.tab #userNav a[href="#sellerPanel"]': "showSellerPanel",
+				'shown.bs.tab #userNav a[href="#mapPanel"]': "shownMapPanel"
 			},
 			initialize: function() {
 				this.$userNav = this.$("#userNav");
 				this.$guestNav = this.$("#guestNav");
 				this.guestMode();
-				
-				this.listenTo(loginUser, 'change', this.changeMode);
-				
-			},
-			changeMode: function(){
-				if(loginUser.get('name') == 'guest'){
-					this.guestMode();
-				}else{
-					this.userMode(loginUser);
-				}
-				console.log('changeMode');
-				console.log(loginUser);
-			},
-			logout: function(){
-				$.get('accounts/logout').done(function(data) {
-					loginUser.fetch();
-				}).fail(function(){
-					alert('登出失敗!');
-				});
+				this.listenTo(loginUser, 'login', this.loginMode);
 			},
 			guestMode: function(){
 				this.$userNav.hide();
 				this.$guestNav.show();
 			},
-			userMode: function(user){
-				this.$userNav.show().find('#navUsername').text(user.get('name'));
+			loginMode: function(){
+				this.$userNav.show().find('#navUsername').text(loginUser.get('name'));
 				this.$guestNav.hide();
+			},
+			logout: function(){
+				$.get('accounts/logout').done(function(data) {
+					//重新整理
+					location.reload();
+				}).fail(function(){
+					alert('登出失敗!');
+				});
+			},
+			showSellerPanel: function(){
+				$("#sellerPanel").trigger('show');
+			},
+			shownMapPanel:function(){
+				$("#mapPanel").trigger('shown');
 			}
 		});
 		
@@ -1574,34 +1666,53 @@
 			});
 		}
 		
+		var myRouter = Backbone.Router.extend({
+			routes: {
+				":test": "testfunc",
+			},
+			testfunc: function(p1) {
+				alert('testfunc: '+p1);
+				console.log('testfunc: '+p1);
+			}     
+		});
+		new myRouter();
+		Backbone.history.start();
+		
 			$(function(){
-			
-				function initialize() {
-					var initlatlng = new google.maps.LatLng(25.056220142845, 121.54178450802);
-					var mapOptions = {
-						center: initlatlng,
-						zoom: 14,
-						mapTypeId: google.maps.MapTypeId.ROADMAP
-					};
-					var map = new google.maps.Map(document.getElementById("mapPanel"), mapOptions);
-					var noPoi = [{
-						featureType: "poi",
-						stylers: [{ visibility: "off" }]
-					}];
-					map.setOptions({styles: noPoi});
-				}
-				initialize();
 				
 				var navBar = new navBarView();
 				var loginModal = new loginModalView({navBar:navBar});
 				var regModal = new regModalView({navBar:navBar});
 				var settingModal = new settingView();
 				var sellerPanel = new sellerPanelView();
-				var createItemPanel = new createItemPanelView();
+				var mapPanel = new mapPanelView();
+				//var createItemPanel = new createItemPanelView();
 				var shopMadal = new shopModalView();
 				var infoEmailModal = new infoEmailView();
-				loginUser.fetch();
 				
+				loginUser.fetch().pipe(function(){
+					var dfd = $.Deferred();
+					if(loginUser.isNew()){
+						dfd.reject();
+					}else if(loginUser.get('shops').length == 0){
+						dfd.reject();
+					}else{
+						loginUser.trigger('login');
+						dfd.resolve();
+					}
+					return dfd;
+				}).pipe(function(){
+					var shopID = loginUser.get('shops')[0];
+					myShop.set('id',shopID);
+					return myShop.fetch();
+				}).pipe(function(){
+					myShopItems.url = 'shops/'+myShop.get('id')+'/items/';
+					return myShopItems.fetch();
+				}).done(function(){
+					console.log('done');
+				}).fail(function(){
+					console.log('fail');
+				});
 			});
 		</script>
 	</body>
