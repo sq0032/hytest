@@ -9,7 +9,8 @@ class Shop(models.Model):
 	latitute = models.FloatField()
 	longtitute = models.FloatField()
 	description = models.TextField(blank=True,null=True)
+	open = models.BooleanField(default=False)
 	owner = models.ForeignKey(User,related_name="shops")
-	items = models.ManyToManyField(Item,blank=True)
+	items = models.ManyToManyField(Item,blank=True,related_name="shops")
 	def __unicode__(self):
 		return "%s (%s)"%(self.owner.username,self.name)

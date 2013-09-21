@@ -44,15 +44,6 @@ def items_i(request):
 	return Response(serializer.data)
 
 @require_POST
-def createItem(request):
-	name = request.POST.get('name')
-	price = request.POST.get('price')
-	description = request.POST.get('description')
-	attrs = request.POST.get('attrs')
-	print name,price,description,attrs
-	return JSONResponse({'status':'OK'},status=status.HTTP_201_CREATED)
-
-@require_POST
 def uploadItemImage(request,item_id,index):
 	item = Item.objects.get(id=item_id)
 	for index in request.FILES:

@@ -21,4 +21,4 @@ class ItemSerializer(serializers.ModelSerializer):
 	images = PrimaryKeyRelatedField(many=True, read_only=True)
 	class Meta:
 		model = Item
-		fields = ('id','rid','owner','name','price','pic','pub_date','category','attrs','description','images')
+		fields = ('id','rid','owner','name','price','pic','pub_date','category','attrs','description','images','shops')

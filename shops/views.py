@@ -35,7 +35,7 @@ def shopItems(request,shop_id):
 class ShopsList(APIView):
 	#商店清單(未完成)
 	def get(self, request, format=None):
-		return Response(status=status.HTTP_204_NO_CONTENT)
+		return Response(status=status.HTTP_400_BAD_REQUEST)
 	#建立新商店(權限尚未完成)
 	def post(self, request, format=None):
 		user = request.user

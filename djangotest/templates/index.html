@@ -302,78 +302,9 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-		
-		<!--Seller Panel-->
-		<div id="sellerPanel2" class="modal fade" tabindex="-1">
-			<div class="modal-dialog modal-dialog-large">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title"><img src="img/setting.png" style="vertical-align:bottom;width:130px;height:130px;">SHOP</h4>
-						<div></div>
-					</div>
-					<div class="modal-body">
-						<div style="display:none;" class="row">
-							<div class="col-lg-2">
-								<ul class="nav nav-pills nav-stacked" id="sellerTabs">
-									<li class="active">
-										<a id="myItemsTab" href="#myItemsPanel" data-toggle="tab">我的商品</a>
-									</li>
-									<li>
-										<a id="myShopTab" href="#myShopPanel" data-toggle="tab">我的店面</a>
-									</li>
-								</ul>
-							</div>
-							<div class="col-lg-10" style="margin-left:0;min-height:400px;max-height:800px;">
-								<div class="tab-content">
-									<div class="tab-pane active" id="myItemsPanel">
-										<div class="btn-toolbar">
-											<div class="btn-group">
-												<button type="button" class="btn btn-primary" data-target="#createItemPanel" data-toggle="modal">新增商品 <span class="glyphicon glyphicon-plus"></span></button>
-											</div>
-											<div class="btn-group" data-toggle="buttons">
-												<label id="myItemsShowList" class="btn btn-info active">
-													<input type="radio" name="myItemsDisplay"><i class="glyphicon glyphicon-th-list"></i>
-												</label>
-												<label id="myItemsShowTable" class="btn btn-info">
-													<input type="radio" name="myItemsDisplay"><i class="glyphicon glyphicon-th"></i>
-												</label>
-											</div>
-										</div>
-										<div>
-											<ul id="myItemsList" class="items items-list">
-											</ul>
-										</div>
-									</div>
-									<div class="tab-pane" id="myShopPanel">
-										<div class="btn-toolbar">
-											<div class="btn-group">
-												<button type="button" class="btn btn-primary">??<span class="glyphicon glyphicon-plus"></span></button>
-											</div>
-										</div>
-										<div>
-											<div>
-												
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div><!-- /.modal-body -->
-					<div class="modal-footer">
-						<!--<div style="float:left;height:100%;width:25%;border-right:1px solid #ddd;"></div>
-						<div style="float:left;height:100%;width:25%;border-right:1px solid #ddd;"></div>
-						<div style="float:left;height:100%;width:25%;border-right:1px solid #ddd;"></div>
-						<div style="float:left;height:100%;width:25%;">
-						</div>-->
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
 
-		<!--Create Item Panel-->
-		<div id="createItemPanel" class="modal fade" tabindex="-1">
+		<!--Item Modal-->
+		<div id="itemModal" class="modal fade" tabindex="-1">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -383,9 +314,9 @@
 					<div class="modal-body">
 						<div class="form-horizontal">
 							<div class="form-group">
-								<label class="col-lg-2 control-label" for="createItemPic">圖片</label>
+								<label class="col-lg-2 control-label">圖片</label>
 								<div class="col-lg-8">
-									<div id="newItemImages">
+									<div id="itemImages">
 										<div class="" style="float:left;width:100px;height:100px">
 											<input class="single" type="file" name="0">
 											<div class="preview-image"></div>
@@ -402,17 +333,17 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group" id="createItemNameField">
-								<label class="col-lg-2 control-label" for="createItemName">品名*</label>
+							<div class="form-group" id="itemNameField">
+								<label class="col-lg-2 control-label" for="itemName">品名*</label>
 								<div class="col-lg-8">
-									<input type="text" class="form-control" id="createItemName" placeholder="">
+									<input type="text" class="form-control" id="itemName" placeholder="">
 								</div>
 								<span class="col-lg-3 help-block msg-error"></span>
 							</div>
-							<div class="form-group" id="createItemPriceField">
-								<label class="col-lg-2 control-label" for="createItemPrice">價格*</label>
+							<div class="form-group" id="itemPriceField">
+								<label class="col-lg-2 control-label" for="itemPrice">價格*</label>
 								<div class="col-lg-8">
-									<input type="text" class="form-control num-only" id="createItemPrice" placeholder="">
+									<input type="text" class="form-control num-only" id="itemPrice" placeholder="">
 								</div>
 								<span class="col-lg-3 help-block msg-error"></span>
 							</div>
@@ -444,28 +375,29 @@
 									</label>
 								</div>
 							</div>
-							<div class="form-group" id="createItemDescField">
+							<div class="form-group" id="itemDescField">
 								<label class="col-lg-2 control-label">商品描述</label>
 								<div class="col-lg-8">
-									<textarea id="createItemDesc" class="form-control" rows="3"></textarea>
+									<textarea id="itemDesc" class="form-control" rows="3"></textarea>
 								</div>
 								<span class="col-lg-3 help-block msg-error"></span>
 							</div>
 							<div class="form-group">
 								<label class="col-lg-2 control-label">商品分類</label>
 							</div>
-							<div class="row" id="createItemCategory">
+							<div class="row" id="itemCategory">
 							</div>
 						</div>
 					</div><!-- /.modal-body -->
 					<div class="modal-footer">
 						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
-						<button class="btn btn-primary" id="createItemSubmit">確定</button>
+						<button class="btn btn-primary" id="itemSubmit">確定</button>
 					</div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 		
+		<!--Shop Modal-->
 		<div id="shopModal" class="modal fade" tabindex="-1">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -669,11 +601,11 @@
 								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-edit"></span>
 								編輯店面
 							</button>
-							<button type="button" class="btn btn-default" href="#createItemPanel" data-toggle="modal"> <!-- 商品上架 -->
+							<button type="button" class="btn btn-default" id="itemModalBtn"> <!-- 商品上架 -->
 								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-cloud-upload"></span>
 								商品上架
 							</button>
-							<button type="button" class="btn btn-default"> <!-- 最新消息 -->
+							<button type="button" class="btn btn-default" id="test"> <!-- 最新消息 -->
 								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-exclamation-sign"></span>
 								最新消息
 							</button>
@@ -791,24 +723,12 @@
 				var attrs = this.model.get('attrs');
 				var category = this.model.get('category');
 				this.$('.item-box-name').text(name);
-				this.$('.item-box-price').text(name);
+				this.$('.item-box-price').text(price);
 				this.$('.item-box-description').text(description);
 				this.$('.item-box-attrs').text(attrs);
 				this.$('.item-box-category').text(category);
 			}
 		});
-		
-		var itemBoxListView = Backbone.View.extend({
-			className: "item-box-list",
-			events: {
-			},
-			initialize: function() {
-				this.listenTo(this.collection, "change", this.render);
-			},
-			render: function(){
-				
-			}
-		})
 		
 		var shopBoxView = Backbone.View.extend({
 			className: "shop-box",
@@ -822,7 +742,8 @@
 				var name = this.model.get('name');
 				var address = this.model.get('address');
 				var description = this.model.get('description');
-				this.$('.shop-box-name').text(name);
+				var isOpen = this.model.get('open');
+				this.$('.shop-box-name').text(name+(isOpen?'(open)':'(close)'));
 				this.$('.shop-box-address').text(address);
 				this.$('.shop-box-description').text(description);
 			}
@@ -922,17 +843,18 @@
 			},
 			show:function(){
 				var that = this;
-				myShop.fetch().done(function(){
-					that.$shopName.val(myShop.get('name'));
-					that.$shopAddress.val(myShop.get('address'));
-					that.$shopDesc.val(myShop.get('description'));
-					var latlng = new google.maps.LatLng(myShop.get('latitute'),myShop.get('longtitute'));
-					that.marker.setPosition(latlng);
-				}).fail(function(){
+				if(myShop.isNew()){
 					var latlng = new google.maps.LatLng(23.973875,120.982024);
-					that.marker.setPosition(latlng);
-				});
-				
+					this.marker.setPosition(latlng);
+				}else{
+					myShop.fetch().done(function(){
+						that.$shopName.val(myShop.get('name'));
+						that.$shopAddress.val(myShop.get('address'));
+						that.$shopDesc.val(myShop.get('description'));
+						var latlng = new google.maps.LatLng(myShop.get('latitute'),myShop.get('longtitute'));
+						that.marker.setPosition(latlng);
+					});
+				}
 			},
 			shown:function(){
 				google.maps.event.trigger(this.map, "resize");
@@ -941,23 +863,55 @@
 			}
 		});
 		
-		var createItemPanelView = Backbone.View.extend({
-			el: $("#createItemPanel"),
+		var FormFieldView = Backbone.View.extend({
+			initialize: function(){
+				if(this.options.val){
+					if($.isFunction(this.options.val)){
+						
+					}
+				}else{
+					this.val = function(){
+						var $input = this.$('input');
+						return $input.val.apply($input, arguments);
+					}
+				}
+			},
+			showError: function(msg){
+				this.$el.addClass('has-error');
+				if(msg){
+					this.$('.msg-error').text(msg);
+				}
+			},
+			clearError: function(){
+				this.$el.removeClass('has-error');
+				this.$('.msg-error').text('');
+			}
+		});
+		
+		var ItemModalView = Backbone.View.extend({
+			el: "#itemModal",
 			events: {
-				"show.bs.modal": "showPanel",
-				"click #createItemSubmit": "submit",
-				"change #createItemName": "checkItemName",
-				"change #createItemPrice": "checkItemPrice",
-				"change #createItemDesc": "checkItemDesc",
-				"keydown #createItemPrice": "checkKeyNumber",
+				//"show.bs.modal": "show",
+				"click #itemSubmit": "submit",
+				"change #itemName": "checkItemName",
+				"change #itemPrice": "checkItemPrice",
+				"change #itemDesc": "checkItemDesc",
+				"keydown #itemPrice": "checkKeyNumber",
 			},
 			initialize: function() {
 				var that = this;
-				this.field = {
-					name: this.$('#createItemNameField'),
-					price: this.$('#createItemPriceField'),
-					describe: this.$('#createItemDescField'),
-				}
+				
+				this.nameField = new FormFieldView({el:this.$('#itemNameField')});
+				this.priceField = new FormFieldView({el:this.$('#itemPriceField')});
+				this.descriptionField = new FormFieldView({el:this.$('#itemDescField')});
+				
+				this.name = this.$('#itemName');
+				this.price = this.$('#itemPrice');
+				this.description = this.$('#itemDesc');
+				this.conditionAttr = this.$('input:radio[name=conditionAttr]');
+				this.sizeAttr = this.$('input:radio[name=sizeAttr]');
+				this.category = this.$('#createItemCategory');
+				
 				this.files = {};
 				this.itemImages = this.$("#newItemImages");
 				this.itemImages.find('input:file').fileupload({
@@ -975,75 +929,30 @@
 					$(this).parent().find(".preview-image").empty().append(file.preview);
 				});
 				
-				this.itemPreview = this.$('#itemPreview');
-				this.createItemName = this.$('#createItemName');
-				this.createItemPrice = this.$('#createItemPrice');
-				this.createItemDesc = this.$('#createItemDesc');
-				this.itemConditionAttr = this.$('input:radio[name=conditionAttr]');
-				this.itemSizeAttr = this.$('input:radio[name=sizeAttr]');
-				this.createItemCategory = this.$('#createItemCategory');
 				this.categorys = [];
-				
 				$.getJSON('item-categorys').done(function(data){
 					var category;
 					for(var i in data){
 						category = data[i];
 						that.categorys[category.id] = category;
-					}					
+					}
 				});
 				
-				/*
-				this.ItemPic = this.$("#createItemPic").fileupload({
-					autoUpload: false,
-					singleFileUploads:true,
-					progressall: function (e, data) {
-						var progress = parseInt(data.loaded / data.total * 100, 10);
-						$('#progress .bar').css('width',progress + '%');
-					},
-					disableImageResize: /Android(?!.*Chrome)|Opera/
-						.test(window.navigator.userAgent),
-					previewMaxWidth: 100,
-					previewMaxHeight: 75,
-					previewCrop: true
-				}).on('fileuploadadd',function(e, data){
-					that.files.push(data);
-					console.log()
-				}).on('fileuploadprocessalways',function(e, data){
-					var index = data.index,
-						file = data.files[index];
-					that.itemPreview.append($('<div class="col-lg-2">').append($('<a href="#" class="thumbnail">').append(file.preview)));
-					console.log(data)
-				});
-				*/
-				
-			},
-			showError: function(fieldName, msg){
-				var $field = this.field[fieldName];
-				if(!$field){return;}
-				$field.addClass('has-error');
-				if(msg){$field.find('.msg-error').text(msg);}
-			},
-			clearError: function(fieldName){
-				var $field = this.field[fieldName];
-				$field.removeClass('has-error');
-				$field.find('.msg-error').text('');
 			},
 			checkItemName: function(){
-				var view = this;
-				var name = this.createItemName.val();
+				var name = this.name.val();
 				if(name.length==0){
-					view.showError('name', '名稱不可空白');
+					this.nameField.showError('名稱不可空白');
 				}else{
-					view.clearError('name');
+					this.nameField.clearError();
 				}
 			},
 			checkItemPrice:	function(){
-				var view = this;
-				var price = this.createItemPrice.val();
+				var price = this.price.val();
 				if(price.length==0){
-					view.showError('price', '價錢不可空白');
+					this.priceField.showError('價錢不可空白');
 				}else{
-					view.clearError('price');
+					this.priceField.clearError();
 				}
 			},
 			checkKeyNumber: function(event){
@@ -1056,8 +965,7 @@
 					(event.keyCode >= 35 && event.keyCode <= 39)) {
 						 // let it happen, don't do anything
 						 return;
-				}
-				else {
+				} else {
 					// Ensure that it is a number and stop the keypress
 					if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
 						event.preventDefault(); 
@@ -1066,24 +974,15 @@
 			},
 			checkItemDesc: function(){
 				var view = this;
-				var describe = this.createItemDesc.val();
-				if(describe.length>100){
-					view.showError('describe','敘述文字不可超過100字');
+				var description = this.description.val();
+				if(description.length>100){
+					this.descriptionField.showError('敘述文字不可超過100字');
 				}else{
-					view.clearError('describe');
+					this.descriptionField.clearError();
 				}
 			},
-			showPanel:function(){
+			show:function(){
 				var that = this;
-				this.createItemName.val('');
-				this.createItemPrice.val('');
-				this.createItemDesc.val('');
-				this.itemConditionAttr.parent().removeClass('active');
-				this.itemConditionAttr.filter('[value=1]').prop('checked', true).parent().addClass('active');
-				this.itemSizeAttr.parent().removeClass('active');
-				this.itemSizeAttr.filter('[value=3]').prop('checked', true).parent().addClass('active');
-				this.itemImages.find(".preview-image").empty();
-				this.createItemCategory.empty().val(null);
 				
 				var select = $('<select>').attr('size','5').addClass('form-control');
 				for(var i in this.categorys){
@@ -1119,26 +1018,28 @@
 				this.files = {};
 			},
 			submit:function(){
-				console.log(this);
 				var that = this;
-				var name = this.createItemName.val();
-				var price = parseInt(this.createItemPrice.val());
-				var description = this.createItemDesc.val();
-				var conditionAttr = this.itemConditionAttr.filter(':checked').val();
-				var sizeAttr = this.itemSizeAttr.filter(':checked').val();
+				var name = this.name.val();
+				var price = parseInt(this.price.val());
+				var description = this.description.val();
+				var conditionAttr = this.conditionAttr.filter(':checked').val();
+				var sizeAttr = this.sizeAttr.filter(':checked').val();
 				var attrs = [parseInt(conditionAttr),parseInt(sizeAttr)];
-				var category = this.createItemCategory.val();
-				
-				var newItem = new Item();
-				newItem.set({
+				var category = parseInt(this.category.val());
+
+				this.item.set({
 					name:name,
 					price:price,
 					description:description,
 					attrs:attrs,
-					category:category
+					//category:category
+					category:1,
+					shops:[myShop.get('id')]
 				});
 				
-				newItem.save().done(function(){
+				this.item.save().done(function(){
+					that.$el.modal('hide');
+					/*
 					var item_id = newItem.get('id');
 					var dfs = []
 					for(var i in that.files){
@@ -1154,8 +1055,32 @@
 					$.when.apply($, dfs).done(function(){
 						myItems.fetch();
 					});
-					
+					*/
 				});
+			},
+			clearField: function(){
+				this.name.val('');
+				this.price.val('');
+				this.description.val('');
+				this.conditionAttr.parent().removeClass('active');
+				this.conditionAttr.filter('[value=1]').prop('checked', true).parent().addClass('active');
+				this.sizeAttr.parent().removeClass('active');
+				this.sizeAttr.filter('[value=3]').prop('checked', true).parent().addClass('active');
+				this.category.empty().val();
+				
+				this.itemImages.find(".preview-image").empty();
+			},
+			initField:function(item){
+				
+			},
+			open: function(item){
+				this.item = item?item:(new Item());
+				if(this.item.isNew()){
+					this.clearField();
+					this.$el.modal('show');
+				}else{
+					this.initField(this.item);
+				}
 			}
 		});
 		
@@ -1184,11 +1109,15 @@
 		});
 		
 		var sellerPanelView = Backbone.View.extend({
-			el: $("#sellerPanel"),
+			el: "#sellerPanel",
 			events: {
-				'show': "show",
+				"show": "show",
+				"click #itemModalBtn": "newItemModal"
 				//"click #myItemsShowList": "listItems",
 				//"click #myItemsShowTable": "tableItems"
+			},
+			newItemModal:function(){
+				this.options.itemModal.open();
 			},
 			initialize: function() {
 				//this.listenTo(myShop, 'sync', this.updateItems);
@@ -1211,10 +1140,6 @@
 			listItems:function(){
 				this.$myItemsList.removeClass('items-table').addClass('items-list');
 			},
-			/*showItemsPanel:function(event){
-				event.stopPropagation();
-				myItems.fetch();
-			},*/
 			syncShopItems:function(){
 				var that = this;
 				this.itemBoxList = [];
@@ -1227,7 +1152,7 @@
 					that.$sellerItemsList.append(itemBox.el);
 				});
 			},
-			updateItems:function(){
+			/*updateItems:function(){
 				var $myItemsList = this.$myItemsList.empty();
 				myItems.each(function(item){
 					var $li = $('<li>').addClass('item');
@@ -1255,7 +1180,7 @@
 					
 					$myItemsList.append($li);
 				});
-			},
+			},*/
 			show:function(){
 				/*
 				var that = this;
@@ -1297,7 +1222,7 @@
 		});
 		
 		var regModalView = Backbone.View.extend({
-			el: $("#regModal"),
+			el: "#regModal",
 			events: {
 				"show.bs.modal": "showModal",
 				"click #registerBtn": "register",
@@ -1549,7 +1474,7 @@
 		})
 		
 		var navBarView = Backbone.View.extend({
-			el:$('#navBar'),
+			el: '#navBar',
 			events: {
 				"click #logoutBtn": "logout",
 				'show.bs.tab #userNav a[href="#sellerPanel"]': "showSellerPanel",
@@ -1681,14 +1606,16 @@
 			$(function(){
 				
 				var navBar = new navBarView();
+				
 				var loginModal = new loginModalView({navBar:navBar});
 				var regModal = new regModalView({navBar:navBar});
 				var settingModal = new settingView();
-				var sellerPanel = new sellerPanelView();
-				var mapPanel = new mapPanelView();
-				//var createItemPanel = new createItemPanelView();
-				var shopMadal = new shopModalView();
+				var itemModal = new ItemModalView();
+				var shopModal = new shopModalView();
 				var infoEmailModal = new infoEmailView();
+				
+				var sellerPanel = new sellerPanelView({itemModal:itemModal});
+				var mapPanel = new mapPanelView();
 				
 				loginUser.fetch().pipe(function(){
 					var dfd = $.Deferred();

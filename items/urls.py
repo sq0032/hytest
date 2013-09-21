@@ -3,8 +3,6 @@ from django.conf.urls import patterns, url
 from items import views
 
 urlpatterns = patterns('',
-	url(r'^create-item$', views.createItem),
-	url(r'^items/$', views.createItem),
 	url(r'^upload/items/(?P<item_id>\d+)/image/(?P<index>\d+)$', views.uploadItemImage),
 	url(r'^items/$', views.ItemsList.as_view()),
 	url(r'^items/i/$', views.items_i),
