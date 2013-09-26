@@ -22,6 +22,8 @@ from items.serializers import ItemSerializer
 from items.models import Item
 from items.models import ItemImage
 
+from conversations.models import Conversation
+
 class JSONResponse(HttpResponse):
 	def __init__(self, data, **kwargs):
 		content = JSONRenderer().render(data)
@@ -86,6 +88,7 @@ class ItemsDetail(APIView):
 		item.delete()
 		return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['GET'])
 def getItemCategorys(request):
 	categorys = Category.objects.all()
@@ -96,3 +99,7 @@ def getItemCategorys(request):
 	
 	return Response(s.data)
 
+
+def getItemConversationList(request, item_id):
+#	list = Conversation.objects.all()
+	return HttpResponse('getItemConversationList')
