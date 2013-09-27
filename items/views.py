@@ -23,6 +23,7 @@ from items.models import Item
 from items.models import ItemImage
 
 from conversations.models import Conversation
+from conversations.serializer import ConvSerializer
 
 class JSONResponse(HttpResponse):
 	def __init__(self, data, **kwargs):
@@ -102,4 +103,7 @@ def getItemCategorys(request):
 
 def getItemConversationList(request, item_id):
 #	list = Conversation.objects.all()
-	return HttpResponse('getItemConversationList')
+	conversation = Conversation.objects.filter(item__rid=item_id)
+	serializer = ConvSerializer(conversation, many=True)
+	json = JSONRenderer().render(serializer.data) 
+	return HttpResponse(json)

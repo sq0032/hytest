@@ -1,4 +1,5 @@
-from conversation.models import Conversation, Reply
+# coding=utf-8
+from conversations.models import Conversation, Reply
 from rest_framework import serializers
 
 class ConvSerializer(serializers.ModelSerializer):
