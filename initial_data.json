@@ -247,7 +247,7 @@
 },
 {
     "pk": 1, 
-    "model": "conversations.conversation", 
+    "model": "chats.chat", 
     "fields": {
         "seller_seen": true, 
         "date": "2013-09-27", 
@@ -260,7 +260,7 @@
 },
 {
     "pk": 2, 
-    "model": "conversations.conversation", 
+    "model": "chats.chat", 
     "fields": {
         "seller_seen": true, 
         "date": "2013-09-27", 

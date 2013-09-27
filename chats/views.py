@@ -10,14 +10,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-from conversations.serializer import ConvSerializer, ReplySerializer
-from conversations.models import Conversation, Reply
+from chats.serializer import ChatSerializer, ReplySerializer
+from chats.models import Chat, Reply
 
 from items.models import Item
 
 def getList(request):
 #    list = Conversation.objects.all()
-    conversation = Conversation.objects.all()
-    serializer = ConvSerializer(conversation, many=True)
+    chat = Chat.objects.all()
+    serializer = ChatSerializer(chat, many=True)
     json = JSONRenderer().render(serializer.data)
     return HttpResponse(json)
