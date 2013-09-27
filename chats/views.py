@@ -15,9 +15,11 @@ from chats.models import Chat, Reply
 
 from items.models import Item
 
+
 def getList(request):
 #    list = Conversation.objects.all()
     chat = Chat.objects.all()
     serializer = ChatSerializer(chat, many=True)
     json = JSONRenderer().render(serializer.data)
     return HttpResponse(json)
+

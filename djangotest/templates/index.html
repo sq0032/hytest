@@ -1641,8 +1641,8 @@
 				}, this);
 			},
 			renderChat: function(item){
-				var buyer = item.get('buyer');
-				var seller = item.get('seller');
+				var buyer = item.get('buyer').username;
+				var seller = item.get('seller').username;
 				
 				var html = 
 				'<div style="border:solid 1px red">'
@@ -1655,7 +1655,7 @@
 				this.$el.append(html);
 			},
 		});
-		//////////Chat system Test (backbone )end//////////
+		//////////Chat system Test (backbone) end//////////
 
 
 			$(function(){

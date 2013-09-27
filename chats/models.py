@@ -29,4 +29,3 @@ class Reply(models.Model):
     
     def __unicode__(self):
         return '%s says:%s' % (self.speaker, self.reply)
-    
