@@ -641,7 +641,12 @@
 							<button type="button">我的評價</button>
 						</a>
 					</div>
-				<div>
+					
+					<!-- Chat system test start -->
+					<div id="chat-test" style="border:solid 1px">
+					</div>
+					<!-- Chat system test end -->
+				</div>
 			</div>	
 		</div>
 		
@@ -1587,11 +1592,61 @@
 			testfunc: function(p1) {
 				alert('testfunc: '+p1);
 				console.log('testfunc: '+p1);
-			}     
+			}
 		});
 		new myRouter();
 		Backbone.history.start();
 		
+		//////////Chat system Test (backbone) start//////////
+		var Chat = Backbone.Model.extend({
+			default:{
+				buyer: 'USER1',
+				seller: 'USER2',
+				item: 'ITEM',
+				time: 'None',
+				date: 'None',
+				seller_seen: true,
+				buyer_seen: true,
+			}
+		});
+
+		var Chat_list = Backbone.Collection.extend({
+			model: Chat,
+			url: '/chats/list'
+		});
+
+		var Chat_listView = Backbone.View.extend({
+			el: '#chat-test',
+			initialize: function(){
+				this.collection = new Chat_list();
+				this.collection.fetch({reset: true});
+				this.render();
+				
+				this.listenTo(this.collection, 'reset', this.render);
+			},
+			render: function(){
+				this.collection.each(function(item){
+					this.renderChat(item);
+				}, this);
+			},
+			renderChat: function(item){
+				var buyer = item.get('buyer');
+				var seller = item.get('seller');
+				
+				var html = 
+				'<div style="border:solid 1px red">'
+				+'	<p>buyer: '+buyer+'</p>'
+				+'	<p>seller: '+seller+'</p>'
+				+'</div>';
+				
+				//var html = '123';
+				
+				this.$el.append(html);
+			},
+		});
+		//////////Chat system Test (backbone )end//////////
+
+
 		var AppView = Backbone.View.extend({
 			el: 'body',
 			events: {
@@ -1602,6 +1657,9 @@
 				this.regModal = new RegModalView();
 				this.settingModal = new SettingView();
 				this.infoEmailModal = new InfoEmailView();
+				
+				//Chat system Test
+				var chat_listView = new Chat_listView();
 				
 				this.sellerPanel = new SellerPanelView();
 				this.mapPanel = new MapPanelView();
