@@ -4,10 +4,9 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 
 class ChatSerializer(serializers.ModelSerializer):
-    #chat = RelatedField()
     class Meta:
         model = Chat
-        field = ('chat', 'seller', 'buyer', 'date', 'time', 'seller_seen', 'buyer_seen')
+        field = ('item', 'seller', 'buyer', 'date', 'time', 'seller_seen', 'buyer_seen')
         #field = ('chat')
         depth = 1
         

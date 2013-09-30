@@ -512,7 +512,7 @@
 								</div>	
 								<div id="newname-panel" class="col-sm-10"  style="display: none"> <!-- newname -->
 									<p>名稱為網路身分識別所用，因此不提供使用者修改‧</p>
-								</div>				
+								</div>
 							</div>
 						</div>
 						<div class="panel panel-default">	<!-- password -->
@@ -678,7 +678,7 @@
 				<div>
 					<div class="user-option">
 						<a href="#settingModal" data-toggle="modal">
-							<button type="button">帳號設定</button>
+							<button type="button" id="settingModalbtn">帳號設定</button>
 						</a>
 					</div>
 					<div class="user-option">
@@ -691,7 +691,11 @@
 							<button type="button">我的評價</button>
 						</a>
 					</div>
-					
+					<div class="user-option">
+						<a href="#">
+							<button type="button" id="logoutBtn">登出帳號</button>
+						</a>
+					</div>
 					<!-- Chat system test start -->
 					<div id="chat-test" style="border:solid 1px">
 					</div>
@@ -1238,6 +1242,25 @@
 			}
 		});
 		
+		var UserPanelView = Backbone.View.extend({
+			el: $("#userPanel"),
+			events:{
+				"click #settingModalbtn": "openSettingModal",
+				"click #logoutBtn":	"logout",
+			},
+			openSettingModal:function(){
+				//do something
+			},
+			logout: function(){
+				$.get('accounts/logout').done(function(data) {
+					//重新整理
+					location.reload();
+				}).fail(function(){
+					alert('登出失敗!');
+				});
+			}
+		});
+		
 		var LoginModalView = Backbone.View.extend({
 			el: $("#loginModal"),
 			events: {
@@ -1538,14 +1561,14 @@
 				this.$userNav.show().find('#navUsername').text(loginUser.get('name'));
 				this.$guestNav.hide();
 			},
-			logout: function(){
-				$.get('accounts/logout').done(function(data) {
-					//重新整理
-					location.reload();
-				}).fail(function(){
-					alert('登出失敗!');
-				});
-			},
+			//logout: function(){
+			//	$.get('accounts/logout').done(function(data) {
+			//		//重新整理
+			//		location.reload();
+			//	}).fail(function(){
+			//		alert('登出失敗!');
+			//	});
+			//},
 			showSellerPanel: function(){
 				$("#sellerPanel").trigger('show');
 			},
@@ -1682,11 +1705,13 @@
 			renderChat: function(item){
 				var buyer = item.get('buyer').username;
 				var seller = item.get('seller').username;
+				var item = item.get('item').name;
 				
 				var html = 
 				'<div style="border:solid 1px red">'
-				+'	<p>buyer: '+buyer+'</p>'
+				+'	<p>item: '+item+'</p>'
 				+'	<p>seller: '+seller+'</p>'
+				+'	<p>buyer: '+buyer+'</p>'
 				+'</div>';
 				
 				//var html = '123';
@@ -1713,6 +1738,7 @@
 				
 				this.sellerPanel = new SellerPanelView();
 				this.mapPanel = new MapPanelView();
+				this.userPanel = new UserPanelView();
 				
 				itemCategorys.fetch()
 				loginUser.fetch().pipe(function(){
