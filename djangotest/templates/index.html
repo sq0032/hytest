@@ -85,6 +85,30 @@
 			margin: 0;
 		}
 		
+		.msglist{
+			padding: 0px;
+			list-style-type: none;
+		}
+		
+		.msglist .msgbox{
+			border-radius: 5px;
+			border: 1px solid;
+			margin-bottom: 10px;
+			padding: 5px;
+		}
+		
+		.msglist .msg-me{
+			background-color: #FFCCFF;
+		}
+		
+		.msglist .msg-other{
+			background-color: #CCFFFF;
+		}
+		
+		div.speaker:after{
+			content:" 說:"
+		}		
+		
 		@media (min-width: 1200px) {
 			.modal-dialog-large {
 				width: 1170px;
@@ -515,7 +539,7 @@
 								</div>	
 								<div id="newname-panel" class="col-sm-10"  style="display: none"> <!-- newname -->
 									<p>名稱為網路身分識別所用，因此不提供使用者修改‧</p>
-								</div>				
+								</div>
 							</div>
 						</div>
 						<div class="panel panel-default">	<!-- password -->
@@ -562,7 +586,7 @@
 		</div><!-- /.modal -->			
 		
 		<!-- Q&A Why Email Verification Modal -->
-		<div id="infoEmailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div id="infoEmailModal" class="modal fade" tabindex="-1">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -584,6 +608,58 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+		
+		<!-- Chat Modal -->
+		<div id="chatroomModal" class="modal fade" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Modal title</h4>
+					</div>
+					<div class="modal-body" style="background-color: #E8E8E8">
+						<ul class="msglist">
+						<!--
+							<li>
+								<div class="pull-left msgbox msg-other">
+									<div class="speaker">阿超</div>
+									<div class="">好好不好?今天晚上來那個好好不好?今天晚上來那個好好不好?今天好不好?今天晚上來那個好好不好?今天晚上來那個好好不好?今天好不好?今天晚上來那個好好不好?今天晚上來那個好好不好?今天好不好?今天晚上來那個好好不好?今天晚上來那個好好不好?今天不好?今天晚上來那個好好不好?今天晚上來那個好好不好?今天晚上來那個好好不好?今天晚上來那個好?不好?不好?不好?今天晚上來那個好不好?</div>
+									<div class="time" style="width:100%">
+										<div class="pull-right">11:42pm</div>
+									</div>
+								</div>
+								<div style="clear:both;"></div>
+							</li>
+							<li>
+								<div class="pull-right msgbox msg-me">
+									<div class="speaker">老黎</div>
+									<div class="">哪個?</div>
+									<div class="time" style="width:100%">
+										<div class="pull-left">11:42pm</div>
+									</div>
+								</div>
+								<div style="clear:both;"></div>
+							</li>
+							<li>
+								<div class="pull-left msgbox msg-other">
+									<div class="speaker">阿超</div>
+									<div class="">Message #3</div>
+									<div class="time" style="width:100%">
+										<div class="pull-right">11:59pm</div>
+									</div>
+								</div>
+							<div style="clear:both;"></div>
+							</li>
+						-->
+						</ul>
+					</div>
+					<div class="modal-footer" style="margin-top:0px">
+						<input type="text" class="form-control pull-left" id="massage" placeholder="Enter message">
+						<button type="button" class="btn btn-default" id="sendBtn">送出</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->	
 		
 		<!-- Main Panels -->
 		<div class="main-panels tab-content">
@@ -631,7 +707,7 @@
 				<div>
 					<div class="user-option">
 						<a href="#settingModal" data-toggle="modal">
-							<button type="button">帳號設定</button>
+							<button type="button" id="settingModalbtn">帳號設定</button>
 						</a>
 					</div>
 					<div class="user-option">
@@ -644,7 +720,11 @@
 							<button type="button">我的評價</button>
 						</a>
 					</div>
-					
+					<div class="user-option">
+						<a href="#">
+							<button type="button" id="logoutBtn">登出帳號</button>
+						</a>
+					</div>
 					<!-- Chat system test start -->
 					<div id="chat-test" style="border:solid 1px">
 					</div>
@@ -1217,6 +1297,25 @@
 			}
 		});
 		
+		var UserPanelView = Backbone.View.extend({
+			el: $("#userPanel"),
+			events:{
+				"click #settingModalbtn": "openSettingModal",
+				"click #logoutBtn":	"logout",
+			},
+			openSettingModal:function(){
+				//do something
+			},
+			logout: function(){
+				$.get('accounts/logout').done(function(data) {
+					//重新整理
+					location.reload();
+				}).fail(function(){
+					alert('登出失敗!');
+				});
+			}
+		});
+		
 		var LoginModalView = Backbone.View.extend({
 			el: $("#loginModal"),
 			events: {
@@ -1517,14 +1616,14 @@
 				this.$userNav.show().find('#navUsername').text(loginUser.get('name'));
 				this.$guestNav.hide();
 			},
-			logout: function(){
-				$.get('accounts/logout').done(function(data) {
-					//重新整理
-					location.reload();
-				}).fail(function(){
-					alert('登出失敗!');
-				});
-			},
+			//logout: function(){
+			//	$.get('accounts/logout').done(function(data) {
+			//		//重新整理
+			//		location.reload();
+			//	}).fail(function(){
+			//		alert('登出失敗!');
+			//	});
+			//},
 			showSellerPanel: function(){
 				$("#sellerPanel").trigger('show');
 			},
@@ -1627,8 +1726,72 @@
 		Backbone.history.start();
 		
 		//////////Chat system Test (backbone) start//////////
+		var Reply = Backbone.Model.extend({
+			default:{
+				reply: 'None',
+				speaker: 'Unknown',
+				date: 'None',
+				time: 'None'
+			}
+		});
+		
+		var Replys = Backbone.Collection.extend({
+			model: Reply,
+			url: '/chats/chat_id',
+		});
+		
+		var ChatroomModalView = Backbone.View.extend({
+			el: '#chatroomModal',
+			initialize: function(chatinfo){
+				this.chatinfo = chatinfo
+				this.replys = new Replys();
+				this.replys.url = '/chats/'+this.chatinfo.get('id');
+				this.replys.fetch({reset: true});
+			
+				this.renderHead();
+				this.renderBody();
+				
+				this.listenTo( this.replys, 'reset', this.renderBody);
+			},
+			events:{
+				'click #sendBtn':'sendReply',
+				'click .close':'close'
+			},
+			sendReply:function(){
+				alert("send reply");
+				replys.create()
+			},
+			renderBody:function(){
+				console.log(this.replys.length);
+				this.replys.each(function(reply){
+					this.renderReply(reply);
+				}, this);				
+			},
+			renderReply:function(reply){
+				var $msgli = $("<li>");
+				$msgli.html(
+				'	<div class="pull-left msgbox msg-other">'
+				+'		<div class="speaker">'+reply.get('speaker')+'</div>'
+				+'		<div class="">'+reply.get('reply')+'</div>'
+				+'		<div class="time" style="width:100%">'
+				+'			<div class="pull-right">11:42pm</div>'
+				+'		</div>'
+				+'	</div>'
+				+'	<div style="clear:both;"></div>'					
+				);
+				$('.msglist').append($msgli);	
+			},
+			renderHead:function(){
+				$('.modal-title').html(this.chatinfo.get('item').name);		
+			},
+			close:function(){
+				$('.msglist').html('');
+			}
+		});
+		
 		var Chat = Backbone.Model.extend({
 			default:{
+				id: 'None',
 				buyer: 'USER1',
 				seller: 'USER2',
 				item: 'ITEM',
@@ -1638,18 +1801,52 @@
 				buyer_seen: true,
 			}
 		});
-
-		var Chat_list = Backbone.Collection.extend({
+		
+		var ChatList = Backbone.Collection.extend({
 			model: Chat,
-			url: '/chats/list'
+		});
+		
+		var ItemChatList = ChatList.extend({
+			initialize: function(item){
+			},
+			url: function(){
+				return 'items/'+item.get('id')+'/chat/';
+			}
 		});
 
-		var Chat_listView = Backbone.View.extend({
+		var ChatView = Backbone.View.extend({
+			tagName: 'div',
+			events:{
+				'click #chatroomModalbtn': 'openChatroomModal'
+			},
+			render: function(){
+				var buyername = this.model.get('buyer').username;
+				var sellername = this.model.get('seller').username;
+				var item = this.model.get('item').name;
+				
+				this.$el.html(
+				'<div style="border:solid 1px red">'
+				+'	<p>item: '+item+'</p>'
+				+'	<p>seller: '+sellername+'</p>'
+				+'	<p>buyer: '+buyername+'</p>'
+				+'		<a href="#chatroomModal" data-toggle="modal">'
+				+'			<button type="button" id="chatroomModalbtn">對話</button>'
+				+'		</a>'
+				+'</div>'
+				);
+				
+				return this;
+			},
+			openChatroomModal: function(){
+				var chatroom = new ChatroomModalView(this.model);
+			}
+		});		
+		
+		var ChatListView = Backbone.View.extend({
 			el: '#chat-test',
 			initialize: function(){
-				this.collection = new Chat_list();
+				this.collection = new ChatList();
 				this.collection.fetch({reset: true});
-				this.render();
 				
 				this.listenTo(this.collection, 'reset', this.render);
 			},
@@ -1659,39 +1856,32 @@
 				}, this);
 			},
 			renderChat: function(item){
-				var buyer = item.get('buyer');
-				var seller = item.get('seller');
+				var chatView = new ChatView({
+					model: item
+				});
 				
-				var html = 
-				'<div style="border:solid 1px red">'
-				+'	<p>buyer: '+buyer+'</p>'
-				+'	<p>seller: '+seller+'</p>'
-				+'</div>';
-				
-				//var html = '123';
-				
-				this.$el.append(html);
+				this.$el.append(chatView.render().el);
 			},
 		});
-		//////////Chat system Test (backbone )end//////////
-
+		//////////Chat system Test (backbone) end//////////
 
 		var AppView = Backbone.View.extend({
 			el: 'body',
 			events: {
 			},
 			initialize: function(){
-				this.navBar = new NavBarView();
+				this.navBar = new NavBarView();	
 				this.loginModal = new LoginModalView();
 				this.regModal = new RegModalView();
 				this.settingModal = new SettingView();
 				this.infoEmailModal = new InfoEmailView();
 				
 				//Chat system Test
-				var chat_listView = new Chat_listView();
+				this.chatList = new ChatListView();
 				
 				this.sellerPanel = new SellerPanelView();
 				this.mapPanel = new MapPanelView();
+				this.userPanel = new UserPanelView();
 				
 				itemCategorys.fetch()
 				loginUser.fetch().pipe(function(){

@@ -20,13 +20,12 @@ class Chat(models.Model):
         return '%s to %s' % (self.seller, self.buyer)
     
 class Reply(models.Model):
-    conv_id = models.ForeignKey(Chat)
+    chat = models.ForeignKey(Chat)
     reply = models.TextField()
-    speaker = models.ForeignKey(User)
+    speaker = models.ForeignKey(User, related_name='speaker')
     ip = models.CharField(max_length=15)
     time = models.TimeField()
     date = models.DateField()
     
     def __unicode__(self):
         return '%s says:%s' % (self.speaker, self.reply)
-    

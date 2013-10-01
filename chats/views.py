@@ -15,9 +15,20 @@ from chats.models import Chat, Reply
 
 from items.models import Item
 
+
 def getList(request):
-#    list = Conversation.objects.all()
-    chat = Chat.objects.all()
+    chat = Chat.objects.filter(seller__username=request.user)
     serializer = ChatSerializer(chat, many=True)
     json = JSONRenderer().render(serializer.data)
     return HttpResponse(json)
+
+def reply(request, chat_id):
+    if request.method == 'POST':
+        return HttpResponse('chat_id='+chat_id)
+    elif request.method == 'GET':
+        reply = Reply.objects.filter(chat__id=chat_id)
+        serializer = ReplySerializer(reply, many=True)
+        json = JSONRenderer().render(serializer.data)
+        return HttpResponse(json)
+        
+        
