@@ -42,7 +42,10 @@
 		
 		.item-box {
 			border: 1px solid #DDDDDD;
-			margin-bottom: 10px;
+		}
+		
+		.seller-item-box {
+			margin-bottom:10px;
 		}
 		
 		#sellerShopBox {
@@ -737,6 +740,7 @@
 			urlRoot:'shops/'
 		});
 
+		//全域變數
 		var loginUser = new LoginUser();
 		var itemCategorys = new ItemCategorys();
 		var myShop = new Shop();
@@ -747,15 +751,17 @@
 			events: {
 			},
 			initialize: function() {
-				this.listenTo(this.model, "change", this.render);
+				this.item = this.model;
+				this.listenTo(this.item, "change", this.render);
+				this.render();
 			},
 			render: function() {
 				var that = this;
-				var name = this.model.get('name');
-				var price = this.model.get('price');
-				var description = this.model.get('description');
-				var attrs = this.model.get('attrs');
-				var categoryID = this.model.get('category');
+				var name = this.item.get('name');
+				var price = this.item.get('price');
+				var description = this.item.get('description');
+				var attrs = this.item.get('attrs');
+				var categoryID = this.item.get('category');
 				
 				this.$el.html(
 					'<div class="item-box-name"></div>\
@@ -768,6 +774,30 @@
 				this.$('.item-box-description').text(description);
 				this.$('.item-box-attrs').text(attrs);
 				this.$('.item-box-category').text(itemCategorys.getByID(categoryID).get('name'));
+				return this;
+			}
+		});
+		
+		var SellerItemBoxView = Backbone.View.extend({
+			className: "seller-item-box",
+			events: {
+			},
+			initialize: function() {
+				this.item = this.model;
+				this.itemBox = new ItemBoxView({model:this.item});
+				this.listenTo(this.item, "change", this.render);
+				this.render();
+			},
+			render: function(){
+				this.$el.html(
+					'<div class="item-box"></div>\
+					<div style="border-width:0 1px 1px 1px;border-style:solid;border-color:#DDDDDD;">\
+						<button class="btn">刪除</button>\
+						<div class="chat-list"></div>\
+					</div>');
+				this.$('.item-box').replaceWith(this.itemBox.el);
+				this.$('.chat-list').text('chat list');
+				return this;
 			}
 		});
 		
@@ -775,8 +805,9 @@
 			className: "shop-box",
 			events: {
 			},
-			initialize: function() {			
+			initialize: function() {
 				this.listenTo(this.model, "change", this.render);
+				this.render();
 			},
 			render: function() {
 				var name = this.model.get('name');
@@ -1146,9 +1177,8 @@
 				this.itemModal = new ItemModalView();
 				this.shopModal = new ShopModalView();
 				
-				//this.listenTo(myShop, 'sync', this.updateItems);
 				//this.listenTo(myItems, 'sync', this.updateItems);
-				//this.listenTo(myItems, 'add', this.updateItems);
+				//this.listenTo(myItems, 'add', this.addOneItem);
 				this.listenTo(myShopItems, 'reset', this.resetItems);
 				
 				this.$sellerItemsList = this.$('#sellerItemsList');
@@ -1169,8 +1199,7 @@
 				this.$sellerItemsList.empty();
 				myShopItems.each(function(item){
 					console.log(item);
-					var itemBox= new ItemBoxView({model:item})
-					item.trigger('change');
+					var itemBox= new SellerItemBoxView({model:item})
 					that.itemBoxList.push(itemBox);
 					that.$sellerItemsList.append(itemBox.el);
 				});
