@@ -107,3 +107,4 @@ def getItemConversationList(request, item_id):
 	serializer = ChatSerializer(chat, many=True)
 	json = JSONRenderer().render(serializer.data) 
 	return HttpResponse(json)
+
