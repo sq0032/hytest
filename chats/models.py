@@ -22,7 +22,7 @@ class Chat(models.Model):
 class Reply(models.Model):
     chat = models.ForeignKey(Chat)
     reply = models.TextField()
-    speaker = models.ForeignKey(User)
+    speaker = models.ForeignKey(User, related_name='speaker')
     ip = models.CharField(max_length=15)
     time = models.TimeField()
     date = models.DateField()

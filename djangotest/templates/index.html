@@ -82,6 +82,30 @@
 			margin: 0;
 		}
 		
+		.msglist{
+			padding: 0px;
+			list-style-type: none;
+		}
+		
+		.msglist .msgbox{
+			border-radius: 5px;
+			border: 1px solid;
+			margin-bottom: 10px;
+			padding: 5px;
+		}
+		
+		.msglist .msg-me{
+			background-color: #FFCCFF;
+		}
+		
+		.msglist .msg-other{
+			background-color: #CCFFFF;
+		}
+		
+		div.speaker:after{
+			content:" 說:"
+		}		
+		
 		@media (min-width: 1200px) {
 			.modal-dialog-large {
 				width: 1170px;
@@ -1754,11 +1778,11 @@
 		});
 		
 		var ItemChatList = ChatList.extend({
-			initialize: function(){
+			initialize: function(item){
 			},
 			url: function(){
-				return 'chats/list/';
-			}			
+				return 'items/'+item.get('id')+'/chat/';
+			}
 		});
 
 		var ChatView = Backbone.View.extend({
@@ -1792,9 +1816,8 @@
 		var ChatListView = Backbone.View.extend({
 			el: '#chat-test',
 			initialize: function(){
-				this.collection = new ItemChatList();
+				this.collection = new ChatList();
 				this.collection.fetch({reset: true});
-				this.render();
 				
 				this.listenTo(this.collection, 'reset', this.render);
 			},
