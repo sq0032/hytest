@@ -724,7 +724,8 @@
 		<script src="js/bootstrap.js"></script>
 		<!-- <script src="js/bootstrap.min.js"></script> -->
 		<script src="js/underscore-min.js"></script>
-		<script src="js/backbone-min.js"></script>
+		<!--<script src="js/backbone-min.js"></script>-->
+		<script src="js/backbone.js"></script>
 		<script src="js/main.js"></script>
 		<script type="text/javascript">
 
@@ -753,7 +754,11 @@
 		var Item = Backbone.Model.extend({
 			urlRoot:'items/',
 			initialize: function(){
-				//this.chatList = 
+				var that = this;
+				this.chats = new Chats();
+				this.chats.url = function(){
+					return 'items/'+that.id+'/chat/';
+				}
 			}
 		});
 		
@@ -784,15 +789,6 @@
 			}
 		});
 		
-		var ShopItems = Items.extend({
-			initialize: function(shop){
-				this.shop = shop;
-			},
-			url: function(){
-				return 'shops/'+this.shop.get('id')+'/items/';
-			}
-		});
-		
 		var Shop = Backbone.Model.extend({
 			urlRoot: 'shops/',
 			initialize: function(){
@@ -801,7 +797,7 @@
 				this.items.url = function(){
 					return 'shops/'+that.id+'/items/';
 				}
-				this.on('change:id',this.resetItems)
+				//this.on('change:id',this.resetItems)
 			},
 			resetItems: function(){
 				this.items.fetch({reset:true});
@@ -820,17 +816,8 @@
 			}
 		});
 		
-		var ChatList = Backbone.Collection.extend({
+		var Chats = Backbone.Collection.extend({
 			model: Chat,
-		});
-		
-		var ItemChatList = ChatList.extend({
-			initialize: function(item){
-				this.item = item;
-			},
-			url: function(){
-				return 'items/'+this.item.get('id')+'/chat/';
-			}
 		});
 		
 		
@@ -845,6 +832,7 @@
 			},
 			initialize: function() {
 				this.item = this.model;
+				this.listenTo(this.item, "destroy", this.remove);
 				this.listenTo(this.item, "change", this.render);
 				this.render();
 			},
@@ -877,17 +865,20 @@
 			},
 			initialize: function() {
 				this.item = this.model;
-				this.chatList = new ItemChatList(this.item);				
 				
 				this.itemBox = new ItemBoxView({model:this.item});
 				
-				this.listenTo(this.chatList, "reset", this.render);
+				this.listenTo(this.item, "destroy", this.remove);
+				this.listenTo(this.item.chats, "reset", this.render);
 				
-				this.chatList.fetch({reset:true});
 				this.render();
 			},
 			deleteItem: function(){
-				this.item.destroy();
+				var that = this;
+				confirm('確定要刪除?',function(result){
+					if(!result){return;}
+					that.item.destroy();
+				});
 			},
 			render: function(){
 				var that = this;
@@ -895,8 +886,8 @@
 				this.$el.empty();
 				
 				var $chatList = $('<div class="chat-list"></div>')
-				this.chatList.each(function(chat){
-					$chatList.append($('<div>buyer_id:'+chat.get('buyer')+'<button>chat room</button></div>'));
+				this.item.chats.each(function(chat){
+					$chatList.append($('<div>buyer_name:'+chat.get('buyer')+'<button>chat room</button></div>'));
 				});
 				
 				this.$el.append('<button class="item-delete">刪除</button>').append(this.itemBox.el).append($chatList);
@@ -925,7 +916,7 @@
 		});
 		
 		var ShopModalView = Backbone.View.extend({
-			el: $("#shopModal"),
+			el: "#shopModal",
 			events: {
 				"shown.bs.modal": "shown",
 				"show.bs.modal": "show",
@@ -1242,7 +1233,7 @@
 		});
 		
 		var MapPanelView = Backbone.View.extend({
-			el: $("#mapPanel"),
+			el: "#mapPanel",
 			events:{
 				'shown': "shown",
 			},
@@ -1268,10 +1259,7 @@
 		var SellerPanelView = Backbone.View.extend({
 			el: "#sellerPanel",
 			events: {
-				"show": "show",
 				"click #itemModalBtn": "newItemModal"
-				//"click #myItemsShowList": "listItems",
-				//"click #myItemsShowTable": "tableItems"
 			},
 			newItemModal:function(){
 				this.itemModal.open();
@@ -1290,24 +1278,15 @@
 				this.shopBox = new ShopBoxView({model:myShop});
 				this.$sellerShopBox.append(this.shopBox.$el);
 			},
-			tableItems:function(){
-				this.$myItemsList.removeClass('items-list').addClass('items-table');
-			},
-			listItems:function(){
-				this.$myItemsList.removeClass('items-table').addClass('items-list');
-			},
 			resetItems:function(){
 				var that = this;
-				this.itemBoxList = [];
 				this.$sellerItemsList.empty();
 				myShop.items.each(function(item){
-					console.log(item);
-					var itemBox= new SellerItemBoxView({model:item})
-					that.itemBoxList.push(itemBox);
+					item.chats.fetch({reset:true});
+					if(item.get('state') != 'on'){return;}
+					var itemBox = new SellerItemBoxView({model:item})
 					that.$sellerItemsList.append(itemBox.el);
 				});
-			},
-			show:function(){
 			}
 		});
 		
@@ -1813,34 +1792,7 @@
 				$('.msglist').html('');
 			}
 		});
-
 		
-		var Chat = Backbone.Model.extend({
-			default:{
-				id: null,
-				buyer: null,
-				seller: null,
-				item: null,
-				time: null,
-				date: null,
-				seller_seen: true,
-				buyer_seen: true,
-			}
-		});
-		
-		var Chats = Backbone.Collection.extend({
-			model: Chat,
-			url: 'chats/list'
-		});
-		
-		var ItemChats = Chats.extend({
-			initialize: function(item){
-			},
-			url: function(){
-				return 'items/'+item.get('id')+'/chat/';
-			}
-		});
-
 		var ChatView = Backbone.View.extend({
 			tagName: 'div',
 			events:{
@@ -1905,7 +1857,7 @@
 				this.infoEmailModal = new InfoEmailView();
 				
 				//Chat system Test
-				this.Chats = new ChatsView();
+				//this.Chats = new ChatsView();
 				
 				this.sellerPanel = new SellerPanelView();
 				this.mapPanel = new MapPanelView();
@@ -1928,6 +1880,8 @@
 					var shopID = loginUser.get('shops')[0];
 					myShop.set('id',shopID);
 					return myShop.fetch();
+				}).pipe(function(){
+					return myShop.items.fetch({reset:true});
 				}).done(function(){
 					console.log('done');
 				}).fail(function(){

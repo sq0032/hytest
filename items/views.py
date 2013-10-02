@@ -86,25 +86,21 @@ class ItemsDetail(APIView):
 				return Response(status=status.HTTP_401_UNAUTHORIZED)
 		except Item.DoesNotExist:
 			return Response(status=status.HTTP_404_NOT_FOUND)
-		item.delete()
-		return Response(status=status.HTTP_204_NO_CONTENT)
+		item.state = Item.DEL
+		item.save()
+		return Response(status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def getItemCategorys(request):
 	categorys = Category.objects.all()
-	s = CategorySerializer(categorys,many=True)
-	#categorys = Category.objects.filter(parent=None)
-	#child = Category.objects.get(id=3)
-	#categorys = Category.objects.filter(child=child)
-	
-	return Response(s.data)
+	serializer = CategorySerializer(categorys,many=True)
+	return Response(serializer.data)
 
-
+#權限未完成
+@api_view(['GET'])
 def getItemConversationList(request, item_id):
-#	list = Conversation.objects.all()
 	chat = Chat.objects.filter(item__rid=item_id)
 	serializer = ChatSerializer(chat, many=True)
-	json = JSONRenderer().render(serializer.data) 
-	return HttpResponse(json)
+	return Response(serializer.data)
 

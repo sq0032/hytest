@@ -28,6 +28,15 @@ def item_thumbnail_path(instance, filename):
 	return 'image/items/%s-s.%s'%(name,extName)
 	
 class Item(models.Model):
+	ON = 'on'
+	OFF = 'off'
+	DEL = 'del'
+	STATE_CHOICES = (
+		(ON, 'Online'),
+		(OFF, 'Offline'),
+		(DEL, 'Deleted'),
+	)
+	state = models.CharField(max_length=3,choices=STATE_CHOICES,default=ON)
 	rid = models.CharField(max_length=40,unique=True) 
 	owner = models.ForeignKey(User)
 	name = models.CharField(max_length=60)
