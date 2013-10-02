@@ -45,7 +45,11 @@
 		}
 		
 		.seller-item-box {
+			border: 1px solid #DDDDDD;
 			margin-bottom:10px;
+		}
+		.seller-item-box .item-box {
+			border-width:0;
 		}
 		
 		#sellerShopBox {
@@ -777,7 +781,10 @@
 		});
 		
 		var Item = Backbone.Model.extend({
-			urlRoot:'items/'
+			urlRoot:'items/',
+			initialize: function(){
+				//this.chatList = 
+			}
 		});
 		
 		var Items = Backbone.Collection.extend({
@@ -817,14 +824,50 @@
 		});
 		
 		var Shop = Backbone.Model.extend({
-			urlRoot:'shops/'
+			urlRoot: 'shops/',
+			initialize: function(){
+				var that = this;
+				this.items = new Items();
+				this.items.url = function(){
+					return 'shops/'+that.id+'/items/';
+				}
+				this.on('change:id',this.resetItems)
+			},
+			resetItems: function(){
+				this.items.fetch({reset:true});
+			}
 		});
-
+		
+		var Chat = Backbone.Model.extend({
+			default:{
+				buyer: null,
+				seller: null,
+				item: null,
+				time: null,
+				date: null,
+				seller_seen: true,
+				buyer_seen: true,
+			}
+		});
+		
+		var ChatList = Backbone.Collection.extend({
+			model: Chat,
+		});
+		
+		var ItemChatList = ChatList.extend({
+			initialize: function(item){
+				this.item = item;
+			},
+			url: function(){
+				return 'items/'+this.item.get('id')+'/chat/';
+			}
+		});
+		
+		
 		//全域變數
 		var loginUser = new LoginUser();
 		var itemCategorys = new ItemCategorys();
 		var myShop = new Shop();
-		var myShopItems = new ShopItems(myShop);
 		
 		var ItemBoxView = Backbone.View.extend({
 			className: "item-box",
@@ -842,7 +885,6 @@
 				var description = this.item.get('description');
 				var attrs = this.item.get('attrs');
 				var categoryID = this.item.get('category');
-				
 				this.$el.html(
 					'<div class="item-box-name"></div>\
 					<div class="item-box-price"></div>\
@@ -861,22 +903,33 @@
 		var SellerItemBoxView = Backbone.View.extend({
 			className: "seller-item-box",
 			events: {
+				"click .item-delete":'deleteItem'
 			},
 			initialize: function() {
 				this.item = this.model;
+				this.chatList = new ItemChatList(this.item);				
+				
 				this.itemBox = new ItemBoxView({model:this.item});
-				this.listenTo(this.item, "change", this.render);
+				
+				this.listenTo(this.chatList, "reset", this.render);
+				
+				this.chatList.fetch({reset:true});
 				this.render();
 			},
+			deleteItem: function(){
+				this.item.destroy();
+			},
 			render: function(){
-				this.$el.html(
-					'<div class="item-box"></div>\
-					<div style="border-width:0 1px 1px 1px;border-style:solid;border-color:#DDDDDD;">\
-						<button class="btn">刪除</button>\
-						<div class="chat-list"></div>\
-					</div>');
-				this.$('.item-box').replaceWith(this.itemBox.el);
-				this.$('.chat-list').text('chat list');
+				var that = this;
+				
+				this.$el.empty();
+				
+				var $chatList = $('<div class="chat-list"></div>')
+				this.chatList.each(function(chat){
+					$chatList.append($('<div>buyer_id:'+chat.get('buyer')+'<button>chat room</button></div>'));
+				});
+				
+				this.$el.append('<button class="item-delete">刪除</button>').append(this.itemBox.el).append($chatList);
 				return this;
 			}
 		});
@@ -1259,7 +1312,7 @@
 				
 				//this.listenTo(myItems, 'sync', this.updateItems);
 				//this.listenTo(myItems, 'add', this.addOneItem);
-				this.listenTo(myShopItems, 'reset', this.resetItems);
+				this.listenTo(myShop.items, 'reset', this.resetItems);
 				
 				this.$sellerItemsList = this.$('#sellerItemsList');
 				this.$sellerShopBox = this.$('#sellerShopBox');
@@ -1277,7 +1330,7 @@
 				var that = this;
 				this.itemBoxList = [];
 				this.$sellerItemsList.empty();
-				myShopItems.each(function(item){
+				myShop.items.each(function(item){
 					console.log(item);
 					var itemBox= new SellerItemBoxView({model:item})
 					that.itemBoxList.push(itemBox);
@@ -1285,15 +1338,6 @@
 				});
 			},
 			show:function(){
-				/*
-				var that = this;
-				myShop.fetch().done(function(){
-					//var itemIDs = myShop.get('items');
-					var shopItems = that.shopItems = new Items();
-					shopItems.url = 'shops/'+myShop.get('id')+'/items/';
-					shopItems.fetch();
-				});
-				*/
 			}
 		});
 		
@@ -1788,31 +1832,6 @@
 				$('.msglist').html('');
 			}
 		});
-		
-		var Chat = Backbone.Model.extend({
-			default:{
-				id: 'None',
-				buyer: 'USER1',
-				seller: 'USER2',
-				item: 'ITEM',
-				time: 'None',
-				date: 'None',
-				seller_seen: true,
-				buyer_seen: true,
-			}
-		});
-		
-		var ChatList = Backbone.Collection.extend({
-			model: Chat,
-		});
-		
-		var ItemChatList = ChatList.extend({
-			initialize: function(item){
-			},
-			url: function(){
-				return 'items/'+item.get('id')+'/chat/';
-			}
-		});
 
 		var ChatView = Backbone.View.extend({
 			tagName: 'div',
@@ -1877,7 +1896,7 @@
 				this.infoEmailModal = new InfoEmailView();
 				
 				//Chat system Test
-				this.chatList = new ChatListView();
+				//this.chatList = new ChatListView();
 				
 				this.sellerPanel = new SellerPanelView();
 				this.mapPanel = new MapPanelView();
@@ -1900,8 +1919,6 @@
 					var shopID = loginUser.get('shops')[0];
 					myShop.set('id',shopID);
 					return myShop.fetch();
-				}).pipe(function(){
-					return myShopItems.fetch({reset:true});
 				}).done(function(){
 					console.log('done');
 				}).fail(function(){
