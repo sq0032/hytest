@@ -292,8 +292,6 @@ def sessiontest(request):
 	if 'count' in request.session:
 		request.session['count'] += 1
 		return HttpResponse('new count=%s' % request.session['count'])
-#		request.session
-#		return HttpResponse(request.session)
 	else:
 		request.session['count'] = 1
 		return HttpResponse('No count in session. Setting to 1')

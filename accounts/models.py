@@ -29,6 +29,7 @@ class EventType(models.Model):
 class Event(models.Model):
 	user = models.ForeignKey(User)
 	event = models.ForeignKey(EventType)
+	datetime = models.DateTimeField(autonow_add=True)
 	
 	def __unicode__(self):
 		return "%s:%s" % (self.user.username, self.event.type)
