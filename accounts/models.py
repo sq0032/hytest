@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
 
 class EmailVerification(models.Model):
 	user = models.OneToOneField(User)
@@ -18,6 +19,19 @@ class Verification(models.Model):
 	
 	def __unicode__(self):
 		return "user:%s %s,%s,%s" % (self.user.username, str(self.email), str(self.phone), str(self.credit))
+
+class EventType(models.Model):
+	type = models.CharField(max_length=20)
+	
+	def __unicode__(self):
+		return self.type
+
+class Event(models.Model):
+	user = models.ForeignKey(User)
+	event = models.ForeignKey(EventType)
+	
+	def __unicode__(self):
+		return "%s:%s" % (self.user.username, self.event.type)
 
 '''
 from django.db import models

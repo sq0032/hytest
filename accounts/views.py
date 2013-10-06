@@ -16,7 +16,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from accounts.serializers import UserSerializer
-from accounts.models import EmailVerification, Verification
+from accounts.models import EmailVerification, Verification, Event
+from django.contrib.sessions.models import Session
 
 #圖形驗證碼
 from PIL import Image, ImageFont, ImageDraw
@@ -287,6 +288,15 @@ def changePassword(request):
 	print 'change passowrd'
 	return HttpResponse()
 
+def sessiontest(request):
+	if 'count' in request.session:
+		request.session['count'] += 1
+		return HttpResponse('new count=%s' % request.session['count'])
+#		request.session
+#		return HttpResponse(request.session)
+	else:
+		request.session['count'] = 1
+		return HttpResponse('No count in session. Setting to 1')
 	
 '''
 class userDetail(APIView):
