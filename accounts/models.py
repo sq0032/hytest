@@ -29,10 +29,12 @@ class EventType(models.Model):
 class Event(models.Model):
 	user = models.ForeignKey(User)
 	event = models.ForeignKey(EventType)
-	datetime = models.DateTimeField(autonow_add=True)
+	datetime = models.DateTimeField(auto_now_add=True)
 	
 	def __unicode__(self):
 		return "%s:%s" % (self.user.username, self.event.type)
+
+
 
 '''
 from django.db import models

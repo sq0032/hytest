@@ -115,7 +115,7 @@
 		
 		div.speaker:after{
 			content:" 說:"
-		}		
+		}
 		
 		@media (min-width: 1200px) {
 			.modal-dialog-large {
@@ -616,9 +616,7 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-		
 
-		
 		<!-- Main Panels -->
 		<div class="main-panels tab-content">
 			<div class="tab-pane active fade in" id="mapPanel"> <!-- Map Panels -->
@@ -705,7 +703,7 @@
 		<script src="js/jquery.fileupload-image.js"></script>
 		
 		<script src="js/bootstrap.js"></script>
-		<!-- <script src="js/bootstrap.min.js"></script> -->
+		<!--<script src="js/bootstrap.min.js"></script>-->
 		<script src="js/underscore-min.js"></script>
 		<!--<script src="js/backbone-min.js"></script>-->
 		<script src="js/backbone.js"></script>
@@ -890,7 +888,6 @@
 					return (chat.get('id') == chatID);
 				});
 				var chatroom = new ChatroomModalView({model:chat});
-				chat.replys.fetch({reset:true});
 				chatroom.open();
 			},
 			render: function(){
@@ -1732,8 +1729,6 @@
 		Backbone.history.start();
 		
 		//////////Chat system Test (backbone) start//////////
-
-		
 		var ChatroomModalView = Backbone.View.extend({
 			//el: '#chatroomModal',
 			className:'modal fade',
@@ -1754,11 +1749,18 @@
 			},
 			sendReply:function(){
 				if($("#massage").val()){
-					var Data={};
-					Data.reply = $("#massage").val();
-					Data.speaker = loginUser.get('name');
-					Data.datetime = new Date();
-					this.chat.replys.create(Data);
+					var data={
+						reply:$("#massage").val(),
+						speaker : this.chat.get('seller'),
+						receiver : this.chat.get('buyer'),
+					};
+					
+					var reply = new Reply(data);
+					reply.parent = this.chat;
+					reply.url = 'chats/'+this.chat.get('id');
+					this.listenTo(reply,'sync',this.syncReply);
+					reply.save();
+					this.chat.replys.add(reply);
 					$("#massage").val('');
 					
 					//this.chat.replys.fetch({reset:true});
@@ -1775,6 +1777,8 @@
 				//alert(this.chat.replys.get(len).get('reply'));
 				//alert(this.chat.replys.get(len).get('speaker'));
 				this.renderReply(reply);
+				alert(reply.get('reply'))
+				alert(reply.get('ip'))
 			},
 			render:function(){
 				//Chatroom Modal
@@ -1806,7 +1810,7 @@
 				$('.msglist').scrollTop(8000);
 			},
 			renderReply:function(reply){
-				if(reply.get('speaker')==loginUser.get('name')){
+				if(reply.get('speaker')==this.chat.get('seller')){
 					var div = '	<div class="pull-right msgbox msg-me">'
 				}
 				else{
@@ -1823,7 +1827,7 @@
 				+'	</div>'
 				+'	<div style="clear:both;"></div>'					
 				);
-				this.$('.msglist').append(msgli);	
+				this.$('.msglist').append(msgli);
 			},
 			renderHead:function(){
 
@@ -1834,11 +1838,41 @@
 			},
 			open:function(){
 				//this.render();
+				this.chat.replys.fetch({reset:true});
 				this.$el.modal('show');
 			}
 		});
 		
-	
+		var ReplyView = Backbone.View.extend({
+			className: 'msgbox',
+			initialize: function(){
+				this.reply = this.model;
+				
+				//this.listenTo( this.chat.replys, 'reset', this.renderHead);
+				//this.listenTo( this.chat.replys, 'reset', this.renderBody);
+				//this.listenTo( this.chat.replys, 'add', this.addReply);
+			},
+			renderReply:function(reply){
+				if(reply.get('speaker')==this.parent.get('seller')){
+					var div = '	<div class="pull-right msgbox msg-me">'
+				}
+				else{
+					var div = '	<div class="pull-left msgbox msg-other">'
+				}
+
+				var msgli = $("<li></li>").html(
+					div
+				+'		<div class="speaker">'+reply.get('speaker')+'</div>'
+				+'		<div class="">'+reply.get('reply')+'</div>'
+				+'		<div class="time" style="width:100%">'
+				+'			<div class="pull-right">'+reply.get('datetime')+'</div>'
+				+'		</div>'
+				+'	</div>'
+				+'	<div style="clear:both;"></div>'					
+				);
+				this.$('.msglist').append(msgli);
+			},	
+		});
 		
 		var ChatsView = Backbone.View.extend({
 			el: '#chat-test',
@@ -1891,6 +1925,7 @@
 						loginUser.trigger('login');
 						dfd.reject();
 					}else{
+						hEvent();
 						loginUser.trigger('login');
 						dfd.resolve();
 					}
@@ -1909,8 +1944,42 @@
 			}
 		});
 		
+		
+		////////////////Global Events start////////////////
+		var globalEvents = {
+			reply:function(data){
+				var reply = data;
+				myShop.items.each(function(itme){
+					item.chats.each(function(chat){
+						if(caht.get('id') == reply.chat){
+							reply = new Reply(reply);
+							chat.replays.add(reply);
+						}	
+					})
+				});
+			},
+			shopUpdate:funciton(){
+			}
+		};
+			
+		e = {events:[{},{}],time:time}
+		function hEvet(e){
+			_.each(e.events,funciton(event){
+				globalEvents[event.eventType](event.eventData);
+			});
+			
+			$.post('url',{time:e.time}).done(function(e){
+				hEvent(e);
+			}).fail();
+		};
+		////////////////Global Events end////////////////
+		
 			$(function(){
 				new AppView();
+				
+				
+				//reply {chat, speaker}
+				//chat {item, buyer, seller}
 			});
 		</script>
 	</body>
