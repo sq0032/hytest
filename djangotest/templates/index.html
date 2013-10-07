@@ -1736,9 +1736,8 @@
 				this.chat = this.model;
 
 			
-				this.render();
+				this.initChat();
 				
-				this.listenTo( this.chat.replys, 'reset', this.renderHead);
 				this.listenTo( this.chat.replys, 'reset', this.renderBody);
 				this.listenTo( this.chat.replys, 'add', this.addReply);
 			},
@@ -1746,6 +1745,40 @@
 				'click #sendBtn':'sendReply',
 				'click .close':'close',
 				'click .open':'open'
+			},
+			initChat:function(){
+				//Chatroom Modal
+				this.$el.html(
+					'<div class="modal-dialog">\
+						<div class="modal-content">\
+							<div class="modal-header">\
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\
+								<h4 class="modal-title">'+this.chat.get('itme')+'</h4>\
+							</div>\
+							<div class="modal-body" style="background-color: #E8E8E8">\
+								<ul class="msglist">\
+								</ul>\
+							</div>\
+							<div class="modal-footer" style="margin-top:0px">\
+								<input type="text" class="form-control pull-left" id="massage" placeholder="Enter message">\
+								<button type="button" class="btn btn-default" id="sendBtn">送出</button>\
+							</div>\
+						</div>\
+					</div>'
+				);
+			},
+			renderBody:function(){
+				console.log(this.chat.replys.length);
+				$('.msglist').html('');
+				this.chat.replys.each(function(reply){
+					this.renderReply(reply);
+				}, this);
+				$('.msglist').scrollTop(8000);
+			},
+			renderReply:function(reply){
+				var replyView = new ReplyView({model:reply});
+				replyView.chat = this.chat;
+				this.$('.msglist').append(replyView.renderReply().el);
 			},
 			sendReply:function(){
 				if($("#massage").val()){
@@ -1756,7 +1789,7 @@
 					};
 					
 					var reply = new Reply(data);
-					reply.parent = this.chat;
+					reply.chat = this.chat;
 					reply.url = 'chats/'+this.chat.get('id');
 					this.listenTo(reply,'sync',this.syncReply);
 					reply.save();
@@ -1780,59 +1813,6 @@
 				alert(reply.get('reply'))
 				alert(reply.get('ip'))
 			},
-			render:function(){
-				//Chatroom Modal
-				this.$el.html(
-					'<div class="modal-dialog">\
-						<div class="modal-content">\
-							<div class="modal-header">\
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\
-								<h4 class="modal-title">Modal title</h4>\
-							</div>\
-							<div class="modal-body" style="background-color: #E8E8E8">\
-								<ul class="msglist">\
-								</ul>\
-							</div>\
-							<div class="modal-footer" style="margin-top:0px">\
-								<input type="text" class="form-control pull-left" id="massage" placeholder="Enter message">\
-								<button type="button" class="btn btn-default" id="sendBtn">送出</button>\
-							</div>\
-						</div>\
-					</div>'
-				);
-			},
-			renderBody:function(){
-				console.log(this.chat.replys.length);
-				$('.msglist').html('');
-				this.chat.replys.each(function(reply){
-					this.renderReply(reply);
-				}, this);
-				$('.msglist').scrollTop(8000);
-			},
-			renderReply:function(reply){
-				if(reply.get('speaker')==this.chat.get('seller')){
-					var div = '	<div class="pull-right msgbox msg-me">'
-				}
-				else{
-					var div = '	<div class="pull-left msgbox msg-other">'
-				}
-
-				var msgli = $("<li></li>").html(
-					div
-				+'		<div class="speaker">'+reply.get('speaker')+'</div>'
-				+'		<div class="">'+reply.get('reply')+'</div>'
-				+'		<div class="time" style="width:100%">'
-				+'			<div class="pull-right">'+reply.get('datetime')+'</div>'
-				+'		</div>'
-				+'	</div>'
-				+'	<div style="clear:both;"></div>'					
-				);
-				this.$('.msglist').append(msgli);
-			},
-			renderHead:function(){
-
-				this.$('.modal-title').html(this.chat.get('item'));		
-			},
 			close:function(){
 				this.remove();
 			},
@@ -1844,7 +1824,7 @@
 		});
 		
 		var ReplyView = Backbone.View.extend({
-			className: 'msgbox',
+			tagName: 'li',
 			initialize: function(){
 				this.reply = this.model;
 				
@@ -1852,25 +1832,26 @@
 				//this.listenTo( this.chat.replys, 'reset', this.renderBody);
 				//this.listenTo( this.chat.replys, 'add', this.addReply);
 			},
-			renderReply:function(reply){
-				if(reply.get('speaker')==this.parent.get('seller')){
+			renderReply:function(){
+				if(this.reply.get('speaker')==this.chat.get('seller')){
 					var div = '	<div class="pull-right msgbox msg-me">'
 				}
 				else{
 					var div = '	<div class="pull-left msgbox msg-other">'
 				}
 
-				var msgli = $("<li></li>").html(
+				this.$el.html(
 					div
-				+'		<div class="speaker">'+reply.get('speaker')+'</div>'
-				+'		<div class="">'+reply.get('reply')+'</div>'
+				+'		<div class="speaker">'+this.reply.get('speaker')+'</div>'
+				+'		<div class="">'+this.reply.get('reply')+'</div>'
 				+'		<div class="time" style="width:100%">'
-				+'			<div class="pull-right">'+reply.get('datetime')+'</div>'
+				+'			<div class="pull-right">'+this.reply.get('datetime')+'</div>'
 				+'		</div>'
 				+'	</div>'
 				+'	<div style="clear:both;"></div>'					
 				);
-				this.$('.msglist').append(msgli);
+				
+				return this;
 			},	
 		});
 		
@@ -1958,19 +1939,19 @@
 					})
 				});
 			},
-			shopUpdate:funciton(){
+			shopUpdate:function(){
 			}
 		};
 			
-		e = {events:[{},{}],time:time}
-		function hEvet(e){
-			_.each(e.events,funciton(event){
-				globalEvents[event.eventType](event.eventData);
-			});
+		//e = {events:[{},{}],time:time};
+		function hEvent(e){
+			//_.each(e.events,funciton(event){
+			//	globalEvents[event.eventType](event.eventData);
+			//});
 			
-			$.post('url',{time:e.time}).done(function(e){
-				hEvent(e);
-			}).fail();
+			//$.post('url',{time:e.time}).done(function(e){
+			//	hEvent(e);
+			//}).fail();
 		};
 		////////////////Global Events end////////////////
 		
