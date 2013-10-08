@@ -1791,33 +1791,23 @@
 					var reply = new Reply(data);
 					reply.chat = this.chat;
 					reply.url = 'chats/'+this.chat.get('id');
-					this.listenTo(reply,'sync',this.syncReply);
-					reply.save();
 					this.chat.replys.add(reply);
 					$("#massage").val('');
-					
-					//this.chat.replys.fetch({reset:true});
-					//alert(this.chat.replys.length);
-					//alert(this.chat.replys.get(this.chat.replys.length).get('reply'));
-					//this.addReply(Data);
-
 				}
 			},
 			addReply:function(reply){
-				//alert('send message');
-				//alert(this.chat.replys.length);
-				//var len = 1;
-				//alert(this.chat.replys.get(len).get('reply'));
-				//alert(this.chat.replys.get(len).get('speaker'));
-				this.renderReply(reply);
-				alert(reply.get('reply'))
-				alert(reply.get('ip'))
+				var replyView = new ReplyView({model:reply});
+				replyView.chat = this.chat;
+				this.$('.msglist').append(replyView.renderReply().el);
+				
+				reply.save().fail(function(){
+					reply.trigger('fail');
+				});
 			},
 			close:function(){
 				this.remove();
 			},
 			open:function(){
-				//this.render();
 				this.chat.replys.fetch({reset:true});
 				this.$el.modal('show');
 			}
@@ -1827,10 +1817,12 @@
 			tagName: 'li',
 			initialize: function(){
 				this.reply = this.model;
-				
-				//this.listenTo( this.chat.replys, 'reset', this.renderHead);
-				//this.listenTo( this.chat.replys, 'reset', this.renderBody);
-				//this.listenTo( this.chat.replys, 'add', this.addReply);
+
+				this.listenTo( this.reply, 'sync', this.renderTime);
+				this.listenTo( this.reply, 'fail', this.renderError);
+			},
+			events:{
+				'click .btn-xs':'resend'
 			},
 			renderReply:function(){
 				if(this.reply.get('speaker')==this.chat.get('seller')){
@@ -1839,20 +1831,43 @@
 				else{
 					var div = '	<div class="pull-left msgbox msg-other">'
 				}
-
+				
+				if(typeof this.reply.get('datetime')==='undefined'){
+					var time = '傳送中…';
+				}
+				else{
+					var time = this.reply.get('datetime');
+				}
+				
 				this.$el.html(
 					div
 				+'		<div class="speaker">'+this.reply.get('speaker')+'</div>'
 				+'		<div class="">'+this.reply.get('reply')+'</div>'
-				+'		<div class="time" style="width:100%">'
-				+'			<div class="pull-right">'+this.reply.get('datetime')+'</div>'
+				+'		<div class="" style="width:100%">'
+				+'			<div class="pull-right time">'+time+'</div>'
 				+'		</div>'
 				+'	</div>'
 				+'	<div style="clear:both;"></div>'					
 				);
 				
 				return this;
-			},	
+			},
+			renderTime: function(){
+				this.$('.time').html(this.reply.get('datetime'));
+			},
+			renderError: function(){
+				this.$('.time').html(
+					'傳送失敗<button type="button" class="btn btn-default btn-xs">重新傳送</button>'				
+				);
+			},
+			resend: function(){
+				this.$('.time').html('傳送中…');
+				console.log(this);
+				var reply = this.reply;
+				reply.save().fail(function(){
+					reply.trigger('fail');
+				});
+			}
 		});
 		
 		var ChatsView = Backbone.View.extend({

@@ -42,6 +42,7 @@ def reply(request, chat_id):
 		
 		serializer = ReplySerializer(reply)
 		json = JSONRenderer().render(serializer.data)
+		print(json)
 		return HttpResponse(json)
 	
 	elif request.method == 'GET':
