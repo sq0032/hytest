@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 	url(r'^create-user$', views.createUser),
 	url(r'^password$', views.changePassword),
 	url(r'^verify$', views.verifyEmail),
+	url(r'^events$', views.events),
 	#url(r'^users/(?P<user_id>\d+)$', views.userDetail.as_view()),
 	
 	

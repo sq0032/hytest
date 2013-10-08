@@ -288,7 +288,20 @@ def changePassword(request):
 	print 'change passowrd'
 	return HttpResponse()
 
-
+import time
+import json
+def events(request):
+	
+	event = {
+		"events":[{
+			"eventType":"test",
+			"eventData":"this is long-polling test"
+		}]
+	};
+	
+	print(json.dumps(event))
+	time.sleep(2)
+	return HttpResponse(json.dumps(event))
 	
 '''
 class userDetail(APIView):

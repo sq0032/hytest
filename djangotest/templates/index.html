@@ -1890,6 +1890,9 @@
 				this.userPanel = new UserPanelView();
 				
 				itemCategorys.fetch()
+				
+				//e = {events:[{},{}],time:time};
+				var e = {events:[]};
 				loginUser.fetch().pipe(function(){
 					var dfd = $.Deferred();
 					if(loginUser.isNew()){
@@ -1898,7 +1901,8 @@
 						loginUser.trigger('login');
 						dfd.reject();
 					}else{
-						hEvent();
+					
+						hEvent(e);
 						loginUser.trigger('login');
 						dfd.resolve();
 					}
@@ -1927,30 +1931,40 @@
 						if(caht.get('id') == reply.chat){
 							reply = new Reply(reply);
 							chat.replays.add(reply);
-						}	
+						}
 					})
 				});
 			},
 			shopUpdate:function(){
+				//do something
+			},
+			test:function(data){
+				console.log(data);
 			}
 		};
 			
-		//e = {events:[{},{}],time:time};
+
 		function hEvent(e){
-			//_.each(e.events,funciton(event){
-			//	globalEvents[event.eventType](event.eventData);
-			//});
+			if(typeof e === 'string'){
+				e = JSON.parse(e);
+			};
+			console.log(e);
+			_.each(e.events,function(event){
+				this[event.eventType](event.eventData);
+			}, globalEvents);
 			
-			//$.post('url',{time:e.time}).done(function(e){
-			//	hEvent(e);
-			//}).fail();
+			//{time:e.time}
+			$.post('accounts/events').done(function(e){
+				hEvent(e);
+			}).fail(function(){
+				console.log('connection error');
+			});
 		};
 		////////////////Global Events end////////////////
 		
 			$(function(){
 				new AppView();
-				
-				
+
 				//reply {chat, speaker}
 				//chat {item, buyer, seller}
 			});
