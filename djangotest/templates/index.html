@@ -1651,86 +1651,9 @@
 				});
 			}
 		});
-		
-		function confirm(message,func){
-			var $modal= $(
-				'<div class="modal fade" tabindex="-1">\
-					<div class="modal-dialog">\
-						<div class="modal-content">\
-							<div class="modal-header">\
-								<h4 class="modal-title">確認</h4>\
-							</div>\
-							<div class="modal-body">\
-								<div class="btn-confirm-message"></div>\
-							</div>\
-							<div class="modal-footer">\
-								<button class="btn btn-default btn-confirm-cancel">取消</button>\
-								<button class="btn btn-primary btn-confirm-ok">確定</button>\
-							</div>\
-						</div>\
-					</div>\
-				</div>').modal('show');
-			console.log($modal);
-			var $msg = $modal.find('.btn-confirm-message').text(message);
-			var $ok = $modal.find('.btn-confirm-ok').click(function(){
-				$modal.on('hidden.bs.modal',function(){
-					$modal.remove();
-					$modal = null;
-				}).modal('hide');
-				func(true);
-			});
-			
-			var $cancel = $modal.find('.btn-confirm-cancel').click(function(){
-				$modal.on('hidden.bs.modal',function(){
-					$modal.remove();
-					$modal = null;
-				}).modal('hide');
-				func(false);
-			});
-		}
-		
-		function msgbox(message){
-			var $modal= $(
-				'<div class="modal fade" tabindex="-1">\
-					<div class="modal-dialog">\
-						<div class="modal-content">\
-							<div class="modal-header">\
-								<h4 class="modal-title">確認</h4>\
-							</div>\
-							<div class="modal-body">\
-								<div class="btn-confirm-message"></div>\
-							</div>\
-							<div class="modal-footer">\
-								<button class="btn btn-primary btn-confirm-ok">確定</button>\
-							</div>\
-						</div>\
-					</div>\
-				</div>').modal('show');
-			console.log($modal);
-			var $msg = $modal.find('.btn-confirm-message').text(message);
-			var $ok = $modal.find('.btn-confirm-ok').click(function(){
-				$modal.on('hidden.bs.modal',function(){
-					$modal.remove();
-					$modal = null;
-				}).modal('hide');
-			});
-		}
-		
-		var myRouter = Backbone.Router.extend({
-			routes: {
-				":test": "testfunc",
-			},
-			testfunc: function(p1) {
-				alert('testfunc: '+p1);
-				console.log('testfunc: '+p1);
-			}
-		});
-		new myRouter();
-		Backbone.history.start();
-		
-		//////////Chat system Test (backbone) start//////////
+
+		//ChatroomModalView
 		var ChatroomModalView = Backbone.View.extend({
-			//el: '#chatroomModal',
 			className:'modal fade',
 			initialize: function(){
 				this.chat = this.model;
@@ -1742,7 +1665,7 @@
 				this.listenTo( this.chat.replys, 'add', this.addReply);
 			},
 			events:{
-				'click #sendBtn':'sendReply',
+				'click .modal-footer>button':'sendReply',
 				'click .close':'close',
 				'click .open':'open'
 			},
@@ -1760,8 +1683,8 @@
 								</ul>\
 							</div>\
 							<div class="modal-footer" style="margin-top:0px">\
-								<input type="text" class="form-control pull-left" id="massage" placeholder="Enter message">\
-								<button type="button" class="btn btn-default" id="sendBtn">送出</button>\
+								<input type="text" class="form-control pull-left" placeholder="Enter message">\
+								<button type="button" class="btn btn-default">送出</button>\
 							</div>\
 						</div>\
 					</div>'
@@ -1773,7 +1696,7 @@
 				this.chat.replys.each(function(reply){
 					this.renderReply(reply);
 				}, this);
-				$('.msglist').scrollTop(8000);
+				$('.msglist').scrollTop(8000);	//scroll bar位置還要修改
 			},
 			renderReply:function(reply){
 				var replyView = new ReplyView({model:reply});
@@ -1781,9 +1704,9 @@
 				this.$('.msglist').append(replyView.renderReply().el);
 			},
 			sendReply:function(){
-				if($("#massage").val()){
+				if($(".modal-footer>input").val()){
 					var data={
-						reply:$("#massage").val(),
+						reply:$(".modal-footer>input").val(),
 						speaker : this.chat.get('seller'),
 						receiver : this.chat.get('buyer'),
 					};
@@ -1792,7 +1715,7 @@
 					reply.chat = this.chat;
 					reply.url = 'chats/'+this.chat.get('id');
 					this.chat.replys.add(reply);
-					$("#massage").val('');
+					$(".modal-footer>input").val('');
 				}
 			},
 			addReply:function(reply){
@@ -1870,29 +1793,83 @@
 			}
 		});
 		
-		var ChatsView = Backbone.View.extend({
-			el: '#chat-test',
-			initialize: function(){
-				this.collection = new Chats();
-				this.collection.fetch({reset: true});
-				this.render();
-				
-				this.listenTo(this.collection, 'reset', this.render);
+		
+		function confirm(message,func){
+			var $modal= $(
+				'<div class="modal fade" tabindex="-1">\
+					<div class="modal-dialog">\
+						<div class="modal-content">\
+							<div class="modal-header">\
+								<h4 class="modal-title">確認</h4>\
+							</div>\
+							<div class="modal-body">\
+								<div class="btn-confirm-message"></div>\
+							</div>\
+							<div class="modal-footer">\
+								<button class="btn btn-default btn-confirm-cancel">取消</button>\
+								<button class="btn btn-primary btn-confirm-ok">確定</button>\
+							</div>\
+						</div>\
+					</div>\
+				</div>').modal('show');
+			console.log($modal);
+			var $msg = $modal.find('.btn-confirm-message').text(message);
+			var $ok = $modal.find('.btn-confirm-ok').click(function(){
+				$modal.on('hidden.bs.modal',function(){
+					$modal.remove();
+					$modal = null;
+				}).modal('hide');
+				func(true);
+			});
+			
+			var $cancel = $modal.find('.btn-confirm-cancel').click(function(){
+				$modal.on('hidden.bs.modal',function(){
+					$modal.remove();
+					$modal = null;
+				}).modal('hide');
+				func(false);
+			});
+		}
+		
+		function msgbox(message){
+			var $modal= $(
+				'<div class="modal fade" tabindex="-1">\
+					<div class="modal-dialog">\
+						<div class="modal-content">\
+							<div class="modal-header">\
+								<h4 class="modal-title">確認</h4>\
+							</div>\
+							<div class="modal-body">\
+								<div class="btn-confirm-message"></div>\
+							</div>\
+							<div class="modal-footer">\
+								<button class="btn btn-primary btn-confirm-ok">確定</button>\
+							</div>\
+						</div>\
+					</div>\
+				</div>').modal('show');
+			console.log($modal);
+			var $msg = $modal.find('.btn-confirm-message').text(message);
+			var $ok = $modal.find('.btn-confirm-ok').click(function(){
+				$modal.on('hidden.bs.modal',function(){
+					$modal.remove();
+					$modal = null;
+				}).modal('hide');
+			});
+		}
+		
+		var myRouter = Backbone.Router.extend({
+			routes: {
+				":test": "testfunc",
 			},
-			render: function(){
-				this.collection.each(function(item){
-					this.renderChat(item);
-				}, this);
-			},
-			renderChat: function(item){
-				var chatView = new ChatView({
-					model: item
-				});
-				
-				this.$el.append(chatView.render().el);
-			},
+			testfunc: function(p1) {
+				alert('testfunc: '+p1);
+				console.log('testfunc: '+p1);
+			}
 		});
-		//////////Chat system Test (backbone) end//////////
+		new myRouter();
+		Backbone.history.start();
+		
 
 		var AppView = Backbone.View.extend({
 			el: 'body',
