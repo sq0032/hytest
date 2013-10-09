@@ -33,8 +33,6 @@ class Event(models.Model):
 	def __unicode__(self):
 		return "%s:%s" % (self.user.username, self.event.type)
 
-
-
 '''
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser

@@ -319,5 +319,12 @@
     "fields": {
         "type": "announcement"
     }
+},
+{
+    "pk": 3, 
+    "model": "accounts.eventtype", 
+    "fields": {
+        "type": "test"
+    }
 }
 ]
