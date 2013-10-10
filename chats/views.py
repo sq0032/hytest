@@ -27,27 +27,47 @@ def getList(request):
 @api_view(['GET','POST'])
 def reply(request, chat_id):
 	if request.method == 'POST':
-		name = request.user.username
-		speaker = User.objects.get(username=name)
+		#Create a 'newmsg' event for message receiver
+		receiver = User.objects.get(username=request.DATA.get('receiver'))
+		type = EventType.objects.get(type='newmsg')
+		event = Event.objects.create(user=receiver, event=type)
+		
+		#Create a reply
 		chat = Chat.objects.get(id=chat_id)
 		reply = Reply.objects.create(chat	=chat, 
-									speaker	=speaker, 
+									speaker	=request.user, 
 									ip		='123.123.123.123', 
-									reply	=request.DATA.get('reply'))
-		
-		
-		receiver = User.objects.get(username=request.DATA.get('receiver'))
-		event = EventType.objects.get(type='newmsg')
-		Event.objects.create(user=receiver, event=event)
-		
+									reply	=request.DATA.get('reply'),
+									event	=event)
+
+		#Create json for return
 		serializer = ReplySerializer(reply)
+		serializer.data['datetime']=reply.event.datetime
 		json = JSONRenderer().render(serializer.data)
-		print(json)
 		return HttpResponse(json)
 	
 	elif request.method == 'GET':
 		reply = Reply.objects.filter(chat__id=chat_id)
 		serializer = ReplySerializer(reply, many=True)
+		for index in range(len(reply)):
+			serializer.data[index]['datetime']=reply[index].event.datetime
 		json = JSONRenderer().render(serializer.data)
 		return HttpResponse(json)
 
+def testreply(request):
+	chat = Chat.objects.get(id=1)
+
+	receiver = chat.seller
+	type = EventType.objects.get(type='newmsg')
+	event = Event.objects.create(user=receiver, event=type)
+
+	speaker = chat.buyer
+	print(speaker)
+	reply = Reply.objects.create(chat	=chat, 
+								speaker	=speaker, 
+								ip		='123.123.123.123', 
+								reply	='test reply',
+								event	=event)
+	
+	
+	return HttpResponse()

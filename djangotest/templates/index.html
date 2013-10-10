@@ -1662,7 +1662,7 @@
 				this.initChat();
 				
 				this.listenTo( this.chat.replys, 'reset', this.renderBody);
-				this.listenTo( this.chat.replys, 'add', this.addReply);
+				this.listenTo( this.chat.replys, 'add', this.renderReply);
 			},
 			events:{
 				'click .modal-footer>button':'sendReply',
@@ -1676,7 +1676,7 @@
 						<div class="modal-content">\
 							<div class="modal-header">\
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\
-								<h4 class="modal-title">'+this.chat.get('itme')+'</h4>\
+								<h4 class="modal-title">'+this.chat.get('item')+'</h4>\
 							</div>\
 							<div class="modal-body" style="background-color: #E8E8E8">\
 								<ul class="msglist">\
@@ -1696,12 +1696,18 @@
 				this.chat.replys.each(function(reply){
 					this.renderReply(reply);
 				}, this);
-				$('.msglist').scrollTop(8000);	//scroll bar位置還要修改
+				$('.msglist').scrollTop(8000);	//scroll bar位置還要修改 #BW15B
 			},
 			renderReply:function(reply){
 				var replyView = new ReplyView({model:reply});
 				replyView.chat = this.chat;
 				this.$('.msglist').append(replyView.renderReply().el);
+			
+				if(typeof reply.get('datetime')=='undefined'){
+					reply.save().fail(function(){
+						reply.trigger('fail');
+					});					
+				}
 			},
 			sendReply:function(){
 				if($(".modal-footer>input").val()){
@@ -1718,15 +1724,7 @@
 					$(".modal-footer>input").val('');
 				}
 			},
-			addReply:function(reply){
-				var replyView = new ReplyView({model:reply});
-				replyView.chat = this.chat;
-				this.$('.msglist').append(replyView.renderReply().el);
-				
-				reply.save().fail(function(){
-					reply.trigger('fail');
-				});
-			},
+
 			close:function(){
 				this.remove();
 			},
@@ -1924,16 +1922,20 @@
 		
 		////////////////Global Events start////////////////
 		var globalEvents = {
-			reply:function(data){
+			newmsg:function(data){
 				var reply = data;
-				myShop.items.each(function(itme){
+				myShop.items.each(function(item){
+					console.log(item.get('name'));
 					item.chats.each(function(chat){
-						if(caht.get('id') == reply.chat){
+					//console.log("chat.get('id'): "+chat.get('id'));
+					//console.log("reply.chat: "+reply.chat);
+						if(chat.get('id') == reply.chat){
 							reply = new Reply(reply);
-							chat.replays.add(reply);
+							chat.replys.add(reply);
 						}
-					})
+					});
 				});
+				console.log('receive a new messgae')
 			},
 			shopUpdate:function(){
 				//do something

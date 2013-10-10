@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from items.models import Item
+from accounts.models import Event
 
 # Create your models here.
 from datetime import datetime
@@ -23,7 +24,7 @@ class Reply(models.Model):
 	reply = models.TextField()
 	speaker = models.ForeignKey(User, related_name='speaker')
 	ip = models.CharField(max_length=15)
-	datetime = models.DateTimeField(auto_now_add=True)
+	event = models.ForeignKey(Event)
 
 	def __unicode__(self):
 		return '%s says:%s' % (self.speaker, self.reply)

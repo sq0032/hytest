@@ -291,20 +291,34 @@ def changePassword(request):
 import time
 import json
 from django.utils import timezone
+
+@login_required
 def events(request):
+	#Check datetime
 	try:
-		begin = request.POST['time']
-	except KeyError:
+		#begin = request.POST['time']
+		begin = timezone.now()
+	except:
 		begin = timezone.now()
 
+	#now = timezone.now()
+	#if begin > timezone.now():
+	#	print('11111')
+	#elif begin < timezone.now():
+	#	print('22222')
+
+	print('begin')
+	#Query for new events
 	has_event = False
 	while has_event != True:
+		print('event')
 		time.sleep(5)
 		end = timezone.now()
 		models = Event.objects.filter(user__username=request.user.username, datetime__range=[begin, end])
 		if models:
 			has_event = True
 
+	#Retrieve event data in json
 	events = {"events":[],"time":str(end)}
 	count = 0
 	for event in models:
@@ -313,8 +327,20 @@ def events(request):
 		if type == 'test':
 			data = testEvent()
 			events['events'].append({"type":type, "data":data})
+		elif type == 'newmsg':
+			data = msgEvent(event)
+			events['events'].append({"type":type, "data":data})
+			#dosomething
 		
 	return HttpResponse(json.dumps(events),mimetype="application/json")
+
+from chats.models import Reply
+from chats.serializer import ReplySerializer
+def msgEvent(event):
+	reply = Reply.objects.get(event = event)
+	seri = ReplySerializer(reply)
+	seri.data['datetime']=str(reply.event.datetime)
+	return seri.data
 	
 def addEvents(request):
 	eventType = EventType.objects.get(type = 'test')
