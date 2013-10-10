@@ -10,4 +10,4 @@ class ShopSerializer(serializers.ModelSerializer):
 	#items = ItemSerializer(required=False,many=True)
 	class Meta:
 		model = Shop
-		fields = ('id','name','address','latitute','longtitute','description','open','owner')
+		fields = ('id','name','address','latitude','longitude','description','open','owner')

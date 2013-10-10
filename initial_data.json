@@ -250,12 +250,12 @@
     "model": "shops.shop", 
     "fields": {
         "description": "\u5546\u5e97\u4ecb\u7d39", 
-        "latitute": 25.091075, 
+        "latitude": 25.091075, 
         "items": [1,2], 
         "address": "114\u53f0\u7063\u53f0\u5317\u5e02\u5167\u6e56\u5340\u6587\u6e56\u885721\u5df7112\u5f046-12\u865f", 
         "owner": 2, 
         "open": false, 
-        "longtitute": 121.55983449999997, 
+        "longitude": 121.55983449999997, 
         "name": "123"
     }
 },

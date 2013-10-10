@@ -86,7 +86,10 @@ admin.site.unregister(Group)
 
 '''
 from django.contrib import admin
+from django.contrib.sessions.models import Session
 from accounts.models import EmailVerification, Verification
+
+admin.site.register(Session)
 
 admin.site.register(EmailVerification)
 admin.site.register(Verification)
