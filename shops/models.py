@@ -6,8 +6,8 @@ from items.models import Item
 class Shop(models.Model):
 	name = models.CharField(max_length=50)
 	address = models.CharField(max_length=100)
-	latitute = models.FloatField()
-	longtitute = models.FloatField()
+	latitude = models.FloatField()
+	longitude = models.FloatField()
 	description = models.TextField(blank=True,null=True)
 	open = models.BooleanField(default=False)
 	owner = models.ForeignKey(User,related_name="shops")

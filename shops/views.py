@@ -10,9 +10,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-from shops.serializers import ShopSerializer
 from shops.models import Shop
-
+from shops.serializers import ShopSerializer
+from items.models import Item
 from items.serializers import ItemSerializer
 
 class JSONResponse(HttpResponse):
@@ -27,14 +27,15 @@ def shopItems(request,shop_id):
 	shop = Shop.objects.get(id=shop_id)
 	if shop.owner.id != user.id:
 		return Response(status=status.HTTP_401_UNAUTHORIZED)
-	print shop_id
-	print shop.items.all()
-	serializer = ItemSerializer(shop.items.all(),many=True)
+	serializer = ItemSerializer(shop.items.filter(state=Item.ON),many=True)
 	return Response(serializer.data)
 
 class ShopsList(APIView):
 	#商店清單(未完成)
 	def get(self, request, format=None):
+		latitude = request.GET['lat']
+		longitude = request.GET['lng']
+		
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 	#建立新商店(權限尚未完成)
 	def post(self, request, format=None):

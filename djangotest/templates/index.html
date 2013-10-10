@@ -806,6 +806,7 @@
 		
 		var Chats = Backbone.Collection.extend({
 			model: Chat,
+			url: 'chats/list'
 		});
 		
 		var Reply = Backbone.Model.extend({
@@ -862,7 +863,11 @@
 			className: "seller-item-box",
 			events: {
 				"click .item-delete":'deleteItem',
+<<<<<<< HEAD
+				"click .chatroom-btn":"openChatroom"
+=======
 				'click .chatroom-btn': 'openChatroom'
+>>>>>>> refs/heads/W15B-2
 			},
 			initialize: function() {
 				this.item = this.model;
@@ -876,10 +881,15 @@
 			},
 			deleteItem: function(){
 				var that = this;
-				confirm('確定要刪除?',function(result){
+				confirm('確定要刪除"'+this.item.get('name')+'"?',function(result){
 					if(!result){return;}
 					that.item.destroy();
 				});
+			},
+			openChatroom: function(event){
+				var $btn = $(event.currentTarget);
+				
+				alert($btn.attr('data-chat-id'))
 			},
 			openChatroom:function(event){
 				var $btn = $(event.currentTarget);
@@ -896,7 +906,11 @@
 				this.$el.empty();
 				
 				var $chatList = $('<div class="chat-list"></div>')
+<<<<<<< HEAD
+				this.item.chats.each(function(chat){
+=======
 				this.item.chats.each(function(chat, index){
+>>>>>>> refs/heads/W15B-2
 					$chatList.append($('<div>buyer_name:'+chat.get('buyer')+'<button class="chatroom-btn" data-chat-id='+chat.get('id')+'>chat room</button></div>'));
 				});
 				
@@ -974,14 +988,14 @@
 				var address = this.$shopAddress.val();
 				var description = this.$shopDesc.val();
 				var latlng = this.marker.getPosition();
-				var latitute = latlng.lat();
-				var longtitute = latlng.lng();
+				var latitude = latlng.lat();
+				var longitude = latlng.lng();
 				myShop.set({
 					name:name,
 					address:address,
 					description:description,
-					latitute:latitute,
-					longtitute:longtitute
+					latitude:latitude,
+					longitude:longitude
 				});
 				myShop.save().done(function(){
 					alert('修改成功');
@@ -1027,7 +1041,7 @@
 						that.$shopName.val(myShop.get('name'));
 						that.$shopAddress.val(myShop.get('address'));
 						that.$shopDesc.val(myShop.get('description'));
-						var latlng = new google.maps.LatLng(myShop.get('latitute'),myShop.get('longtitute'));
+						var latlng = new google.maps.LatLng(myShop.get('latitude'),myShop.get('longitude'));
 						that.marker.setPosition(latlng);
 					});
 				}
@@ -1141,7 +1155,6 @@
 				}
 			},
 			checkItemDesc: function(){
-				var view = this;
 				var description = this.description.val();
 				if(description.length>100){
 					this.descriptionField.showError('敘述文字不可超過100字');
@@ -1254,12 +1267,21 @@
 					zoom: 14,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
-				this.map = new google.maps.Map(this.el, mapOptions);
+				var map = this.map = new google.maps.Map(this.el, mapOptions);
 				var noPoi = [{
 					featureType: "poi",
 					stylers: [{ visibility: "off" }]
 				}];
 				this.map.setOptions({styles: noPoi});
+				
+				var timer =null;
+				google.maps.event.addListener(map, 'bounds_changed', function() {
+					clearTimeout(timer);
+					timer = setTimeout(function(){
+						var bounds = map.getBounds();
+						console.log(bounds.getNorthEast(),bounds.getSouthWest());
+					},1000);
+				});
 			},
 			shown:function(){
 				google.maps.event.trigger(this.map, "resize");
@@ -1881,7 +1903,7 @@
 				this.infoEmailModal = new InfoEmailView();
 				
 				//Chat system Test
-				//this.Chats = new ChatsView();
+				this.Chats = new ChatsView();
 				
 				this.sellerPanel = new SellerPanelView();
 				this.mapPanel = new MapPanelView();
