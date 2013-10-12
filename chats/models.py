@@ -24,7 +24,7 @@ class Reply(models.Model):
 	reply = models.TextField()
 	speaker = models.ForeignKey(User, related_name='speaker')
 	ip = models.CharField(max_length=15)
-	event = models.ForeignKey(Event)
+	datetime = models.DateTimeField(auto_now_add=True)
 
 	def __unicode__(self):
 		return '%s says:%s' % (self.speaker, self.reply)
