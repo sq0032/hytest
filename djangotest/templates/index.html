@@ -116,6 +116,10 @@
 			content:" 說:"
 		}
 		
+		.chatroom-btn.newmsg{
+			background-color: red;
+		}
+		
 		@media (min-width: 1200px) {
 			.modal-dialog-large {
 				width: 1170px;
@@ -881,11 +885,6 @@
 					that.item.destroy();
 				});
 			},
-			openChatroom: function(event){
-				var $btn = $(event.currentTarget);
-				
-				alert($btn.attr('data-chat-id'))
-			},
 			openChatroom:function(event){
 				var $btn = $(event.currentTarget);
 				var chatID = $btn.attr('data-chat-id');
@@ -894,6 +893,7 @@
 				});
 				var chatroom = new ChatroomModalView({model:chat});
 				chatroom.open();
+				$btn.removeClass('newmsg');
 			},
 			render: function(){
 				var that = this;
@@ -902,7 +902,18 @@
 				
 				var $chatList = $('<div class="chat-list"></div>')
 				this.item.chats.each(function(chat){
-					$chatList.append($('<div>buyer_name:'+chat.get('buyer')+'<button class="chatroom-btn" data-chat-id='+chat.get('id')+'>chat room</button></div>'));
+					var buyer = chat.get('buyer');
+					var id = chat.get('id');
+					var img = "./img/chat.png";
+					var seen = chat.get('seller_seen');
+					console.log('chat '+id+' seller_seen='+seen);
+					$chatList.append($(
+						'<div>buyer_name:'+buyer
+						+'	<button class="chatroom-btn '+(seen?'':'newmsg')+'" data-chat-id='+id+'>\
+								<img src='+img+'>\
+							</button>\
+						</div>'
+						));
 				});
 				
 				this.$el.append('<button class="item-delete">刪除</button>').append(this.itemBox.el).append($chatList);
@@ -1739,6 +1750,7 @@
 			},
 
 			close:function(){
+				this.chat.replys.reset();
 				this.remove();
 			},
 			open:function(){
@@ -1954,13 +1966,17 @@
 					//console.log("chat.get('id'): "+chat.get('id'));
 					//console.log("reply.chat: "+reply.chat);
 						if(chat.get('id') == reply.chat){
-							chat.replys.each(function(existReply){
-								//console.log(existReply.get('id'));
-								existReply.get('id') == reply.id;
-								return;
-							});
-							reply = new Reply(reply);
-							chat.replys.add(reply);
+							if(chat.replys.length==0){
+								$("button.chatroom-btn[data-chat-id="+chat.get('id')+"]").addClass('newmsg');
+							}
+							else{
+								chat.replys.each(function(existReply){
+									existReply.get('id') == reply.id;
+									return;
+								});
+								reply = new Reply(reply);
+								chat.replys.add(reply);
+							}
 						}
 					});
 				});

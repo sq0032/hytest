@@ -40,21 +40,39 @@ def reply(request, chat_id):
 		type = EventType.objects.get(type='newmsg')
 		Event.objects.create(user=receiver, event=type, data_id=reply.id)
 		Event.objects.create(user=request.user, event=type, data_id=reply.id)
-		#Event.objects.create(user=request.user, event=type)
 
-		#Create json for return
+		#Set chat "seen" attribute
+		if reqeust.user == chat.seller:
+			chat.buyer_seen = False
+		elif reqeust.user == chat.buyer:
+			chat.seller_seen = False
+		chat.save()
+
+		#Serializer json for return
 		serializer = ReplySerializer(reply)
 		json = JSONRenderer().render(serializer.data)
 		return HttpResponse(json)
 	
 	elif request.method == 'GET':
 		reply = Reply.objects.filter(chat__id=chat_id)
+		
+		#Set chat "seen" attribute as True
+		if reply:
+			if request.user == reply[0].chat.seller:
+				reply[0].chat.seller_seen = True
+			elif request.user == reply[0].chat.buyer:
+				reply[0].chat.buyer_seen = True
+			reply[0].chat.save()
+		
+		#Serializer json for return
 		serializer = ReplySerializer(reply, many=True)
 		json = JSONRenderer().render(serializer.data)
 		return HttpResponse(json)
 
 def testreply(request):
 	chat = Chat.objects.get(id=1)
+	chat.seller_seen = False
+	chat.save()
 
 	speaker = chat.buyer
 	print(speaker)

@@ -317,10 +317,7 @@ def events(request):
 	for event in models:
 		seri = EventSerializer(event)
 		type = seri.data['event']
-		if type == 'test':
-			data = testEvent()
-			events['events'].append({"type":type, "data":data})
-		elif type == 'newmsg':
+		if type == 'newmsg':
 			data = msgEvent(event)
 			events['events'].append({"type":type, "data":data})
 	
@@ -336,14 +333,6 @@ def msgEvent(event):
 	seri = ReplySerializer(reply)
 	return seri.data
 	
-def addEvents(request):
-	eventType = EventType.objects.get(type = 'test')
-	event = Event.objects.create(user=request.user, event=eventType)
-	
-	return HttpResponse('addEvent')
-
-def testEvent():
-	return 'Test Event'
 
 '''
 class userDetail(APIView):
