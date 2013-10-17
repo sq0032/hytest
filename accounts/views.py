@@ -17,6 +17,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from accounts.serializers import *
 from accounts.models import *
+from shops.models import Shop
 from django.contrib.sessions.models import Session
 
 #圖形驗證碼
@@ -333,6 +334,36 @@ def msgEvent(event):
 	seri = ReplySerializer(reply)
 	return seri.data
 	
+
+def users(request):
+	i = 0
+	while(i<100):
+		if i<10:
+			num = '00%s'%(i)
+		elif i<100:
+			num = '0%s'%(i)
+		elif i==100:
+			num = '100'
+		name = 'user'+num
+		i+=1
+		
+		try:
+			user = User(username=name, password=name)
+			user.save()
+		except:
+			user = User.objects.get(username=name)
+		
+		lat = 123.5;
+		lon = 123.5;
+		shop = Shop(name 		= name+'\'s shop', 
+					latitude 	= lat,
+					longitude	= lon,
+					owner		= user)
+		print shop.name
+		shop.save()
+
+	return HttpResponse()
+
 
 '''
 class userDetail(APIView):
