@@ -42,7 +42,7 @@ def reply(request, chat_id):
 		Event.objects.create(user=request.user, event=type, data_id=reply.id)
 
 		#Set chat "seen" attribute
-		if reqeust.user == chat.seller:
+		if request.user == chat.seller:
 			chat.buyer_seen = False
 		elif reqeust.user == chat.buyer:
 			chat.seller_seen = False

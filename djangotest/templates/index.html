@@ -894,20 +894,54 @@
 				var chatroom = new ChatroomModalView({model:chat});
 				chatroom.open();
 				$btn.removeClass('newmsg');
+				
+				//var chats_seen;
+				//this.item.chats.each(function(chat){
+				//	if(chat.get('seller_seen') == false){chats_seen = false}
+				//});
+				//alert(chats_seen);
+				//if(chats_seen == false){
+				//	$el.find("a").attr("style","color:red");
+				//	alert('chats_seen = false');
+				//}else{
+				//	$el.find("a").removeAttr("style");
+				//	alert('chats_seen = true');
+				//}
+				
 			},
 			render: function(){
 				var that = this;
 				
 				this.$el.empty();
 				
-				var $chatList = $('<div class="chat-list"></div>')
+				var num = this.item.chats.length;
+				var item_id = this.item.get('id');
+				var $chatList = $(
+					'<div class="panel-group" id="chats'+item_id+'">\
+						<div class="panel panel-default">\
+							<div class="panel-heading">\
+								<h4 class="panel-title">\
+								<a class="accordion-toggle" data-toggle="collapse" href="#item'+item_id+'">\
+									有 '+num+' 人找你\
+								</a>\
+								</h4>\
+							</div>\
+							<div id="item'+item_id+'" class="panel-collapse collapse in">\
+								<div class="chat-list">\
+								</div>\
+							</div>\
+						</div>\
+					</div>'					
+				);
+				var chats_seen;
 				this.item.chats.each(function(chat){
 					var buyer = chat.get('buyer');
 					var id = chat.get('id');
 					var img = "./img/chat.png";
 					var seen = chat.get('seller_seen');
+					if(seen == false){chats_seen = false}
 					console.log('chat '+id+' seller_seen='+seen);
-					$chatList.append($(
+					$chatList.find(".chat-list").append($(
 						'<div>buyer_name:'+buyer
 						+'	<button class="chatroom-btn '+(seen?'':'newmsg')+'" data-chat-id='+id+'>\
 								<img src='+img+'>\
@@ -915,7 +949,8 @@
 						</div>'
 						));
 				});
-				
+				if(chats_seen==false){$chatList.find("a").attr("style","color:red")}
+	
 				this.$el.append('<button class="item-delete">刪除</button>').append(this.itemBox.el).append($chatList);
 				return this;
 			}
@@ -1968,6 +2003,7 @@
 						if(chat.get('id') == reply.chat){
 							if(chat.replys.length==0){
 								$("button.chatroom-btn[data-chat-id="+chat.get('id')+"]").addClass('newmsg');
+								$("#chats"+item.get('id')+" a").attr("style","color:red");
 							}
 							else{
 								chat.replys.each(function(existReply){
