@@ -334,7 +334,7 @@ def msgEvent(event):
 	seri = ReplySerializer(reply)
 	return seri.data
 	
-
+import hashlib
 def users(request):
 	i = 0
 	while(i<100):
@@ -348,19 +348,42 @@ def users(request):
 		i+=1
 		
 		try:
-			user = User(username=name, password=name)
-			user.save()
-		except:
 			user = User.objects.get(username=name)
+			#user.set_password(str(name))
+			#user.save()
+		except:
+			user = User(username=name)
+			#user.set_password(name)
+			#user.save()
+			
+		#lat = 25.092595, 25.018884;
+		#lon = 121.458809, 121.595108
 		
-		lat = 123.5;
-		lon = 123.5;
-		shop = Shop(name 		= name+'\'s shop', 
-					latitude 	= lat,
-					longitude	= lon,
-					owner		= user)
-		print shop.name
-		shop.save()
+		lat = random.uniform(25.092595, 25.018884)
+		lon = random.uniform(121.458809, 121.595108)
+		descri = '這裡是'+name+'的商店'
+		
+		road = random.sample(['和平東路','和平東路','信義路','仁愛路','忠孝東路','忠孝西路'], 1)
+		num = random.randint(1,100)
+		address = '台北市'+road[0]+str(num)+'號'
+		print '(%s,%s)'%(lat,lon)
+		
+		try:
+			shop = Shop.objects.get(owner = user)
+			shop.latitude 	= lat
+			shop.longitude 	= lon
+			shop.description = descri
+			shop.address 	= address
+			shop.save()
+		except:
+			shop = Shop(name 		= name+'\'s shop',
+						latitude 	= lat,
+						longitude	= lon,
+						owner		= user,
+						description = descri,
+						address		= address)
+			print shop.name
+			shop.save()
 
 	return HttpResponse()
 
