@@ -53,26 +53,27 @@
 		
 		#sellerShopBox {
 			position:absolute;
-			top:70px;
-			right:15px;
-			left:15px;
+			top:0px;
+			right:0px;
+			left:0px;
 		}
 		
 		#sellerShowCase {
 			position:absolute;
-			top:140px;
-			right:15px;
-			left:15px;
-			bottom:10px;
+			top:70px;
+			right:0px;
+			left:0px;
+			bottom:-40px;
 		}
 		
 		#sellerItemsList {
-			overflow:auto;
+			overflow-y:	auto;
+			overflow-x:	hidden;
 			position:absolute;
 			top:40px;
-			right:10px;
-			left:10px;
-			bottom:10px;
+			right:0px;
+			left:0px;
+			//bottom:10px;
 		}
 		
 		#settingModal {
@@ -175,6 +176,62 @@
 			display: inline-block;
 			font-size: 1.2em;
 		}		
+
+			.item-box-price:before,
+			.item-box-price:after,
+			.item-box-condition:before,
+			.item-box-condition:after{
+				font-weight: normal;
+				font-family: "";
+				font-size: 0.8em;			
+			}
+			
+			.item-box-price:before{
+				content: "價格:";
+				float:	left;
+			}
+			
+			.item-box-price:after{
+				content: " 元";
+				float:	right;
+			}
+			
+			.item-box-condition:before{
+				content: "剩餘:";
+				float:	left;
+			}			
+	
+			.item-box-condition:after{
+				content: "件";
+				float:	right;
+			}
+	
+			.item-box-name{
+				font-size:		1.2em;
+				font-weight:	bold;
+				color:			blue;
+				overflow:		hidden;
+				//text-align:	center;
+				padding-left:	10px;
+			}
+			
+			.item-box-price,
+			.item-box-condition{
+				text-align:		center;
+				font-weight:	bold;
+				max-width:		150px;
+			}
+			
+			.item-box-attrs{
+				margin:			2px;
+				border:			1px solid;
+				border-radius:	20px;
+				font-size:		xx-small;
+				text-align:		center;
+				height:			15px;
+				background-color:	#0c0;
+				width:				80px;
+			}		
 		
 		@media (min-width: 1200px) {
 			.modal-dialog-large {
@@ -685,8 +742,8 @@
 			</div>
 			<div class="tab-pane fade" id="sellerPanel"> <!-- Seller Panel -->
 				<div class="container" style="position:relative;height:100%">
-					<div id="sellerShopPanel" sytle="text-align:center;">
-						<div class="btn-group">
+					<div id="sellerShopPanel">
+						<div class="btn-group" style="text-align:center; position:fixed; bottom:0px; z-index:1000">
 							<button type="button" class="btn btn-default"> <!-- 開始營業 -->
 								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-play"></span>
 								開始營業
@@ -714,6 +771,7 @@
 							<div id="sellerItemsList">
 								
 							</div>
+							<div style="height: 40pc"></div>
 						</div>
 					</div>
 				</div>
@@ -906,12 +964,26 @@
 				var description = this.item.get('description');
 				var attrs = this.item.get('attrs');
 				var categoryID = this.item.get('category');
+				var img = './img/goods.jpg';
+				//var img = '../media/image/items/'+this.item.get('rid')+'-s.png';
 				this.$el.html(
-					'<div class="item-box-name"></div>\
-					<div class="item-box-price"></div>\
-					<div class="item-box-description"></div>\
-					<div class="item-box-attrs"></div>\
-					<div class="item-box-category"></div>');
+					'<button class="item-delete glyphicon glyphicon-remove pull-right" style="border:none; background-color:white; color:red"></button>\
+					<img class="pull-left" src="'+img+'" style="width:120px; height:80px; border: 1px solid black">\
+								<div class="item-box-name">'+name+'</div>\
+							<div class="row">\
+								<div class="col-xs-4">\
+									<div class="item-box-price">'+price+'</div>\
+									<div class="item-box-condition">1</div>\
+								</div>\
+								<div class="col-xs-2">\
+									<div class="item-box-attrs">機車可載</div>\
+									<div class="item-box-attrs">二手品</div>\
+									<div class="item-box-attrs">可議價</div>\
+								</div>\
+								<div class="col-sm-3 hidden-xs">\
+									<div class="item-box-description">'+description+'</div>\
+								</div>\
+						</div>');
 				this.$('.item-box-name').text(name);
 				this.$('.item-box-price').text(price);
 				this.$('.item-box-description').text(description);
@@ -952,7 +1024,10 @@
 				});
 				var chatroom = new ChatroomModalView({model:chat});
 				chatroom.open();
-				$btn.removeClass('newmsg');
+				$btn.next().removeClass('newmsg');
+				
+				
+				
 				
 				//var chats_seen;
 				//this.item.chats.each(function(chat){
@@ -1005,12 +1080,12 @@
 							<span class="chats-order">'+(index+1)+'</span>\
 							<span class="chat-to">'+buyer+'</span>\
 							<button class="chatroom-btn" data-chat-id='+id+'></button>\
-							<img class="'+(seen?'':'newmsg')+'" src='+notification_img+'>\
+							<img class="'+(seen?'':'newmsg')+'" data-chat-id='+id+' src='+notification_img+'>\
 						</div>'
 					));
 				});
 	
-				this.$el.append('<button class="item-delete">刪除</button>').append(this.itemBox.el).append($chatList);
+				this.$el.append(this.itemBox.el).append($chatList);
 				return this;
 			}
 		});
@@ -2050,6 +2125,8 @@
 		});
 		
 		
+		//var myEvents = new Events();
+		
 		////////////////Global Events start////////////////
 		var globalEvents = {
 			newmsg:function(data){
@@ -2070,6 +2147,11 @@
 									return;
 								});
 								reply = new Reply(reply);
+								//reply.trigger('seen');
+								//reply.once('seen',funciton(){
+									//remove event
+								//	event.destroy();
+								//});
 								chat.replys.add(reply);
 							}
 						}
