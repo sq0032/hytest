@@ -63,7 +63,7 @@
 			top:70px;
 			right:0px;
 			left:0px;
-			bottom:-40px;
+			bottom:0px;
 		}
 		
 		#sellerItemsList {
@@ -176,7 +176,50 @@
 			display: inline-block;
 			font-size: 1.2em;
 		}		
+		
+			.item-box{
+				position:	relative;
+				height:		80px;
+			}
 
+			.item-box img{
+				position:	absolute;
+				top:		0px;
+				left:		0px;
+				width:		120px;
+				height:		80px;
+				border: 	1px solid black;
+			}
+
+			.item-box-name{
+				position:		absolute;
+				top:			0px;
+				left:			120px;
+				right:			20px;
+				padding-left:	10px;
+				
+				font-size:		1.2em;
+				font-weight:	bold;
+				color:			blue;
+				overflow:		hidden;
+			}	
+
+			.item-box-detail{
+				position:		absolute;
+				left:			125px;
+				right:			35%;
+				top:			27px;
+				text-align:		center;
+				font-weight:	bold;	
+				min-width:		92px;
+			}
+			
+			.item-box-price,
+			.item-box-condition{
+				margin-left:	0px;
+				width:			92px;
+			}
+			
 			.item-box-price:before,
 			.item-box-price:after,
 			.item-box-condition:before,
@@ -205,33 +248,59 @@
 				content: "件";
 				float:	right;
 			}
-	
-			.item-box-name{
-				font-size:		1.2em;
-				font-weight:	bold;
-				color:			blue;
-				overflow:		hidden;
-				//text-align:	center;
-				padding-left:	10px;
-			}
-			
-			.item-box-price,
-			.item-box-condition{
-				text-align:		center;
-				font-weight:	bold;
-				max-width:		150px;
-			}
-			
+
+			/* for vertical layout*/
 			.item-box-attrs{
+				position:		absolute;
+				top:			27px;
+				left:			70%;
+				min-width:		80px;
+			}
+			
+			
+			
+			/* for horizontal layout*/
+			/*
+			.item-box-attrs{
+				left:			40%;
+			}
+			*/
+			
+			.item-box-attrs div{
 				margin:			2px;
-				border:			1px solid;
+				margin-left:auto;	
+				margin-right:auto;				
 				border-radius:	20px;
 				font-size:		xx-small;
 				text-align:		center;
 				height:			15px;
 				background-color:	#0c0;
-				width:				80px;
-			}		
+				width:			80px;
+			}
+	
+			/* for vertical layout*/
+			.item-box-description{
+				display:		none;
+				position:		absolute;
+				top:			27px;
+				width:			40%;
+				max-height:		51px;
+				right:			5px;
+				overflow:		auto;
+				font-size:		xx-small;
+			}
+			
+			.item-box-description:before{
+				font-weight:	bold;
+				content:		"商品描述:";
+			}
+			
+			/* for horizontal layout*/
+			/*
+			.item-box-description{
+				display:		block;
+			}
+			*/		
 		
 		@media (min-width: 1200px) {
 			.modal-dialog-large {
@@ -771,7 +840,7 @@
 							<div id="sellerItemsList">
 								
 							</div>
-							<div style="height: 40pc"></div>
+							<div style="height: 40px; position:absolute; bottom:0px"></div>
 						</div>
 					</div>
 				</div>
@@ -968,26 +1037,24 @@
 				//var img = '../media/image/items/'+this.item.get('rid')+'-s.png';
 				this.$el.html(
 					'<button class="item-delete glyphicon glyphicon-remove pull-right" style="border:none; background-color:white; color:red"></button>\
-					<img class="pull-left" src="'+img+'" style="width:120px; height:80px; border: 1px solid black">\
-								<div class="item-box-name">'+name+'</div>\
-							<div class="row">\
-								<div class="col-xs-4">\
-									<div class="item-box-price">'+price+'</div>\
-									<div class="item-box-condition">1</div>\
-								</div>\
-								<div class="col-xs-2">\
-									<div class="item-box-attrs">機車可載</div>\
-									<div class="item-box-attrs">二手品</div>\
-									<div class="item-box-attrs">可議價</div>\
-								</div>\
-								<div class="col-sm-3 hidden-xs">\
-									<div class="item-box-description">'+description+'</div>\
-								</div>\
-						</div>');
+					 <img class="pull-left" src="'+img+'" style="width:120px; height:80px; border: 1px solid black">\
+					 <div class="item-box-name">'+name+'</div>\
+					 <div class="item-box-detail">\
+						<div class="item-box-price">'+price+'</div>\
+						<div class="item-box-condition">1</div>\
+					</div>\
+					<div class="item-box-attrs">\
+						<div>機車可載</div>\
+						<div>二手品</div>\
+						<div>可議價</div>\
+					</div>\
+					<div class="item-box-description">\
+						'+description+'\
+					</div>');
 				this.$('.item-box-name').text(name);
 				this.$('.item-box-price').text(price);
 				this.$('.item-box-description').text(description);
-				this.$('.item-box-attrs').text(attrs);
+				this.$('.item-box-attrs div').text(attrs);
 				this.$('.item-box-category').text(itemCategorys.getByID(categoryID).get('name'));
 				return this;
 			}
@@ -2190,6 +2257,15 @@
 			$(function(){
 				new AppView();
 
+				window.onresize = function(event) {
+					if(window.innerWidth>window.innerHeight){
+						this.$(".item-box-description").css("display","block");
+						this.$(".item-box-attrs").css("left","40%");
+					}else{
+						this.$(".item-box-description").css("display","none");
+						this.$(".item-box-attrs").css("left","70%");
+					}					
+				}
 				//reply {chat, speaker}
 				//chat {item, buyer, seller}
 			});
