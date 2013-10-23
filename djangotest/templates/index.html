@@ -116,248 +116,151 @@
 			height: 20px;
 		}
 		
-		/*SellerItemBox*/
-			/*ItemBox*/
-		.seller-item-box .item-box{
-			position:	relative;
-			height:		80px;
+		/************************/
+		/* 		            	*/
+		/*	  seller-item-box	*/
+		/* 		 | item-box		*/
+		/* 		             	*/
+		/************************/		
+		.seller-item-box .item-box-price:before{
+			content: "價格:";
+			float:	left;
+		}
+		
+		.seller-item-box .item-box-price:after{
+			content: " 元";
+			
+		}
+		
+		.seller-item-box .item-box-attrs span{
+			border-radius:		5px; 
+			background-color:	#0c0; 
+			color:				white;
+			width:				80px;
 		}
 
-			.seller-item-box .item-box img{
-				position:	absolute;
-				top:		0px;
-				left:		0px;
-				width:		120px;
-				height:		80px;
-				border: 	1px solid black;
-			}
-
-			.seller-item-box .item-box-name{
-				position:		absolute;
-				top:			0px;
-				left:			120px;
-				right:			20px;
-				padding-left:	10px;
-				
-				font-size:		1.2em;
-				font-weight:	bold;
-				color:			blue;
-				overflow:		hidden;
-			}	
-
-			.seller-item-box .item-box-detail{
-				position:		absolute;
-				left:			125px;
-				right:			35%;
-				top:			27px;
-				text-align:		center;
-				font-weight:	bold;	
-				min-width:		92px;
-			}
-			
-			.seller-item-box .item-box-price,
-			.seller-item-box .item-box-condition{
-				margin-left:	0px;
-				width:			92px;
-			}
-			
-			.seller-item-box .item-box-price:before,
-			.seller-item-box .item-box-price:after,
-			.seller-item-box .item-box-condition:before,
-			.seller-item-box .item-box-condition:after{
-				font-weight: normal;
-				font-family: "";
-				font-size: 0.8em;			
-			}
-			
-			.seller-item-box .item-box-price:before{
-				content: "價格:";
-				float:	left;
-			}
-			
-			.seller-item-box .item-box-price:after{
-				content: " 元";
-				float:	right;
-			}
-			
-			.seller-item-box .item-box-condition:before{
-				content: "剩餘:";
-				float:	left;
-			}			
-
-			.seller-item-box .item-box-condition:after{
-				content: "件";
-				float:	right;
-			}
-
-			.seller-item-box .item-box-attrs{
-				position:		absolute;
-				top:			27px;
-				left:			70%;	/*vertical*/
-				/*left:			40%;*/	/*horizontal*/
-				min-width:		80px;
-			}
-			
-			.seller-item-box .item-box-attrs div{
-				margin:			2px;
-				margin-left:auto;	
-				margin-right:auto;				
-				border-radius:	20px;
-				font-size:		xx-small;
-				text-align:		center;
-				height:			15px;
-				background-color:	#0c0;
-				width:			80px;
-			}
-
-			/* for vertical layout*/
-			.seller-item-box .item-box-description{
-				display:		none;		/*vertical*/
-				/*display:		block;*/	/*horizontal*/
-				position:		absolute;
-				top:			27px;
-				width:			40%;
-				max-height:		51px;
-				right:			5px;
-				overflow:		auto;
-				font-size:		xx-small;
-			}
-			
-			.seller-item-box .item-box-description:before{
-				font-weight:	bold;
-				content:		"商品描述:";
-			}
+		.seller-item-box .item-box-description{
+			position:		absolute; 
+			right:			0px;
+			margin-top:		14px;
+			padding-top:	6px;
+			padding-right:	20px;
+			left:			50%				
+		}
 		
-			/*Chat-List*/
-			.seller-item-box .chat-list div{
-				border-bottom: 1px solid #ccc;
-				background-image: linear-gradient(-45deg, rgb(255,255,255) 25%, rgb(255,255,0) 90%);
-				padding: 5px;
-			}
-			
-			.seller-item-box .chat-list button,
-			.seller-item-box .chat-list img{
-				position: 	relative;
-				float:		right;
-			}
-			
-			.seller-item-box .chat-list img{
-				width:		20px; 
-				height:		20px;
-				right:		-31px;
-				top:		-5px;
-				display:	none;
-			}			
-			
-			.seller-item-box .chat-list img.newmsg{
-				display:	inline;
-			}
-
-			.seller-item-box .chat-list button{
-				border:1px solid;
-				border-radius: 5px;
-				background-color: white;
-				background-image: url("./img/chat.png");	
-				background-size: contain;
-				width: 30px;
-				height: 25px;
-				top: 2px;
-				right: 5px;
-			}
-			
-			.seller-item-box .chats-order{
-				line-height: 25px;
-				font-size: 1.75em;
-				font-weight: bold;
-				font-style: italic;
-				text-align: center;
-				color: white;
-				background-image: linear-gradient(-45deg, rgb(100,100,100) 30%, rgb(0,0,0) 70%);
-				display: inline-block;
-				width: 40px;
-				height: 25px;
-			}
-			
-			.seller-item-box .chat-to{
-				display: inline-block;
-				font-size: 1.2em;
-			}
-
-			
-			.shop-box{
-				position: relative;
-				height:	60px;
-			}
+		.seller-item-box .item-box-description .item-box-vertical{
+			display:	none;
+		}
+		.seller-item-box .item-box-description .item-box-horizontal{
+			display:	block;
+		}
+		
+		.seller-item-box .item-box-description:before{
+			font-weight:	bold;
+			content:		"商品描述:";
+		}
 	
-			.shop-box-status{
-				position:		absolute;
-				padding-top:	5px;
-				padding-bottom:	5px;
-				margin:			10px;
-				border:			1px solid;
-				font-size:		large;
-				width:			80px;
-				text-align:		center;
-			}
-			
-			.shop-box .shop-box-status.shop-open{
-				color:			#2c2;
-				border-color	#2c2
-			}
+		/**********************/
+		/* 		              */
+		/*	seller-item-box	  */
+		/* 		| chat-list   */
+		/* 		              */
+		/**********************/
+		.seller-item-box .chat-list div{
+			border-bottom: 1px solid #ccc;
+			background-image: linear-gradient(-45deg, rgb(255,255,255) 25%, rgb(255,255,0) 90%);
+			padding: 5px;
+		}
+		
+		.seller-item-box .chat-list button,
+		.seller-item-box .chat-list img{
+			position: 	relative;
+			float:		right;
+		}
+		
+		.seller-item-box .chat-list img{
+			width:		20px; 
+			height:		20px;
+			right:		-31px;
+			top:		-5px;
+			display:	none;
+		}			
+		
+		.seller-item-box .chat-list img.newmsg{
+			display:	inline;
+		}
 
-			.shop-box .shop-box-status.shop-close{
-				color:			#f00;
-				border-color	#f00;
-			}			
-			
-			.shop-box .shop-box-name{
-				position:		absolute;
-				top:			6px;
-				font-size:		large;
-				font-weight:	bold;
-				white-space:	nowrap;
-				/*font-style:	italic;	*/
-			}
-			
-			.shop-box .shop-box-item-num{
-				position:		absolute;
-				top:			30px;
-				color:			#505050;
-				font-size:		small;
-				text-align:		center;
-				width:			130px;
-			}
-			
-			.shop-box .shop-box-item-num:before{
-				content:		"展示商品: ";
-				float:			left;
-			}
-			
-			.shop-box .shop-box-item-num:after{
-				content:		" 件";
-				float:			right;
-			}
+		.seller-item-box .chat-list button{
+			border:1px solid;
+			border-radius: 5px;
+			background-color: white;
+			background-image: url("./img/chat.png");	
+			background-size: contain;
+			width: 30px;
+			height: 25px;
+			top: 2px;
+			right: 5px;
+		}
+		
+		.seller-item-box .chats-order{
+			line-height: 25px;
+			font-size: 1.75em;
+			font-weight: bold;
+			font-style: italic;
+			text-align: center;
+			color: white;
+			background-image: linear-gradient(-45deg, rgb(100,100,100) 30%, rgb(0,0,0) 70%);
+			display: inline-block;
+			width: 40px;
+			height: 25px;
+		}
 
-			.seller-shop-box button{
-				float:			right;
-			}
-			
-			.shop-box .shop-box-detail{
-				position:		absolute;
-				top:			0px;
-				left:			100px;
-				overflow:		hidden;
-				height:			60px;
-				right:			70px;
-			}
-			
-			.shop-box .shop-box-button{
-				float:			right; 
-				width:			50px; 
-				height:			50px;
-				margin-top:		5px; 
-				margin-right:	5px;
-			}
+		/**********************/
+		/* 		              */
+		/*	   shop-box	      */
+		/* 		              */
+		/**********************/
+		.seller-item-box .chat-to{
+			display: inline-block;
+			font-size: 1.2em;
+		}
+
+		.shop-box{
+			position: relative;
+		}
+
+		.shop-box-status{
+		}			
+		
+		.shop-box .shop-box-name{
+			white-space:	nowrap;
+		}
+		
+		.shop-box .shop-box-item-num{
+			color:			#505050;
+			font-size:		small;
+		}
+		
+		.shop-box .shop-box-item-num:after{
+			content:		" 件商品正在出售中";
+		}
+
+		.shop-box .shop-box-detail{
+			position:		absolute;
+			top:			0px;
+			left:			100px;
+			overflow:		hidden;
+			height:			60px;
+			right:			70px;
+		}
+		
+		.shop-box .shop-box-button{
+			float:			right; 
+			width:			50px; 
+			height:			50px;
+			margin-top:		5px; 
+			margin-right:	5px;
+		}
 			
 		@media (min-width: 1200px) {
 			.modal-dialog-large {
@@ -891,8 +794,8 @@
 							
 						</div>
 						<div id="sellerShowCase" class="item-box-showcase">
-							<div>
-								tool bar
+							<div style="text-align:center; background-color:#ccc; margin:auto">
+								商品列表
 							</div>
 							<div id="sellerItemsList">
 								
@@ -900,8 +803,8 @@
 							
 						</div>
 						
+						<!-- 畫面底部要墊高 -->
 						<div style="height: 60px; width:100px"></div>
-						
 					</div>
 				</div>
 			</div>
@@ -1082,7 +985,6 @@
 			},
 			initialize: function() {
 				this.item = this.model;
-				this.listenTo(this.item, "destroy", this.remove);
 				this.listenTo(this.item, "change", this.render);
 				this.render();
 			},
@@ -1096,26 +998,22 @@
 				var img = './img/goods.jpg';
 				//var img = '../media/image/items/'+this.item.get('rid')+'-s.png';
 				this.$el.html(
-					'<button class="item-delete glyphicon glyphicon-remove pull-right" style="border:none; background-color:white; color:red"></button>\
-					 <img class="pull-left" src="'+img+'" style="width:120px; height:80px; border: 1px solid black">\
-					 <div class="item-box-name">'+name+'</div>\
-					 <div class="item-box-detail">\
+					'<div class="media">\
+						<a class="pull-left" href="#">\
+							<img class="media-object" data-src="holder.js/64x64" src="'+img+'" alt="..." style="width:64px; height:64px">\
+						</a>\
+						<div class="item-box-description">'+(description==''?'無內容':description)+'</div>\
+						<div class="media-body">\
+						<h4 class="media-heading" style="white-space:nowrap">'+name+'</h4>\
 						<div class="item-box-price">'+price+'</div>\
-						<div class="item-box-condition">1</div>\
-					</div>\
-					<div class="item-box-attrs">\
-						<div>機車可載</div>\
-						<div>二手品</div>\
-						<div>可議價</div>\
-					</div>\
-					<div class="item-box-description">\
-						'+description+'\
+						<div class="item-box-attrs">\
+							<span>背包可裝</span>\
+							<span>二手品</span>\
+							<span>可議價</span>\
+						</div>\
 					</div>');
-				this.$('.item-box-name').text(name);
-				this.$('.item-box-price').text(price);
-				this.$('.item-box-description').text(description);
-				this.$('.item-box-attrs div').text(attrs);
-				this.$('.item-box-category').text(itemCategorys.getByID(categoryID).get('name'));
+						
+				//this.$('.item-box-attrs div').text(attrs);
 				return this;
 			}
 		});
@@ -1212,7 +1110,7 @@
 					));
 				});
 	
-				this.$el.append(this.itemBox.el).append($chatList);
+				this.$el.append('<button class="item-delete glyphicon glyphicon-remove pull-right" style="border:none; background-color:white; color:red"></button>').append(this.itemBox.el).append($chatList);
 				return this;
 			}
 		});
@@ -1230,22 +1128,19 @@
 				var address = this.model.get('address');
 				var description = this.model.get('description');
 				var isOpen = this.model.get('open');
+				var shopimg = './img/Shop.png';
 				this.$el.html(
-					'<div class="shop-box-status"></div>\
-					 <div class="shop-box-detail">\
-						<div class="shop-box-name">'+name+'</div>\
-						<div class="shop-box-item-num">12</div>\
-					 </div>\
-					 <button class="shop-box-button" type="button">關於商店</button>')
-					 
-				if(name==true){
-					this.$('.shop-box-status').addClass('shop-open').removeClass('shop-close');
-					this.$('.shop-box-status').text('OPEN');
-				}
-				else{
-					this.$('.shop-box-status').addClass('shop-close').removeClass('shop-open');
-					this.$('.shop-box-status').text('CLOSE');					
-				}
+					'<div class="media">\
+						<a class="pull-left" href="#">\
+						<img class="media-object" data-src="holder.js/64x64" src="img/Shop.png" alt="'+name+'" style="width:64px; height:64px">\
+						</a>\
+						<div class="media-body">\
+							<h4 class="media-heading shop-box-name">'+name+'</h4>\
+							<div class="shop-box-subtitle">十七字簡單解說商店性質拍賣商品為何</div>\
+							<div class="shop-box-item-num">12</div>\
+						</div>\
+					</div>'
+				);
 			}
 		});
 		
@@ -2332,10 +2227,8 @@
 				window.onresize = function(event) {
 					if(window.innerWidth>window.innerHeight){
 						this.$(".item-box-description").css("display","block");
-						this.$(".item-box-attrs").css("left","40%");
 					}else{
 						this.$(".item-box-description").css("display","none");
-						this.$(".item-box-attrs").css("left","70%");
 					}					
 				}
 				//reply {chat, speaker}
