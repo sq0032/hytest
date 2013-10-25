@@ -117,21 +117,24 @@
 		}
 		
 		/************************/
-		/* 		            	*/
+		/* 	  shop-modal,     	*/
 		/*	  seller-item-box	*/
 		/* 		 | item-box		*/
 		/* 		             	*/
-		/************************/		
+		/************************/
+		.shop-modal-showcase .item-box-price:before,
 		.seller-item-box .item-box-price:before{
 			content: "價格:";
 			float:	left;
 		}
 		
+		.shop-modal-showcase .item-box-price:after,
 		.seller-item-box .item-box-price:after{
 			content: " 元";
 			
 		}
 		
+		.shop-modal-showcase .item-box-attrs span,
 		.seller-item-box .item-box-attrs span{
 			border-radius:		5px; 
 			background-color:	#0c0; 
@@ -139,6 +142,7 @@
 			width:				80px;
 		}
 
+		.shop-modal-showcase .item-box-description,
 		.seller-item-box .item-box-description{
 			position:		absolute; 
 			right:			0px;
@@ -148,16 +152,23 @@
 			left:			50%				
 		}
 		
+		.shop-modal-showcase .item-box-description .item-box-vertical,
 		.seller-item-box .item-box-description .item-box-vertical{
 			display:	none;
 		}
+		.shop-modal-showcase .item-box-description .item-box-horizontal,
 		.seller-item-box .item-box-description .item-box-horizontal{
 			display:	block;
 		}
 		
+		.shop-modal-showcase .item-box-description:before,
 		.seller-item-box .item-box-description:before{
 			font-weight:	bold;
 			content:		"商品描述:";
+		}
+
+		.shop-modal .shop-modal-board h4{
+			font-size: 1.5em;
 		}
 	
 		/**********************/
@@ -577,8 +588,8 @@
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 		
-		<!--Shop Modal-->
-		<div id="shopModal" class="modal fade" tabindex="-1">
+		<!--Edit Shop Modal-->
+		<div id="editShopModal" class="modal fade" tabindex="-1">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -623,6 +634,43 @@
 				</div>
 			</div>
 		</div>
+
+		<!--Shop Modal -->
+		<div id="shopModal" class="modal fade" tabindex="-1">
+			<div class="modal-dialog">
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">SHOP</h4>
+					</div>
+					<div class="modal-body" style="min-height:300px; padding:0px">
+						<div id="shopModalBoard" class="shop-modal-board" style="position:relative; padding:10px;">
+							<h4 style="margin-right:50px"></h4>
+							<button type="submit" style="position:absolute; right:0px; top:0px; margin:10px">
+								<span class="glyphicon glyphicon-star-empty" style="font-size:2em;"></span>
+							</button>
+						</div>
+						<div id="shopModalShowcase" class="shop-modal-showcase">
+							<div class="showcase-toolbar" style="padding:5px 10px; border-bottom:1px solid">
+								<div class="showcase-toolbar-sort">
+									排序依
+									<select>
+									  <option value="上架日期">上架日期</option>
+									  <option value="價格">價格</option>
+									</select>
+								</div>
+							</div>
+							<div id="shopModalItemList" class="showcase-item-list" style="">
+								
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer" style="text-align:center">
+						<button type="button" class="btn btn-primary" style="margin:auto">關於本店</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 		
 		<!--Setting modal -->
 		<div id="settingModal" class="modal fade" tabindex="-1">
@@ -777,7 +825,7 @@
 								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-play"></span>
 								開始營業
 							</a>
-							<a href="#" class="btn btn-default" href="#shopModal" data-toggle="modal"> <!-- 編輯店面 -->
+							<a href="#" class="btn btn-default" href="#editShopModal" data-toggle="modal"> <!-- 編輯店面 -->
 								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-edit"></span>
 								編輯店面
 							</a>
@@ -793,9 +841,19 @@
 						<div id="sellerShopBox">
 							
 						</div>
+						<div class="sellerShopBtn" style="margin:5px; text-align:center">
+							<button id="shopModalBtn" type="button" class="btn btn-primary">檢視商店內容</button>
+							<button id="aboutMeModalBtn" type="button" class="btn btn-primary">檢視關於本店</button>
+						</div>						
 						<div id="sellerShowCase" class="item-box-showcase">
-							<div style="text-align:center; background-color:#ccc; margin:auto">
-								商品列表
+							<div class="showcase-toolbar" style="padding:5px 10px; border-bottom:1px solid; border-top:1px solid">
+								<div class="showcase-toolbar-sort">
+									商品排序依
+									<select>
+									  <option value="上架日期">上架日期</option>
+									  <option value="價格">價格</option>
+									</select>
+								</div>
 							</div>
 							<div id="sellerItemsList">
 								
@@ -1144,8 +1202,8 @@
 			}
 		});
 		
-		var ShopModalView = Backbone.View.extend({
-			el: "#shopModal",
+		var EditShopModalView = Backbone.View.extend({
+			el: "#editShopModal",
 			events: {
 				"shown.bs.modal": "shown",
 				"show.bs.modal": "show",
@@ -1255,6 +1313,30 @@
 				google.maps.event.trigger(this.map, "resize");
 				var latlng = this.marker.getPosition();
 				this.map.setCenter(latlng);
+			}
+		});
+
+		var ShopModalView = Backbone.View.extend({
+			el: "#shopModal",
+			initialize: function() {
+				var that = this;
+				this.myShop = this.model;
+				this.$shopModalItemList = this.$("#shopModalItemList");
+				this.listenTo(this.myShop.items, 'reset', this.render);
+			},
+			render: function(){
+				var that = this;
+				var shopName = this.myShop.get('name');
+				
+				this.$("#shopModalBoard h4").text(shopName);
+				
+				this.myShop.items.each(function(item){
+					var itemBox = new ItemBoxView({model:item});
+					that.$shopModalItemList.append(itemBox.el);
+				});
+			},
+			open: function(item){
+				this.$el.modal('show');
 			}
 		});
 		
@@ -1496,14 +1578,18 @@
 		var SellerPanelView = Backbone.View.extend({
 			el: "#sellerPanel",
 			events: {
-				"click #itemModalBtn": "newItemModal"
+				"click #itemModalBtn": "newItemModal",
+				"click #shopModalBtn": "newShopModal"				
 			},
 			newItemModal:function(){
 				this.itemModal.open();
 			},
+			newShopModal:function(){
+				this.shopModal.open();
+			},			
 			initialize: function() {
 				this.itemModal = new ItemModalView();
-				this.shopModal = new ShopModalView();
+				this.editShopModal = new EditShopModalView();
 				
 				//this.listenTo(myItems, 'sync', this.updateItems);
 				//this.listenTo(myItems, 'add', this.addOneItem);
@@ -1514,6 +1600,8 @@
 				
 				this.shopBox = new ShopBoxView({model:myShop});
 				this.$sellerShopBox.append(this.shopBox.$el);
+				
+				this.shopModal = new ShopModalView({model:myShop});				
 			},
 			resetItems:function(){
 				var that = this;
