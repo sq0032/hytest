@@ -84,6 +84,23 @@
 			*min-height:500px;
 		}
 		
+		#mainMap {
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			right: 200px;
+			bottom: 0px;
+		}
+		
+		#mapBoxList {
+			position: absolute;
+			top: 0px;
+			right: 0px;
+			bottom: 0px;
+			width: 200px;
+			overflow: auto;
+		}
+		
 		.list {
 			list-style: none outside none;
 			margin: 0;
@@ -168,6 +185,24 @@
 				width:80%;
 				height:200px;
 			}
+			
+			#mainMap {
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				right: 0px;
+				bottom: 25%;
+			}
+			
+			#mapBoxList {
+				position: absolute;
+				top: 75%;
+				right: 0px;
+				left: 0px;
+				bottom: 0px;
+				width: auto;
+			}
+			
 		}
 		</style>
 	<link href="css/main.css" rel="stylesheet">
@@ -620,7 +655,8 @@
 		<!-- Main Panels -->
 		<div class="main-panels tab-content">
 			<div class="tab-pane active fade in" id="mapPanel"> <!-- Map Panels -->
-				<p>mapPanel</p>
+				<div id="mainMap"></div>
+				<div id="mapBoxList"></div>
 			</div>
 			<div class="tab-pane fade" id="tracePanel"> <!-- Trace Panel -->
 			</div>
@@ -785,6 +821,34 @@
 			}
 		});
 		
+		var Shops = Backbone.Collection.extend({
+			model:Shop,
+			url:'shops/',
+			initialize:function(options){
+				var that = this;
+				this.url = function(){ 
+					if (that.bounds){
+						return 'shops/?'+$.param(that.bounds);
+					}
+					return 'shops/';
+				}
+			},
+			fetchByBounds:function(bounds){
+				/*var that = this;
+				var dfd = $.get('shops/',bounds);
+				dfd.done(function(shops){
+					that.set(shops);
+				});
+				return dfd;*/
+				this.setBounds(bounds);
+				return this.fetch();
+			},
+			setBounds:function(bounds){
+				this.bounds = bounds
+				return this;
+			}
+		})
+		
 		var Chat = Backbone.Model.extend({
 			default:{
 				buyer: null,
@@ -826,6 +890,7 @@
 		var loginUser = new LoginUser();
 		var itemCategorys = new ItemCategorys();
 		var myShop = new Shop();
+		console.log(myShop);
 		
 		var ItemBoxView = Backbone.View.extend({
 			className: "item-box",
@@ -862,12 +927,8 @@
 		var SellerItemBoxView = Backbone.View.extend({
 			className: "seller-item-box",
 			events: {
-				"click .item-delete":'deleteItem',
-<<<<<<< HEAD
+				"click .item-delete":"deleteItem",
 				"click .chatroom-btn":"openChatroom"
-=======
-				'click .chatroom-btn': 'openChatroom'
->>>>>>> refs/heads/W15B-2
 			},
 			initialize: function() {
 				this.item = this.model;
@@ -886,11 +947,6 @@
 					that.item.destroy();
 				});
 			},
-			openChatroom: function(event){
-				var $btn = $(event.currentTarget);
-				
-				alert($btn.attr('data-chat-id'))
-			},
 			openChatroom:function(event){
 				var $btn = $(event.currentTarget);
 				var chatID = $btn.attr('data-chat-id');
@@ -906,11 +962,7 @@
 				this.$el.empty();
 				
 				var $chatList = $('<div class="chat-list"></div>')
-<<<<<<< HEAD
 				this.item.chats.each(function(chat){
-=======
-				this.item.chats.each(function(chat, index){
->>>>>>> refs/heads/W15B-2
 					$chatList.append($('<div>buyer_name:'+chat.get('buyer')+'<button class="chatroom-btn" data-chat-id='+chat.get('id')+'>chat room</button></div>'));
 				});
 				
@@ -1055,15 +1107,9 @@
 		
 		var FormFieldView = Backbone.View.extend({
 			initialize: function(){
-				if(this.options.val){
-					if($.isFunction(this.options.val)){
-						
-					}
-				}else{
-					this.val = function(){
-						var $input = this.$('input');
-						return $input.val.apply($input, arguments);
-					}
+				this.val = function(){
+					var $input = this.$('input');
+					return $input.val.apply($input, arguments);
 				}
 			},
 			showError: function(msg){
@@ -1259,32 +1305,173 @@
 			el: "#mapPanel",
 			events:{
 				'shown': "shown",
+				//'scroll #mapBoxList':"scrollBoxList"
 			},
 			initialize:function(){
+				var that = this;
 				var latlng = new google.maps.LatLng(25.056220142845, 121.54178450802);
 				var mapOptions = {
 					center: latlng,
 					zoom: 14,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
-				var map = this.map = new google.maps.Map(this.el, mapOptions);
+				//console.log($('#mapBoxList').listHandlers('*', console.info));
+				var map = this.map = new google.maps.Map(this.$('#mainMap')[0], mapOptions);
 				var noPoi = [{
 					featureType: "poi",
 					stylers: [{ visibility: "off" }]
 				}];
 				this.map.setOptions({styles: noPoi});
 				
-				var timer =null;
+				var centerMarker = new google.maps.Marker({
+					map:map,
+					draggable:true,
+					position: map.getCenter()
+				});
+				centerMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+				
+				google.maps.event.addListener(centerMarker, 'position_changed', function(){
+					if(!this.markerTimer){this.markerTimer=null;}
+					clearTimeout(this.markerTimer);
+					this.markerTimer = setTimeout(function(){
+						shopsCache.sort();
+					},200);
+				});
+				
+				var shopsCache = new Shops();
+				shopsCache.comparator = function(shop1,shop2){
+					var center = centerMarker.getPosition();
+					var c_lat = center.lat();
+					var c_lng = center.lng();
+					var d1 = Math.pow(c_lat-shop1.get('latitude'),2)+Math.pow(c_lng-shop1.get('longitude'),2)
+					var d2 = Math.pow(c_lat-shop2.get('latitude'),2)+Math.pow(c_lng-shop2.get('longitude'),2)
+					if(d1>d2){return 1;}
+					else if(d1=d2){return 0;}
+					else{return -1}
+				}
+				
+				var shopMarkers = {};
+				var displayShopMarkers = {};
+				
+				var shopBoxList = new ShopBoxListView({
+					shops:shopsCache,
+					el:'#mapBoxList',
+					display:function(shops){
+						_.each(displayShopMarkers,function(marker){
+							marker.setMap(null);
+							delete marker;
+						});
+						_.each(shops,function(shop){
+							var latlng = new google.maps.LatLng(shop.get('latitude'),shop.get('longitude'));
+							displayShopMarkers[shop.id] = new google.maps.Marker({position:latlng,map:map,title:shop.get('name')});
+							displayShopMarkers[shop.id].setAnimation(google.maps.Animation.BOUNCE);
+						});
+					}
+				});
+				
+				this.listenTo(shopsCache,'reset',function(){
+					_.each(shopMarkers,function(marker){
+						marker.setMap(null);
+						delete marker;
+					});
+					shopsCache.each(function(shop){
+						var latlng = new google.maps.LatLng(shop.get('latitude'),shop.get('longitude'));
+						shopMarkers[shop.id] = new google.maps.Marker({position:latlng,map:map,title:shop.get('name')});
+					});
+				});
+				
 				google.maps.event.addListener(map, 'bounds_changed', function() {
-					clearTimeout(timer);
-					timer = setTimeout(function(){
+					if(!this.timer){this.timer=null;}
+					clearTimeout(this.timer);
+					this.timer = setTimeout(function(){
 						var bounds = map.getBounds();
-						console.log(bounds.getNorthEast(),bounds.getSouthWest());
-					},1000);
+						//console.log(bounds.getNorthEast(),bounds.getSouthWest());
+						var n_lat = bounds.getNorthEast().lat();
+						var e_lng = bounds.getNorthEast().lng();
+						var s_lat = bounds.getSouthWest().lat();
+						var w_lng = bounds.getSouthWest().lng();
+						var bounds = {n_lat:n_lat,s_lat:s_lat,e_lng:e_lng,w_lng:w_lng};
+						shopsCache.setBounds(bounds).fetch({reset:true});
+						//shopsCache.fetchByBounds(bounds);
+						/*.done(function(){
+							var center = map.getCenter();
+							var c_lat = center.lat();
+							var c_lng = center.lng();
+							shopsCache.each(function(shop){
+								var d = Math.pow(c_lat-shop.get('latitude'),2)+Math.pow(c_lng-shop.get('longitude'),2)
+								console.log(shop.get('name'),d)
+							});
+						});*/
+						//console.log(shopsCache);
+					},500);
 				});
 			},
 			shown:function(){
 				google.maps.event.trigger(this.map, "resize");
+			}
+		});
+		
+		var ShopBoxListView = Backbone.View.extend({
+			events:{
+				'scroll': "changeDisplay"
+			},
+			changeDisplay: function(){
+				var that = this;
+				if(!this.changeDisplayTimer){this.changeDisplayTimer = null;}
+				clearTimeout(this.changeDisplayTimer);
+				this.changeDisplayTimer = setTimeout(function(){
+					var height = that.$el.height();
+					var displayShops = [];
+					that.shops.each(function(shop){
+						var shopBox = that.shopBoxs[shop.id]
+						var position = shopBox.$el.position();
+						var top = position.top;
+						var bottom = top + shopBox.$el.height();
+						if((top>=0 && top<height)||(bottom>=0 && bottom<height)){
+							that.shopBoxs[shop.id].$el.css('color','red');
+							displayShops.push(shop);
+							//shopMarkers[shop.id].setAnimation(google.maps.Animation.BOUNCE);
+						}else{
+							that.shopBoxs[shop.id].$el.css('color','black');
+							//shopMarkers[shop.id].setAnimation(null);
+						}
+						that.display(displayShops);
+					});
+				},100);
+			},
+			initialize: function(options){
+				var that = this;
+				var shops = this.shops = options.shops;
+				this.display = options.display;
+				this.listenTo(shops, 'add',this.add);
+				this.listenTo(shops, 'remove',this.remove);
+				this.listenTo(shops, 'reset',this.reset);
+				this.listenTo(shops, 'sort',this.reset);
+				this.shopBoxs = {};
+				$(window).resize(function(){that.changeDisplay()});
+			},
+			reset: function(shops){
+				var that = this;
+				this.$el.empty();
+				shops.each(function(shop){
+					var shopBox = new ShopBoxView({model:shop});
+					that.shopBoxs[shop.id] = shopBox;
+					that.$el.append(shopBox.el);
+				});
+				this.$el.scrollTop(0);
+				this.changeDisplay();
+			},
+			add: function(shop){
+				console.log('add',shop.get('description'));
+			},
+			remove:function(shop){
+				console.log('remove',shop.get('description'));
+			}
+		});
+		
+		var ShopMarkerView = Backbone.View.extend({
+			initialize: function(options){
+			
 			}
 		});
 		
@@ -1641,14 +1828,6 @@
 				this.$userNav.show().find('#navUsername').text(loginUser.get('name'));
 				this.$guestNav.hide();
 			},
-			//logout: function(){
-			//	$.get('accounts/logout').done(function(data) {
-			//		//重新整理
-			//		location.reload();
-			//	}).fail(function(){
-			//		alert('登出失敗!');
-			//	});
-			//},
 			showSellerPanel: function(){
 				$("#sellerPanel").trigger('show');
 			},
@@ -1892,6 +2071,132 @@
 		new myRouter();
 		Backbone.history.start();
 		
+		//////////Chat system Test (backbone) start//////////
+		var Reply = Backbone.Model.extend({
+			default:{
+				reply: null,
+				speaker: null,
+				datetime: null,
+			}
+		});
+		
+		var Replys = Backbone.Collection.extend({
+			model: Reply,
+			url: '/chats/chat_id',
+		});
+		
+		var ChatroomModalView = Backbone.View.extend({
+			el: '#chatroomModal',
+			initialize: function(chatinfo){
+				this.chatinfo = chatinfo
+				this.replys = new Replys();
+				this.replys.url = '/chats/'+this.chatinfo.get('id');
+				this.replys.fetch({reset: true});
+			
+				this.renderHead();
+				this.renderBody();
+				
+				this.listenTo( this.replys, 'reset', this.renderBody);
+			},
+			events:{
+				'click #sendBtn':'sendReply',
+				'click .close':'close'
+			},
+			sendReply:function(){
+				if($("#massage").val()){
+					var Data={};
+					Data['reply'] = $("#massage").val();
+					this.replys.create(Data);
+					$("#massage").val('');
+				}
+			},
+			renderBody:function(){
+				console.log(this.replys.length);
+				this.replys.each(function(reply){
+					this.renderReply(reply);
+				}, this);
+				//$('.msglist').scrollTop($('.msglist')[0].scrollHeight);
+			},
+			renderReply:function(reply){
+				var $msgli = $("<li>");
+				if(reply.get('speaker')==loginUser.get('name')){
+					var div = '	<div class="pull-right msgbox msg-me">'
+				}
+				else{
+					var div = '	<div class="pull-left msgbox msg-other">'
+				}
+
+				$msgli.html(
+					div
+				+'		<div class="speaker">'+reply.get('speaker')+'</div>'
+				+'		<div class="">'+reply.get('reply')+'</div>'
+				+'		<div class="time" style="width:100%">'
+				+'			<div class="pull-right">'+reply.get('datetime')+'</div>'
+				+'		</div>'
+				+'	</div>'
+				+'	<div style="clear:both;"></div>'					
+				);
+				$('.msglist').append($msgli);	
+			},
+			renderHead:function(){
+				$('.modal-title').html(this.chatinfo.get('item'));		
+			},
+			close:function(){
+				$('.msglist').html('');
+			}
+		});
+		
+		var ChatView = Backbone.View.extend({
+			tagName: 'div',
+			events:{
+				'click #chatroomModalbtn': 'openChatroomModal'
+			},
+			render: function(){
+				var buyername = this.model.get('buyer');
+				var sellername = this.model.get('seller');
+				var item = this.model.get('item');
+				
+				this.$el.html(
+				'<div style="border:solid 1px red">'
+				+'	<p>item: '+item+'</p>'
+				+'	<p>seller: '+sellername+'</p>'
+				+'	<p>buyer: '+buyername+'</p>'
+				+'		<a href="#chatroomModal" data-toggle="modal">'
+				+'			<button type="button" id="chatroomModalbtn">對話</button>'
+				+'		</a>'
+				+'</div>'
+				);
+				
+				return this;
+			},
+			openChatroomModal: function(){
+				var chatroom = new ChatroomModalView(this.model);
+			}
+		});		
+		
+		var ChatsView = Backbone.View.extend({
+			el: '#chat-test',
+			initialize: function(){
+				this.collection = new Chats();
+				this.collection.fetch({reset: true});
+				this.render();
+				
+				this.listenTo(this.collection, 'reset', this.render);
+			},
+			render: function(){
+				this.collection.each(function(item){
+					this.renderChat(item);
+				}, this);
+			},
+			renderChat: function(item){
+				var chatView = new ChatView({
+					model: item
+				});
+				
+				this.$el.append(chatView.render().el);
+			},
+		});
+		//////////Chat system Test (backbone) end//////////
 
 		var AppView = Backbone.View.extend({
 			el: 'body',
@@ -1982,9 +2287,6 @@
 		
 			$(function(){
 				new AppView();
-
-				//reply {chat, speaker}
-				//chat {item, buyer, seller}
 			});
 		</script>
 	</body>
