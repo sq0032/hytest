@@ -493,9 +493,9 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-
-		<!--Item Modal-->
-		<div id="itemModal" class="modal fade" tabindex="-1">
+	
+		<!--Edit Item Modal-->
+		<div id="editItemModal" class="modal fade" tabindex="-1">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -587,6 +587,77 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+
+		<!--Item Modal-->
+		<div id="itemModal" class="modal fade" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">ITEM</h4>
+					</div>
+					<div class="modal-body" style="min-height:300px; padding:0px">
+						<div class="modal-board">
+							<div style="position:relative; border-bottom:1px solid; padding:10px;">
+								<h4 style="margin-right:50px">這裡放商品的名稱這裡放商店的名稱這裡放商品的名稱</h4>
+								<button type="submit" style="position:absolute; right:0px; top:0px; margin:10px">
+									<span class="glyphicon glyphicon-star-empty" style="font-size:2em;"></span>
+								</button>
+							</div>
+						</div>
+						<div class="item-modal-photos" style="padding:5px; border:1px solid; overflow:auto">
+							<span style=""><img src="img/first-slide.png" width="100%"></span>
+							<span style=""><img src="img/second-slide.png" width="100%"></span>
+							<span style=""><img src="img/third-slide.png" width="100%"></span>
+						</div>
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="item-modal-detail" style="text-align: center; margin:10px">
+									<div class="item-modal-price">100000</div>
+									<div class="item-modal-add-time"></div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="item-modal-attrs" style="margin:10px">
+									<div class="row" style="text-align:center">
+										<div class="col-xs-4">尺寸<br><span>背包可裝</span></div>
+										<div class="col-xs-4">新舊<br><span>全新品</span></div>
+										<div class="col-xs-4">談價空間<br><span>不二價</span></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item-modal-description" style="margin:10px; text-align:center">
+							<h4>商品描述</h4>
+							<p style="text-align:left">商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述</p>
+						</div>
+						<div class="item-modal-map" style="margin:10px; text-align:center; height:100px;">
+							<h4>位置</h4>
+							<div>
+								<!--Googole Map-->
+							</div>
+						</div>
+						<div class="item-modal-chat" style="margin:10px; text-align:center">
+							<h4>想要買?有問題?<h4>
+							<button class="btn btn-primary" type="button">聯絡賣家</button>
+						</div>
+					</div>
+					<div class="modal-footer" style="text-align:center">
+						<div class="row">
+							<div class="col-xs-6">
+								<button type="button" class="btn btn-primary" style="margin:auto">瀏覽商店</button>
+							</div>
+							<div class="col-xs-6">
+								<button type="button" class="btn btn-primary" style="margin:auto">關於本店</button>
+							</div>
+						</div>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
+		
+		
 		
 		<!--Edit Shop Modal-->
 		<div id="editShopModal" class="modal fade" tabindex="-1">
@@ -829,7 +900,7 @@
 								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-edit"></span>
 								編輯店面
 							</a>
-							<a href="#" class="btn btn-default" id="itemModalBtn"> <!-- 商品上架 -->
+							<a href="#" class="btn btn-default" id="editItemModalBtn"> <!-- 商品上架 -->
 								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-cloud-upload"></span>
 								商品上架
 							</a>
@@ -1040,13 +1111,17 @@
 		var ItemBoxView = Backbone.View.extend({
 			className: "item-box",
 			events: {
+				"click .item-box":"openItemModal",
+				"click .media":"openItemModal",
+				"click .item-box-attrs":"openItemModal"				
 			},
 			initialize: function() {
 				this.item = this.model;
-				this.listenTo(this.item, "change", this.render);
-				this.render();
+				this.listenTo(this.item, "destroy", this.remove);
+				this.listenTo(this.item, "change", this.renderBox);
+				this.renderBox();
 			},
-			render: function() {
+			renderBox: function() {
 				var that = this;
 				var name = this.item.get('name');
 				var price = this.item.get('price');
@@ -1070,9 +1145,22 @@
 							<span>可議價</span>\
 						</div>\
 					</div>');
-						
+					
 				//this.$('.item-box-attrs div').text(attrs);
-				return this;
+				//return this;
+			},
+			openItemModal: function(){
+				alert('open modal');
+				var itemModal = new ItemModalView();
+				itemModal.open();
+			}
+		});
+		
+		var ItemModalView = Backbone.View.extend({
+			el: "#itemModal",
+			open: function(){
+				alert('ItemModalView.open()');
+				this.$el.modal('show');
 			}
 		});
 		
@@ -1080,7 +1168,7 @@
 			className: "seller-item-box",
 			events: {
 				"click .item-delete":'deleteItem',
-				"click .chatroom-btn":"openChatroom"
+				"click .chatroom-btn":"openChatroom",
 			},
 			initialize: function() {
 				this.item = this.model;
@@ -1092,6 +1180,11 @@
 				
 				this.render();
 			},
+			//openItemModal: function(){
+			//	alert('open modal');
+			//	var itemModal = new ItemModalView();
+			//	itemModal.open();
+			//},			
 			deleteItem: function(){
 				var that = this;
 				confirm('確定要刪除"'+this.item.get('name')+'"?',function(result){
@@ -1108,23 +1201,6 @@
 				var chatroom = new ChatroomModalView({model:chat});
 				chatroom.open();
 				$btn.next().removeClass('newmsg');
-				
-				
-				
-				
-				//var chats_seen;
-				//this.item.chats.each(function(chat){
-				//	if(chat.get('seller_seen') == false){chats_seen = false}
-				//});
-				//alert(chats_seen);
-				//if(chats_seen == false){
-				//	$el.find("a").attr("style","color:red");
-				//	alert('chats_seen = false');
-				//}else{
-				//	$el.find("a").removeAttr("style");
-				//	alert('chats_seen = true');
-				//}
-				
 			},
 			render: function(){
 				var that = this;
@@ -1168,7 +1244,8 @@
 					));
 				});
 	
-				this.$el.append('<button class="item-delete glyphicon glyphicon-remove pull-right" style="border:none; background-color:white; color:red"></button>').append(this.itemBox.el).append($chatList);
+				var removeBtn = '<button class="item-delete glyphicon glyphicon-remove pull-right" style="border:none; background-color:white; color:red"></button>';
+				this.$el.append(removeBtn).append(this.itemBox.el).append($chatList);
 				return this;
 			}
 		});
@@ -1365,8 +1442,8 @@
 			}
 		});
 		
-		var ItemModalView = Backbone.View.extend({
-			el: "#itemModal",
+		var EditItemModalView = Backbone.View.extend({
+			el: "#editItemModal",
 			events: {
 				"click #itemSubmit": "submit",
 				"change #itemName": "checkItemName",
@@ -1578,17 +1655,17 @@
 		var SellerPanelView = Backbone.View.extend({
 			el: "#sellerPanel",
 			events: {
-				"click #itemModalBtn": "newItemModal",
-				"click #shopModalBtn": "newShopModal"				
+				"click #editItemModalBtn": "newEditItemModal",
+				"click #shopModalBtn": "newShopModal"			
 			},
-			newItemModal:function(){
-				this.itemModal.open();
+			newEditItemModal:function(){
+				this.editItemModal.open();
 			},
 			newShopModal:function(){
 				this.shopModal.open();
 			},			
 			initialize: function() {
-				this.itemModal = new ItemModalView();
+				this.editItemModal = new EditItemModalView();
 				this.editShopModal = new EditShopModalView();
 				
 				//this.listenTo(myItems, 'sync', this.updateItems);
