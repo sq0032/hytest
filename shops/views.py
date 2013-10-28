@@ -33,10 +33,15 @@ def shopItems(request,shop_id):
 class ShopsList(APIView):
 	#商店清單(未完成)
 	def get(self, request, format=None):
-		latitude = request.GET['lat']
-		longitude = request.GET['lng']
-		
-		return Response(status=status.HTTP_400_BAD_REQUEST)
+		northLatitude = float(request.GET['n_lat'])
+		southLatitude = float(request.GET['s_lat'])
+		eastLongitude = float(request.GET['e_lng'])
+		westLongitude = float(request.GET['w_lng'])
+		print type(northLatitude)
+		shops = Shop.objects.filter(latitude__range=(southLatitude,northLatitude),longitude__range=(westLongitude,eastLongitude))
+		serializer = ShopSerializer(shops,many=True)
+		return Response(serializer.data,status=status.HTTP_200_OK)
+		#return Response(status=status.HTTP_400_BAD_REQUEST)
 	#建立新商店(權限尚未完成)
 	def post(self, request, format=None):
 		user = request.user
