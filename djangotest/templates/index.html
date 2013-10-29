@@ -1030,18 +1030,20 @@
 		<script src="js/main.js"></script>
 		<script type="text/javascript">
 
-		var User = Backbone.Model.extend({
+		var app = {};
+		
+		app.User = Backbone.Model.extend({
 			urlRoot:'accounts/users/'
 		});
 		
-		var LoginUser = User.extend({
+		app.LoginUser = app.User.extend({
 			url: 'accounts/users/i',
 			login: function(email, password){
 				var dfd = $.Deferred();
 				$.get('accounts/login',{email:email,password:password}).done(function(){
-					loginUser.fetch().done(function(){
+					app.loginUser.fetch().done(function(){
 						dfd.resolve();
-						loginUser.trigger('login');
+						app.loginUser.trigger('login');
 					}).fail(function(){
 						dfd.reject();
 					});
@@ -1052,26 +1054,26 @@
 			}
 		});
 		
-		var Item = Backbone.Model.extend({
+		app.Item = Backbone.Model.extend({
 			urlRoot:'items/',
 			initialize: function(){
 				var that = this;
-				this.chats = new Chats();
+				this.chats = new app.Chats();
 				this.chats.url = function(){
 					return 'items/'+that.id+'/chat/';
 				}
 			}
 		});
 		
-		var Items = Backbone.Collection.extend({
-			model:Item
+		app.Items = Backbone.Collection.extend({
+			model: app.Item
 		});
 		
-		var ItemCategory = Backbone.Model.extend({
+		app.ItemCategory = Backbone.Model.extend({
 		});
 		
-		var ItemCategorys = Backbone.Collection.extend({
-			model:ItemCategory,
+		app.ItemCategorys = Backbone.Collection.extend({
+			model: app.ItemCategory,
 			url:'item-categorys',
 			getByID: function(id){
 				return this.find(function(category){
@@ -1090,11 +1092,11 @@
 			}
 		});
 		
-		var Shop = Backbone.Model.extend({
+		app.Shop = Backbone.Model.extend({
 			urlRoot: 'shops/',
 			initialize: function(){
 				var that = this;
-				this.items = new Items();
+				this.items = new app.Items();
 				this.items.url = function(){
 					return 'shops/'+that.id+'/items/';
 				}
@@ -1105,8 +1107,8 @@
 			}
 		});
 		
-		var Shops = Backbone.Collection.extend({
-			model:Shop,
+		app.Shops = Backbone.Collection.extend({
+			model: app.Shop,
 			url:'shops/',
 			initialize:function(options){
 				var that = this;
@@ -1133,7 +1135,7 @@
 			}
 		})
 		
-		var Chat = Backbone.Model.extend({
+		app.Chat = Backbone.Model.extend({
 			default:{
 				buyer: null,
 				seller: null,
@@ -1145,19 +1147,19 @@
 			},
 			initialize: function(){
 				var that = this;
-				this.replys = new Replys();
+				this.replys = new app.Replys();
 				this.replys.url = 	function(){
 					return 'chats/'+that.id;
 				};
 			}
 		});
 		
-		var Chats = Backbone.Collection.extend({
-			model: Chat,
+		app.Chats = Backbone.Collection.extend({
+			model: app.Chat,
 			url: 'chats/list'
 		});
 		
-		var Reply = Backbone.Model.extend({
+		app.Reply = Backbone.Model.extend({
 			default:{
 				reply: null,
 				speaker: null,
@@ -1165,18 +1167,18 @@
 			}
 		});
 		
-		var Replys = Backbone.Collection.extend({
-			model: Reply,
+		app.Replys = Backbone.Collection.extend({
+			model: app.Reply,
 			url: '/chats/chat_id',
 		});
 		
 		//全域變數
-		var loginUser = new LoginUser();
-		var itemCategorys = new ItemCategorys();
-		var myShop = new Shop();
-		console.log(myShop);
+		app.loginUser = new app.LoginUser();
+		app.itemCategorys = new app.ItemCategorys();
+		app.myShop = new app.Shop();
+		console.log(app.myShop);
 		
-		var ItemBoxView = Backbone.View.extend({
+		app.ItemBoxView = Backbone.View.extend({
 			className: "item-box",
 			events: {
 				"click .item-box":"openItemModal",
@@ -1219,19 +1221,19 @@
 			},
 			openItemModal: function(){
 				alert('open modal');
-				var itemModal = new ItemModalView();
+				var itemModal = new app.ItemModalView();
 				itemModal.open();
 			}
 		});
 		
-		var ItemModalView = Backbone.View.extend({
+		app.ItemModalView = Backbone.View.extend({
 			el: "#itemModal",
 			open: function(){
 				this.$el.modal('show');
 			}
 		});
 		
-		var SellerItemBoxView = Backbone.View.extend({
+		app.SellerItemBoxView = Backbone.View.extend({
 			className: "seller-item-box",
 			events: {
 				"click .item-delete":"deleteItem",
@@ -1241,7 +1243,7 @@
 			initialize: function() {
 				this.item = this.model;
 				
-				this.itemBox = new ItemBoxView({model:this.item});
+				this.itemBox = new app.ItemBoxView({model:this.item});
 				
 				this.listenTo(this.item, "destroy", this.remove);
 				this.listenTo(this.item.chats, "reset", this.render);
@@ -1250,7 +1252,7 @@
 			},
 			openItemModal: function(){
 				alert('open modal');
-				var itemModal = new ItemModalView();
+				var itemModal = new app.ItemModalView();
 				itemModal.open();
 			},			
 			deleteItem: function(){
@@ -1266,7 +1268,7 @@
 				var chat = this.item.chats.find(function(chat){
 					return (chat.get('id') == chatID);
 				});
-				var chatroom = new ChatroomModalView({model:chat});
+				var chatroom = new app.ChatroomModalView({model:chat});
 				chatroom.open();
 				$btn.next().removeClass('newmsg');
 			},
@@ -1317,7 +1319,7 @@
 			}
 		});
 		
-		var ShopBoxView = Backbone.View.extend({
+		app.ShopBoxView = Backbone.View.extend({
 			className: "shop-box",
 			events: {
 			},
@@ -1346,7 +1348,7 @@
 			}
 		});
 		
-		var EditShopModalView = Backbone.View.extend({
+		app.EditShopModalView = Backbone.View.extend({
 			el: "#editShopModal",
 			events: {
 				"shown.bs.modal": "shown",
@@ -1397,18 +1399,18 @@
 				var latlng = this.marker.getPosition();
 				var latitude = latlng.lat();
 				var longitude = latlng.lng();
-				myShop.set({
+				app.myShop.set({
 					name:name,
 					address:address,
 					description:description,
 					latitude:latitude,
 					longitude:longitude
 				});
-				myShop.save().done(function(){
+				app.myShop.save().done(function(){
 					alert('修改成功');
 					that.$el.modal('hide');
 				}).fail(function(){
-					myShop.fetch();
+					app.myShop.fetch();
 					alert('資料錯誤');
 				});
 			},
@@ -1440,15 +1442,15 @@
 			},
 			show:function(){
 				var that = this;
-				if(myShop.isNew()){
+				if(app.myShop.isNew()){
 					var latlng = new google.maps.LatLng(23.973875,120.982024);
 					this.marker.setPosition(latlng);
 				}else{
-					myShop.fetch().done(function(){
-						that.$shopName.val(myShop.get('name'));
-						that.$shopAddress.val(myShop.get('address'));
-						that.$shopDesc.val(myShop.get('description'));
-						var latlng = new google.maps.LatLng(myShop.get('latitude'),myShop.get('longitude'));
+					app.myShop.fetch().done(function(){
+						that.$shopName.val(app.myShop.get('name'));
+						that.$shopAddress.val(app.myShop.get('address'));
+						that.$shopDesc.val(app.myShop.get('description'));
+						var latlng = new google.maps.LatLng(app.myShop.get('latitude'),app.myShop.get('longitude'));
 						that.marker.setPosition(latlng);
 					});
 				}
@@ -1460,7 +1462,7 @@
 			}
 		});
 
-		var ShopModalView = Backbone.View.extend({
+		app.ShopModalView = Backbone.View.extend({
 			el: "#shopModal",
 			initialize: function() {
 				var that = this;
@@ -1475,7 +1477,7 @@
 				this.$("#shopModalBoard h4").text(shopName);
 				
 				this.myShop.items.each(function(item){
-					var itemBox = new ItemBoxView({model:item});
+					var itemBox = new app.ItemBoxView({model:item});
 					that.$shopModalItemList.append(itemBox.el);
 				});
 			},
@@ -1484,7 +1486,7 @@
 			}
 		});
 		
-		var FormFieldView = Backbone.View.extend({
+		app.FormFieldView = Backbone.View.extend({
 			initialize: function(){
 				this.val = function(){
 					var $input = this.$('input');
@@ -1503,7 +1505,7 @@
 			}
 		});
 		
-		var EditItemModalView = Backbone.View.extend({
+		app.EditItemModalView = Backbone.View.extend({
 			el: "#editItemModal",
 			events: {
 				"click #itemSubmit": "submit",
@@ -1516,9 +1518,9 @@
 			initialize: function() {
 				var that = this;
 				
-				this.nameField = new FormFieldView({el:this.$('#itemNameField')});
-				this.priceField = new FormFieldView({el:this.$('#itemPriceField')});
-				this.descriptionField = new FormFieldView({el:this.$('#itemDescField')});
+				this.nameField = new app.FormFieldView({el:this.$('#itemNameField')});
+				this.priceField = new app.FormFieldView({el:this.$('#itemPriceField')});
+				this.descriptionField = new app.FormFieldView({el:this.$('#itemDescField')});
 				
 				this.name = this.$('#itemName');
 				this.price = this.$('#itemPrice');
@@ -1670,7 +1672,7 @@
 				this.clearField();
 			},
 			open: function(item){
-				this.item = item?item:(new Item());
+				this.item = item?item:(new app.Item());
 				if(this.item.isNew()){
 					this.clearField();
 					this.$el.modal('show');
@@ -1744,7 +1746,7 @@ RINGOverlay.prototype.onRemove = function() {
   this.div_ = null;
 };
 
-		var MapPanelView = Backbone.View.extend({
+		app.MapPanelView = Backbone.View.extend({
 			el: "#mapPanel",
 			events:{
 				'shown': "shown",
@@ -1784,7 +1786,7 @@ RINGOverlay.prototype.onRemove = function() {
 					},200);
 				});
 				
-				var shopsCache = new Shops();
+				var shopsCache = new app.Shops();
 				shopsCache.comparator = function(shop1,shop2){
 					var center = centerMarker.getPosition();
 					var latlng1 = new google.maps.LatLng(shop1.get('latitude'), shop1.get('longitude'));
@@ -1799,7 +1801,7 @@ RINGOverlay.prototype.onRemove = function() {
 				var shopMarkers = {};
 				var displayShopMarkers = {};
 				
-				var shopBoxList = new ShopBoxListView({
+				var shopBoxList = new app.ShopBoxListView({
 					shops:shopsCache,
 					el:'#mapBoxList',
 					display:function(shops){
@@ -1894,7 +1896,7 @@ RINGOverlay.prototype.onRemove = function() {
 			}
 		});
 		
-		var ShopBoxListView = Backbone.View.extend({
+		app.ShopBoxListView = Backbone.View.extend({
 			events:{
 				'scroll': "changeDisplay"
 			},
@@ -1941,7 +1943,7 @@ RINGOverlay.prototype.onRemove = function() {
 				var that = this;
 				this.$el.empty();
 				shops.each(function(shop){
-					var shopBox = new ShopBoxView({model:shop});
+					var shopBox = new app.ShopBoxView({model:shop});
 					that.shopBoxs[shop.id] = shopBox;
 					that.$el.append(shopBox.el);
 				});
@@ -1956,13 +1958,13 @@ RINGOverlay.prototype.onRemove = function() {
 			}
 		});
 		
-		var ShopMarkerView = Backbone.View.extend({
+		app.ShopMarkerView = Backbone.View.extend({
 			initialize: function(options){
 			
 			}
 		});
 		
-		var SellerPanelView = Backbone.View.extend({
+		app.SellerPanelView = Backbone.View.extend({
 			el: "#sellerPanel",
 			events: {
 				"click #editItemModalBtn": "newEditItemModal",
@@ -1975,34 +1977,34 @@ RINGOverlay.prototype.onRemove = function() {
 				this.shopModal.open();
 			},
 			initialize: function() {
-				this.editItemModal = new EditItemModalView();
-				this.editShopModal = new EditShopModalView();
+				this.editItemModal = new app.EditItemModalView();
+				this.editShopModal = new app.EditShopModalView();
 				
 				//this.listenTo(myItems, 'sync', this.updateItems);
 				//this.listenTo(myItems, 'add', this.addOneItem);
-				this.listenTo(myShop.items, 'reset', this.resetItems);
+				this.listenTo(app.myShop.items, 'reset', this.resetItems);
 				
 				this.$sellerItemsList = this.$('#sellerItemsList');
 				this.$sellerShopBox = this.$('#sellerShopBox');
 				
-				this.shopBox = new ShopBoxView({model:myShop});
+				this.shopBox = new app.ShopBoxView({model:app.myShop});
 				this.$sellerShopBox.append(this.shopBox.$el);
 				
-				this.shopModal = new ShopModalView({model:myShop});
+				this.shopModal = new app.ShopModalView({model:app.myShop});
 			},
 			resetItems:function(){
 				var that = this;
 				this.$sellerItemsList.empty();
-				myShop.items.each(function(item){
+				app.myShop.items.each(function(item){
 					item.chats.fetch({reset:true});
 					if(item.get('state') != 'on'){return;}
-					var itemBox = new SellerItemBoxView({model:item})
+					var itemBox = new app.SellerItemBoxView({model:item})
 					that.$sellerItemsList.append(itemBox.el);
 				});
 			}
 		});
 		
-		var UserPanelView = Backbone.View.extend({
+		app.UserPanelView = Backbone.View.extend({
 			el: $("#userPanel"),
 			events:{
 				"click #settingModalbtn": "openSettingModal",
@@ -2021,7 +2023,7 @@ RINGOverlay.prototype.onRemove = function() {
 			}
 		});
 		
-		var LoginModalView = Backbone.View.extend({
+		app.LoginModalView = Backbone.View.extend({
 			el: $("#loginModal"),
 			events: {
 				"show": "showModal",
@@ -2038,7 +2040,7 @@ RINGOverlay.prototype.onRemove = function() {
 				var that = this;
 				var email = this.$("#loginEmail").val();
 				var password = this.$("#loginPassword").val();
-				loginUser.login(email,password)
+				app.loginUser.login(email,password)
 				.done(function(){
 					that.$el.modal('hide');
 				}).fail(function(jqXHR, textStatus, errorThrown){
@@ -2048,7 +2050,7 @@ RINGOverlay.prototype.onRemove = function() {
 			}
 		});
 		
-		var RegModalView = Backbone.View.extend({
+		app.RegModalView = Backbone.View.extend({
 			el: "#regModal",
 			events: {
 				"show.bs.modal": "showModal",
@@ -2232,7 +2234,7 @@ RINGOverlay.prototype.onRemove = function() {
 			}
 		});
 		
-		var SettingView = Backbone.View.extend({
+		app.SettingView = Backbone.View.extend({
 			el:$('#settingModal'),
 			events:{
 				'click #photo-edit':'openPhotoPage',
@@ -2243,7 +2245,7 @@ RINGOverlay.prototype.onRemove = function() {
 				'click #newpass-panel .btn':'changePassword'
 			},
 			initialize: function() {
-				this.listenTo(loginUser, 'change', this.updateUser);
+				this.listenTo(app.loginUser, 'change', this.updateUser);
 			},
 			openPhotoPage: function(){
 				$("#newphoto-panel").toggle();
@@ -2293,14 +2295,14 @@ RINGOverlay.prototype.onRemove = function() {
 				alert('change photo');
 			},
 			updateUser: function(){
-				var email = loginUser.get('email');
-				var name = loginUser.get('name');
+				var email = app.loginUser.get('email');
+				var name = app.loginUser.get('name');
 				this.$('#oldemail').text(email);
 				this.$('#oldname').text(name);
 			}
 		})
 		
-		var NavBarView = Backbone.View.extend({
+		app.NavBarView = Backbone.View.extend({
 			el: '#navBar',
 			events: {
 				"click #logoutBtn": "logout",
@@ -2311,14 +2313,14 @@ RINGOverlay.prototype.onRemove = function() {
 				this.$userNav = this.$("#userNav");
 				this.$guestNav = this.$("#guestNav");
 				this.guestMode();
-				this.listenTo(loginUser, 'login', this.loginMode);
+				this.listenTo(app.loginUser, 'login', this.loginMode);
 			},
 			guestMode: function(){
 				this.$userNav.hide();
 				this.$guestNav.show();
 			},
 			loginMode: function(){
-				this.$userNav.show().find('#navUsername').text(loginUser.get('name'));
+				this.$userNav.show().find('#navUsername').text(app.loginUser.get('name'));
 				this.$guestNav.hide();
 			},
 			showSellerPanel: function(){
@@ -2329,7 +2331,7 @@ RINGOverlay.prototype.onRemove = function() {
 			}
 		});
 		
-		var InfoEmailView = Backbone.View.extend({
+		app.InfoEmailView = Backbone.View.extend({
 			el:$('#infoEmailModal'),
 			initialize: function() {
 			},
@@ -2347,7 +2349,7 @@ RINGOverlay.prototype.onRemove = function() {
 		});
 
 		//ChatroomModalView
-		var ChatroomModalView = Backbone.View.extend({
+		app.ChatroomModalView = Backbone.View.extend({
 			className:'modal fade',
 			initialize: function(){
 				this.chat = this.model;
@@ -2393,7 +2395,7 @@ RINGOverlay.prototype.onRemove = function() {
 				$('.msglist').scrollTop(8000);	//scroll bar位置還要修改 #BW15B
 			},
 			renderReply:function(reply){
-				var replyView = new ReplyView({model:reply});
+				var replyView = new app.ReplyView({model:reply});
 				replyView.chat = this.chat;
 				this.$('.msglist').append(replyView.renderReply().el);
 			
@@ -2411,7 +2413,7 @@ RINGOverlay.prototype.onRemove = function() {
 						receiver : this.chat.get('buyer'),
 					};
 					
-					var reply = new Reply(data);
+					var reply = new app.Reply(data);
 					reply.chat = this.chat;
 					reply.url = 'chats/'+this.chat.get('id');
 					this.chat.replys.add(reply);
@@ -2429,7 +2431,7 @@ RINGOverlay.prototype.onRemove = function() {
 			}
 		});
 		
-		var ReplyView = Backbone.View.extend({
+		app.ReplyView = Backbone.View.extend({
 			tagName: 'li',
 			initialize: function(){
 				this.reply = this.model;
@@ -2566,7 +2568,7 @@ RINGOverlay.prototype.onRemove = function() {
 			});
 		}
 		
-		var myRouter = Backbone.Router.extend({
+		app.myRouter = Backbone.Router.extend({
 			routes: {
 				":test": "testfunc",
 			},
@@ -2575,48 +2577,48 @@ RINGOverlay.prototype.onRemove = function() {
 				console.log('testfunc: '+p1);
 			}
 		});
-		new myRouter();
+		new app.myRouter();
 		Backbone.history.start();
 		
 
-		var AppView = Backbone.View.extend({
+		app.AppView = Backbone.View.extend({
 			el: 'body',
 			events: {
 			},
 			initialize: function(){
-				this.navBar = new NavBarView();	
-				this.loginModal = new LoginModalView();
-				this.regModal = new RegModalView();
-				this.settingModal = new SettingView();
-				this.infoEmailModal = new InfoEmailView();
-				this.sellerPanel = new SellerPanelView();
-				this.mapPanel = new MapPanelView();
-				this.userPanel = new UserPanelView();
+				this.navBar = new app.NavBarView();	
+				this.loginModal = new app.LoginModalView();
+				this.regModal = new app.RegModalView();
+				this.settingModal = new app.SettingView();
+				this.infoEmailModal = new app.InfoEmailView();
+				this.sellerPanel = new app.SellerPanelView();
+				this.mapPanel = new app.MapPanelView();
+				this.userPanel = new app.UserPanelView();
 				
-				itemCategorys.fetch()
+				app.itemCategorys.fetch()
 				
 				//e = {events:[{},{}],time:time};
 				var e = {events:[]};
-				loginUser.fetch().pipe(function(){
+				app.loginUser.fetch().pipe(function(){
 					var dfd = $.Deferred();
-					if(loginUser.isNew()){
+					if(app.loginUser.isNew()){
 						dfd.reject();
-					}else if(loginUser.get('shops').length == 0){
-						loginUser.trigger('login');
+					}else if(app.loginUser.get('shops').length == 0){
+						app.loginUser.trigger('login');
 						dfd.reject();
 					}else{
 					
 						hEvent(e);
-						loginUser.trigger('login');
+						app.loginUser.trigger('login');
 						dfd.resolve();
 					}
 					return dfd;
 				}).pipe(function(){
-					var shopID = loginUser.get('shops')[0];
-					myShop.set('id',shopID);
-					return myShop.fetch();
+					var shopID = app.loginUser.get('shops')[0];
+					app.myShop.set('id',shopID);
+					return app.myShop.fetch();
 				}).pipe(function(){
-					return myShop.items.fetch({reset:true});
+					return app.myShop.items.fetch({reset:true});
 				}).done(function(){
 					console.log('done');
 				}).fail(function(){
@@ -2632,7 +2634,7 @@ RINGOverlay.prototype.onRemove = function() {
 		var globalEvents = {
 			newmsg:function(data){
 				var reply = data;
-				myShop.items.each(function(item){
+				app.myShop.items.each(function(item){
 					console.log(item.get('name'));
 					item.chats.each(function(chat){
 					//console.log("chat.get('id'): "+chat.get('id'));
@@ -2647,7 +2649,7 @@ RINGOverlay.prototype.onRemove = function() {
 									existReply.get('id') == reply.id;
 									return;
 								});
-								reply = new Reply(reply);
+								reply = new app.Reply(reply);
 								//reply.trigger('seen');
 								//reply.once('seen',funciton(){
 									//remove event
@@ -2689,7 +2691,7 @@ RINGOverlay.prototype.onRemove = function() {
 		////////////////Global Events end////////////////
 		
 			$(function(){
-				new AppView();
+				new app.AppView();
 
 
 				window.onresize = function(event) {
