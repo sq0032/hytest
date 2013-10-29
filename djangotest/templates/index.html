@@ -644,7 +644,7 @@
 								</button>
 							</div>
 						</div>
-						<div class="item-modal-photos" style="padding:5px; border:1px solid; overflow:auto">
+						<div class="item-modal-photos" style="white-space:nowrap; padding:5px; border:1px solid; overflow:auto">
 							<span style=""><img src="img/first-slide.png" width="100%"></span>
 							<span style=""><img src="img/second-slide.png" width="100%"></span>
 							<span style=""><img src="img/third-slide.png" width="100%"></span>
@@ -936,7 +936,7 @@
 								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-play"></span>
 								開始營業
 							</button>
-							<button class="btn btn-default" style="width:25%" href="#shopModal" data-toggle="modal"> <!-- 編輯店面 -->
+							<button class="btn btn-default" style="width:25%" href="#editShopModal" data-toggle="modal"> <!-- 編輯店面 -->
 								<span style="display:block;font-size: 24px;" class="glyphicon glyphicon-edit"></span>
 								編輯店面
 							</button>
@@ -1227,7 +1227,6 @@
 		var ItemModalView = Backbone.View.extend({
 			el: "#itemModal",
 			open: function(){
-				alert('ItemModalView.open()');
 				this.$el.modal('show');
 			}
 		});
@@ -1237,6 +1236,7 @@
 			events: {
 				"click .item-delete":"deleteItem",
 				"click .chatroom-btn":"openChatroom",
+				"click .item-box":"openItemModal"
 			},
 			initialize: function() {
 				this.item = this.model;
@@ -1248,11 +1248,11 @@
 				
 				this.render();
 			},
-			//openItemModal: function(){
-			//	alert('open modal');
-			//	var itemModal = new ItemModalView();
-			//	itemModal.open();
-			//},			
+			openItemModal: function(){
+				alert('open modal');
+				var itemModal = new ItemModalView();
+				itemModal.open();
+			},			
 			deleteItem: function(){
 				var that = this;
 				confirm('確定要刪除"'+this.item.get('name')+'"?',function(result){
@@ -1966,14 +1966,14 @@ RINGOverlay.prototype.onRemove = function() {
 			el: "#sellerPanel",
 			events: {
 				"click #editItemModalBtn": "newEditItemModal",
-				"click #shopModalBtn": "newShopModal"			
+				"click #shopModalBtn": "newShopModal"
 			},
 			newEditItemModal:function(){
 				this.editItemModal.open();
 			},
 			newShopModal:function(){
 				this.shopModal.open();
-			},			
+			},
 			initialize: function() {
 				this.editItemModal = new EditItemModalView();
 				this.editShopModal = new EditShopModalView();
@@ -1988,7 +1988,7 @@ RINGOverlay.prototype.onRemove = function() {
 				this.shopBox = new ShopBoxView({model:myShop});
 				this.$sellerShopBox.append(this.shopBox.$el);
 				
-				this.shopModal = new ShopModalView({model:myShop});				
+				this.shopModal = new ShopModalView({model:myShop});
 			},
 			resetItems:function(){
 				var that = this;
