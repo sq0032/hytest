@@ -5,7 +5,7 @@ app.ItemBoxView = Backbone.View.extend({
 	events: {
 		"click .item-box":"openItemModal",
 		"click .media":"openItemModal",
-		"click .item-box-attrs":"openItemModal"				
+		"click .item-box-attrs":"openItemModal"
 	},
 	initialize: function() {
 		this.item = this.model;
@@ -538,7 +538,7 @@ app.MapPanelView = Backbone.View.extend({
 		google.maps.event.addListener(centerMarker, 'position_changed', function(){
 			if(!this.markerTimer){this.markerTimer=null;}
 			clearTimeout(this.markerTimer);
-			this.markerTimer = setTimeout(function(){
+			this.markerTimex	r = setTimeout(function(){
 				ring.setCenter(centerMarker.getPosition());
 				shopsCache.sort();
 			},200);

@@ -266,7 +266,6 @@ function hEvent(e){
 $(function(){
 	new app.AppView();
 
-
 	window.onresize = function(event) {
 		if(window.innerWidth>window.innerHeight){
 			this.$(".item-box-description").css("display","block");
