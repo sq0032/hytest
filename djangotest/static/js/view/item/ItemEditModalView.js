@@ -13,16 +13,16 @@ app.ItemEditModalView = Backbone.View.extend({
 	initialize: function() {
 		var that = this;
 		
-		this.nameField = new app.FormFieldView({el:this.$('#itemNameField')});
-		this.priceField = new app.FormFieldView({el:this.$('#itemPriceField')});
+		this.nameField = 		new app.FormFieldView({el:this.$('#itemNameField')});
+		this.priceField = 		new app.FormFieldView({el:this.$('#itemPriceField')});
 		this.descriptionField = new app.FormFieldView({el:this.$('#itemDescField')});
 		
-		this.name = this.$('#itemName');
-		this.price = this.$('#itemPrice');
-		this.description = this.$('#itemDesc');
-		this.conditionAttr = this.$('input:radio[name=conditionAttr]');
-		this.sizeAttr = this.$('input:radio[name=sizeAttr]');
-		this.category = this.$('#itemCategory');
+		this.name = 			this.$('#itemName');
+		this.price = 			this.$('#itemPrice');
+		this.description = 		this.$('#itemDesc');
+		this.conditionAttr = 	this.$('input:radio[name=conditionAttr]');
+		this.sizeAttr = 		this.$('input:radio[name=sizeAttr]');
+		this.category = 		this.$('#itemCategory');
 		
 		//uploadfile
 		this.files = {};
@@ -105,12 +105,12 @@ app.ItemEditModalView = Backbone.View.extend({
 	submit: function(){
 		var that = this;
 		var name = this.name.val();
-		var price = parseInt(this.price.val());
-		var description = this.description.val();
+		var price = 		parseInt(this.price.val());
+		var description = 	this.description.val();
 		var conditionAttr = this.conditionAttr.filter(':checked').val();
-		var sizeAttr = this.sizeAttr.filter(':checked').val();
-		var attrs = [parseInt(conditionAttr),parseInt(sizeAttr)];
-		var category = this.category.val();
+		var sizeAttr = 		this.sizeAttr.filter(':checked').val();
+		var attrs = 		[parseInt(conditionAttr),parseInt(sizeAttr)];
+		var category = 		this.category.val();
 
 		this.item.set({
 			name:name,

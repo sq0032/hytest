@@ -18,8 +18,8 @@ app.SellerItemBoxView = Backbone.View.extend({
 		this.render();
 	},
 	openItemModal: function(){
-		alert('open modal');
-		var itemModal = new app.ItemModalView();
+		alert(typeof(this.item));
+		var itemModal = new app.ItemModalView({model:this.item});
 		itemModal.open();
 	},			
 	deleteItem: function(){

@@ -138,6 +138,40 @@
 		}
 		
 		/************************/
+		/*						*/
+		/*		item-modal		*/
+		/*						*/
+		/************************/
+		.item-modal-container{
+			margin:		20px;
+			text-align:	center;
+		}
+		
+		#item-modal-price:before{
+			content: "價格:";
+			float:	left;
+		}
+		
+		#item-modal-price:after{
+			content: " 元";
+		}
+		
+		#item-modal-add-time:before{
+			content: "上架日期:";
+			float:	left;
+		}
+		
+		#item-modal-price-attr span,
+		#item-modal-condition-attr span,
+		#item-modal-size-attr span{
+			border-radius:		5px; 
+			background-color:	#0c0; 
+			color:				white;
+			width:				80%;
+		}
+		
+		
+		/************************/
 		/*		shop-modal,		*/
 		/*		seller-item-box	*/
 		/*		 | item-box		*/
@@ -636,47 +670,47 @@
 						<h4 class="modal-title">ITEM</h4>
 					</div>
 					<div class="modal-body" style="min-height:300px; padding:0px">
-						<div class="modal-board">
+						<div>
 							<div style="position:relative; border-bottom:1px solid; padding:10px;">
-								<h4 style="margin-right:50px">這裡放商品的名稱這裡放商店的名稱這裡放商品的名稱</h4>
+								<h4 id="item-modal-name" style="margin-right:50px">這裡放商品的名稱這裡放商店的名稱這裡放商品的名稱</h4>
 								<button type="submit" style="position:absolute; right:0px; top:0px; margin:10px">
 									<span class="glyphicon glyphicon-star-empty" style="font-size:2em;"></span>
 								</button>
 							</div>
 						</div>
-						<div class="item-modal-photos" style="white-space:nowrap; padding:5px; border:1px solid; overflow:auto">
+						<div id="item-modal-photos" class="item-modal-container" style="white-space:nowrap; padding:5px; border:1px solid; overflow:auto">
 							<span style=""><img src="img/first-slide.png" width="100%"></span>
 							<span style=""><img src="img/second-slide.png" width="100%"></span>
 							<span style=""><img src="img/third-slide.png" width="100%"></span>
 						</div>
 						<div class="row">
 							<div class="col-xs-12 col-sm-6">
-								<div class="item-modal-detail" style="text-align: center; margin:10px">
-									<div class="item-modal-price">100000</div>
-									<div class="item-modal-add-time"></div>
+								<div class="item-modal-container" style="text-align: center; margin:10px">
+									<div id="item-modal-price">100000</div>
+									<div id="item-modal-add-time"></div>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-6">
-								<div class="item-modal-attrs" style="margin:10px">
+								<div class="item-modal-container" style="margin:10px">
 									<div class="row" style="text-align:center">
-										<div class="col-xs-4">尺寸<br><span>背包可裝</span></div>
-										<div class="col-xs-4">新舊<br><span>全新品</span></div>
-										<div class="col-xs-4">談價空間<br><span>不二價</span></div>
+										<div id="item-modal-size-attr"class="col-xs-4">尺寸<br><span>背包可裝</span></div>
+										<div id="item-modal-condition-attr" class="col-xs-4">新舊<br><span>全新品</span></div>
+										<div id="item-modal-price-attr" class="col-xs-4">談價空間<br><span>不二價</span></div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="item-modal-description" style="margin:10px; text-align:center">
+						<div class="item-modal-container" style="margin:10px; text-align:center">
 							<h4>商品描述</h4>
-							<p style="text-align:left">商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述</p>
+							<p id="item-modal-description" style="text-align:left">商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述</p>
 						</div>
-						<div class="item-modal-map" style="margin:10px; text-align:center; height:100px;">
+						<div class="item-modal-container" style="margin:10px; text-align:center; height:250px;">
 							<h4>位置</h4>
-							<div>
+							<div id="item-modal-googlemap" style="width:100%;">
 								<!--Googole Map-->
 							</div>
 						</div>
-						<div class="item-modal-chat" style="margin:10px; text-align:center">
+						<div class="item-modal-container" style="margin:10px; text-align:center">
 							<h4>想要買?有問題?</h4>
 							<button class="btn btn-primary" type="button">聯絡賣家</button>
 						</div>
