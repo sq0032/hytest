@@ -92,13 +92,11 @@ app.ItemModalView = Backbone.View.extend({
 		});
 		
 		//set infoWindow
-		var contentStr = '<p style="white-space:nowrap">\
-							'+this.item.collection.shop.get('address')+'\
-						</p>';
-		var infowindow = new google.maps.InfoWindow({
+		var contentStr = this.item.collection.shop.get('address');
+		this.infowindow = new google.maps.InfoWindow({
 			content: contentStr,
 		});
-		infowindow.open(this.map,this.marker);
+		this.infowindow.open(this.map,this.marker);
 		this.marker.setMap(this.map);
 	},
 	open: function(){
@@ -108,5 +106,6 @@ app.ItemModalView = Backbone.View.extend({
 		console.log('google map resize');
 		google.maps.event.trigger(this.map, "resize");
 		this.map.setCenter(this.marker.getPosition());
+		this.infowindow.open(this.map, this.marker);
 	}
 });
