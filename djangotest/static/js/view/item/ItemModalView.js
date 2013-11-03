@@ -5,13 +5,17 @@ app.ItemModalView = Backbone.View.extend({
 	events:{
 		"shown.bs.modal": "shown",
 		//"show.bs.modal": "show",
+		"click #item-modal-board button": "like",
+		"click .modal-header button":"remove",
 	},
+
 	initialize: function(){
 		this.item 			= this.model;
-		
-
+	
+	
 		//declare jquery objects
 		this.name 			= this.$('#item-modal-name');
+		this.star 			= this.$('#item-modal-board span');
 		this.photos 		= this.$('#item-modal-photos');
 		this.price 			= this.$('#item-modal-price');
 		this.addtime 		= this.$('#item-modal-add-time');
@@ -20,13 +24,25 @@ app.ItemModalView = Backbone.View.extend({
 		this.priceAttr 		= this.$('#item-modal-price-attr span');
 		this.description 	= this.$('#item-modal-description');
 		this.map 			= this.$('#item-modal-map');
-		
+	
 		//input item name
 		this.name.text(this.item.get('name'));
+	
+		alert('set star type');
+		//set star type
+		if(this.item.get('favorite')==true){
+			this.$('#item-modal-board span')
+				.removeClass('glyphicon-star-empty')
+				.addClass('glyphicon-star');
+		}else{
+			this.$('#item-modal-board span')
+				.removeClass('glyphicon-star')
+				.addClass('glyphicon-star-empty');
+		}
 		
 		//input item price
 		this.price.text(this.item.get('price'));
-		
+	
 		//input item pubtime
 		var now = new Date();
 		var d = new Date(this.item.get('pub_date'));
@@ -35,7 +51,7 @@ app.ItemModalView = Backbone.View.extend({
 		var D = d.getDate();
 		var date = Y+'/'+M+'/'+D;
 		this.addtime.text(date);
-		
+	
 		//input item attritubes
 		var attrs = this.item.get('attrs');
 		var that = this;
@@ -67,7 +83,7 @@ app.ItemModalView = Backbone.View.extend({
 				}
 			}
 		});
-		
+	
 		//input item description
 		var description = this.item.get('description');
 		if(description==''){
@@ -75,7 +91,7 @@ app.ItemModalView = Backbone.View.extend({
 		}else{
 			this.description.text(description);
 		}
-
+	
 		//set google map
 		var latlng = new google.maps.LatLng(this.item.collection.shop.get('latitude'),
 											this.item.collection.shop.get('longitude'));
@@ -85,12 +101,12 @@ app.ItemModalView = Backbone.View.extend({
 			mapTypeId:google.maps.MapTypeId.ROADMAP
 		};
 		this.map=new google.maps.Map(this.map[0],mapProp);
-		
+	
 		//set shop marker
 		this.marker = new google.maps.Marker({
 			position:latlng,
 		});
-		
+	
 		//set infoWindow
 		var contentStr = this.item.collection.shop.get('address');
 		this.infowindow = new google.maps.InfoWindow({
@@ -99,9 +115,31 @@ app.ItemModalView = Backbone.View.extend({
 		this.infowindow.open(this.map,this.marker);
 		this.marker.setMap(this.map);
 	},
+
+	like: function(){
+		var that = this;
+		$.get( 'item/'+this.item.get('id')+'/like/')
+		.done(function(data){
+			if(data=='added'){
+				that.$('#item-modal-board span')
+					.removeClass('glyphicon-star-empty')
+					.addClass('glyphicon-star');
+				alert('data=added');
+			}else{
+				that.$('#item-modal-board span')
+					.removeClass('glyphicon-star')
+					.addClass('glyphicon-star-empty');
+				alert('data=removed');
+			}
+		}).fail(function(){
+			alert('連線錯誤 請稍後再試');
+		});
+	},
+
 	open: function(){
 		this.$el.modal('show');
 	},
+
 	shown: function(){
 		console.log('google map resize');
 		google.maps.event.trigger(this.map, "resize");

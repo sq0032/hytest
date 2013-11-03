@@ -104,3 +104,25 @@ def getItemConversationList(request, item_id):
 	serializer = ChatSerializer(chat, many=True)
 	return Response(serializer.data)
 
+
+def likeItem(request, item_id):
+	print('likeItem function')
+	print('item_id='+item_id)
+	print(request.user)
+	item = Item.objects.get(id=item_id)
+	if item.follower.all().filter(username = request.user.username).exists():
+		item.follower.remove(request.user)
+		return HttpResponse('remove')
+	else:
+		item.follower.add(request.user)
+		return HttpResponse('added')
+
+	return HttpResponse()
+
+@api_view(['GET'])
+def getItemTest(request, item_id):
+	item = Item.objects.all()
+	serializer = ItemSerializer(item,user=request.user)
+	return Response(serializer.data)
+
+
