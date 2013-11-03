@@ -27,7 +27,7 @@ def shopItems(request,shop_id):
 	shop = Shop.objects.get(id=shop_id)
 	if shop.owner.id != user.id:
 		return Response(status=status.HTTP_401_UNAUTHORIZED)
-	serializer = ItemSerializer(shop.items.filter(state=Item.ON),many=True)
+	serializer = ItemSerializer(shop.items.filter(state=Item.ON),user=request.user,many=True)
 	return Response(serializer.data)
 
 class ShopsList(APIView):
@@ -81,3 +81,17 @@ class ShopsDetail(APIView):
 			return Response(serializer.data)
 		else:
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		
+def likeShop(request, shop_id):
+	print('likeItem function')
+	print('shop_id='+shop_id)
+	print(request.user)
+	shop = Shop.objects.get(id=shop_id)
+	if shop.follower.all().filter(username = request.user.username).exists():
+		shop.follower.remove(request.user)
+		return HttpResponse('remove')
+	else:
+		shop.follower.add(request.user)
+		return HttpResponse('added')
+
+	return HttpResponse()
