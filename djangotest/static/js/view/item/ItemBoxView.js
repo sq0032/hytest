@@ -79,8 +79,7 @@ app.ItemBoxView = Backbone.View.extend({
 		//return this;
 	},
 	openItemModal: function(){
-		alert('open modal');
-		var itemModal = new app.ItemModalView();
+		var itemModal = new app.ItemModalView({model:this.item});
 		itemModal.open();
 	}
 });
