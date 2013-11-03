@@ -9,6 +9,7 @@ app.ItemModalView = Backbone.View.extend({
 	initialize: function(){
 		this.item 			= this.model;
 		
+
 		//declare jquery objects
 		this.name 			= this.$('#item-modal-name');
 		this.photos 		= this.$('#item-modal-photos');
@@ -18,7 +19,7 @@ app.ItemModalView = Backbone.View.extend({
 		this.conditionAttr 	= this.$('#item-modal-condition-attr span');
 		this.priceAttr 		= this.$('#item-modal-price-attr span');
 		this.description 	= this.$('#item-modal-description');
-		this.map 			= this.$('#item-modal-googlemap');
+		this.map 			= this.$('#item-modal-map');
 		
 		//input item name
 		this.name.text(this.item.get('name'));
@@ -74,14 +75,31 @@ app.ItemModalView = Backbone.View.extend({
 		}else{
 			this.description.text(description);
 		}
-		
+
 		//set google map
+		var latlng = new google.maps.LatLng(this.item.collection.shop.get('latitude'),
+											this.item.collection.shop.get('longitude'));
 		var mapProp = {
-			center:new google.maps.LatLng(51.508742,-0.120850),
-			zoom:5,
+			center:latlng,
+			zoom:14,
 			mapTypeId:google.maps.MapTypeId.ROADMAP
 		};
 		this.map=new google.maps.Map(this.map[0],mapProp);
+		
+		//set shop marker
+		this.marker = new google.maps.Marker({
+			position:latlng,
+		});
+		
+		//set infoWindow
+		var contentStr = '<p style="white-space:nowrap">\
+							'+this.item.collection.shop.get('address')+'\
+						</p>';
+		var infowindow = new google.maps.InfoWindow({
+			content: contentStr,
+		});
+		infowindow.open(this.map,this.marker);
+		this.marker.setMap(this.map);
 	},
 	open: function(){
 		this.$el.modal('show');
@@ -89,5 +107,6 @@ app.ItemModalView = Backbone.View.extend({
 	shown: function(){
 		console.log('google map resize');
 		google.maps.event.trigger(this.map, "resize");
+		this.map.setCenter(this.marker.getPosition());
 	}
 });
