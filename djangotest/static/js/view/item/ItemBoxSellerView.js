@@ -18,7 +18,6 @@ app.SellerItemBoxView = Backbone.View.extend({
 		this.render();
 	},
 	openItemModal: function(){
-		alert(typeof(this.item));
 		var itemModal = new app.ItemModalView({model:this.item});
 		itemModal.open();
 	},			
