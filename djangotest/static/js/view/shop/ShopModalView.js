@@ -4,7 +4,7 @@ app.ShopModalView = Backbone.View.extend({
 	id: "shopModal",
 	className: "modal fade",
 	events:{
-		"click .item-modal-board button": "like",
+		"click .shop-modal-board button": "like",
 		"click .modal-header button":"remove",
 		"click #shopModalItemList":"remove"
 	},
@@ -101,7 +101,7 @@ app.ShopModalView = Backbone.View.extend({
 	like: function(){
 		var that = this;
 		
-		$.get( 'shop/'+that.shop.get('id')+'/like/')
+		$.get( 'shops/'+that.shop.get('id')+'/like/')
 		.done(function(){
 			if(that.shop.get('favorite')==true){
 				that.shop.set('favorite', false);
