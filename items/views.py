@@ -89,7 +89,10 @@ class ItemsDetail(APIView):
 		item.state = Item.DEL
 		item.save()
 		return Response(status=status.HTTP_200_OK)
-
+	def get(self, request, id):
+		item = Item.objects.get(id=id)
+		serializer = ItemSerializer(item, user=request.user)
+		return Response(serializer.data)
 
 @api_view(['GET'])
 def getItemCategorys(request):
@@ -103,4 +106,23 @@ def getItemConversationList(request, item_id):
 	chat = Chat.objects.filter(item__rid=item_id)
 	serializer = ChatSerializer(chat, many=True)
 	return Response(serializer.data)
+
+
+def likeItem(request, item_id):
+	item = Item.objects.get(id=item_id)
+	if item.follower.all().filter(username = request.user.username).exists():
+		item.follower.remove(request.user)
+		return HttpResponse('remove')
+	else:
+		item.follower.add(request.user)
+		return HttpResponse('added')
+
+	return HttpResponse()
+
+@api_view(['GET'])
+def getItemTest(request, item_id):
+	item = Item.objects.all()
+	serializer = ItemSerializer(item,user=request.user)
+	return Response(serializer.data)
+
 

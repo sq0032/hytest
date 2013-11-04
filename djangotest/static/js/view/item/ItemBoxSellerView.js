@@ -18,9 +18,15 @@ app.SellerItemBoxView = Backbone.View.extend({
 		this.render();
 	},
 	openItemModal: function(){
-		var itemModal = new app.ItemModalView({model:this.item});
-		itemModal.open();
-	},			
+		var item = new app.Item();
+		item.set('id',this.item.get('id'));
+		item.fetch().done( function(){
+			var itemModal = new app.ItemModalView({model:item});
+			itemModal.open();
+		}).fail(function(){
+			alert('網路發生錯誤');
+		});
+	},
 	deleteItem: function(){
 		var that = this;
 		confirm('確定要刪除"'+this.item.get('name')+'"?',function(result){
