@@ -14,14 +14,20 @@ app.ItemModalView = Backbone.View.extend({
 
 	initialize: function(){
 		this.item 			= this.model;
+		//this.item.fetch();
+		this.shop			= new app.Shop();
+		this.shop.set('id',this.item.get('shops')[0]);
+		
+		this.listenTo(this.shop, 'sync', this.setMap);
+		this.shop.fetch();
+		
+
 		this.$el.attr("tabindex","-1");
 		
 		var $modalStructure = this.renderStructure();
 		$modalStructure.find(".modal-body").append(this.renderBody());
 		this.$el.append($modalStructure);
-		//this.$el.append(this.renderModalBody());
-		//	'<div class="modal fade" tabindex="-1">
-			
+
 		//declare jquery objects
 		this.name 			= this.$('#item-modal-name');
 		this.star 			= this.$('#item-modal-board span');
@@ -99,29 +105,6 @@ app.ItemModalView = Backbone.View.extend({
 		}else{
 			this.description.text(description);
 		}
-	
-		//set google map
-		var latlng = new google.maps.LatLng(this.item.collection.shop.get('latitude'),
-											this.item.collection.shop.get('longitude'));
-		var mapProp = {
-			center:latlng,
-			zoom:14,
-			mapTypeId:google.maps.MapTypeId.ROADMAP
-		};
-		this.map=new google.maps.Map(this.map[0],mapProp);
-	
-		//set shop marker
-		this.marker = new google.maps.Marker({
-			position:latlng,
-		});
-	
-		//set infoWindow
-		var contentStr = this.item.collection.shop.get('address');
-		this.infowindow = new google.maps.InfoWindow({
-			content: contentStr,
-		});
-		this.infowindow.open(this.map,this.marker);
-		this.marker.setMap(this.map);
 	},
 
 	renderStructure: function(){
@@ -198,6 +181,31 @@ app.ItemModalView = Backbone.View.extend({
 		return $modalBody;
 	},
 	
+	setMap: function(){
+		//set google map
+		var latlng = new google.maps.LatLng(this.shop.get('latitude'),
+											this.shop.get('longitude'));
+		var mapProp = {
+			center:latlng,
+			zoom:14,
+			mapTypeId:google.maps.MapTypeId.ROADMAP
+		};
+		this.map=new google.maps.Map(this.map[0],mapProp);
+	
+		//set shop marker
+		this.marker = new google.maps.Marker({
+			position:latlng,
+		});
+	
+		//set infoWindow
+		var contentStr = this.shop.get('address');
+		this.infowindow = new google.maps.InfoWindow({
+			content: contentStr,
+		});
+		this.infowindow.open(this.map,this.marker);
+		this.marker.setMap(this.map);
+	},
+	
 	like: function(){
 		var that = this;
 		
@@ -224,15 +232,25 @@ app.ItemModalView = Backbone.View.extend({
 	},
 	
 	openShopModal: function(){
-		this.remove();
-		
-		var shopModal = new app.ShopModalView({model:this.item.collection.shop});
-		shopModal.open();
+		var that = this;
+		var shop = new app.Shop();
+		shop.set('id',this.shop.get('id'));
+		shop.fetch().pipe(function(){
+			return shop.items.fetch({reset:true});
+		}).done(function(){
+			var shopModal = new app.ShopModalView({model:shop});
+			that.remove();
+			$(".modal-backdrop").remove();
+			shopModal.open();
+		}).fail(function(){
+			alert('網路傳輸錯誤 請稍後再試');
+		});
 	},
 
 	openAboutModal: function(){
 		alert("功能未完成");
 	},
+	
 	
 	shown: function(){
 		console.log('google map resize');

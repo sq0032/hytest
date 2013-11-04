@@ -79,7 +79,13 @@ app.ItemBoxView = Backbone.View.extend({
 		//return this;
 	},
 	openItemModal: function(){
-		var itemModal = new app.ItemModalView({model:this.item});
-		itemModal.open();
+		var item = new app.Item();
+		item.set('id',this.item.get('id'));
+		item.fetch().done( function(){
+			var itemModal = new app.ItemModalView({model:item});
+			itemModal.open();
+		}).fail(function(){
+			alert('網路發生錯誤');
+		});
 	}
 });

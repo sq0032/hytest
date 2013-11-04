@@ -10,7 +10,8 @@ app.SellerPanelView = Backbone.View.extend({
 		this.itemEditModal.open();
 	},
 	newShopModal:function(){
-		this.shopModal.open();
+		var shopModal = new app.ShopModalView({model:app.myShop});
+		shopModal.open();
 	},
 	initialize: function() {
 		this.itemEditModal = new app.ItemEditModalView();
@@ -25,8 +26,6 @@ app.SellerPanelView = Backbone.View.extend({
 		
 		this.shopBox = new app.ShopBoxView({model:app.myShop});
 		this.$sellerShopBox.append(this.shopBox.$el);
-		
-		this.shopModal = new app.ShopModalView({model:app.myShop});
 	},
 	resetItems:function(){
 		var that = this;

@@ -83,9 +83,6 @@ class ShopsDetail(APIView):
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 		
 def likeShop(request, shop_id):
-	print('likeItem function')
-	print('shop_id='+shop_id)
-	print(request.user)
 	shop = Shop.objects.get(id=shop_id)
 	if shop.follower.all().filter(username = request.user.username).exists():
 		shop.follower.remove(request.user)
