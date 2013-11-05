@@ -3,7 +3,7 @@ var app = app || {};
 app.ShopBoxView = Backbone.View.extend({
 	className: "shop-box",
 	events: {
-		"click .shop-box":"openShopModal",
+		"click .media":"openShopModal",
 	},
 	initialize: function() {
 		this.shop = this.model;

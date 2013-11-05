@@ -15,6 +15,7 @@ app.ShopFavorListView = Backbone.View.extend({
 	},
 	renderShop:function(shop){
 		var shopBox = new app.ShopBoxView({model:shop});
-		this.$(".shop-favor-list").append(shopBox.el);
+		//this.$(".shop-favor-list").append(shopBox.el);
+		this.$el.append(shopBox.el);
 	}
 });
