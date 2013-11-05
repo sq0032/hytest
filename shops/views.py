@@ -94,9 +94,10 @@ class ShopsFavorList(APIView):
 	
 		return Response()
 
-	def get(self, request, shop_id):	
+	def get(self, request, shop_id):
 		shop = Shop.objects.filter(follower = request.user)
 		serializer = ShopSerializer(shop, many=True)
+		print(serializer.data)
 		return Response(serializer.data)
 	
 	
