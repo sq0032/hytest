@@ -403,6 +403,7 @@
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>
 	</head>
 	<body>
+		<!--NavBar-->
 		<div id="navBar" style="background-color:#FFFFFF" class="navbar navbar-fixed-top">
 			<div class="container">
 				<div>
@@ -415,7 +416,7 @@
 							</a>
 						</li>
 						<li> <!-- Trace Panel Tab -->
-							<a href="#tracePanel" data-toggle="tab">
+							<a href="#buyerPanel" data-toggle="tab">
 								<span class="glyphicon glyphicon-list-alt"></span>
 								<span class="hidden-xs">追蹤清單</span>
 							</a>
@@ -710,43 +711,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!--Shop Modal -->
-		<div id="shopModal" class="modal fade" tabindex="-1">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title">SHOP</h4>
-					</div>
-					<div class="modal-body" style="min-height:300px; padding:0px">
-						<div id="shopModalBoard" class="shop-modal-board" style="position:relative; padding:10px;">
-							<h4 id="shopModalName" style="margin-right:50px"></h4>
-							<button type="submit" style="position:absolute; right:0px; top:0px; margin:10px">
-								<span class="glyphicon glyphicon-star-empty" style="font-size:2em;"></span>
-							</button>
-						</div>
-						<div id="shopModalShowcase" class="shop-modal-showcase">
-							<div class="showcase-toolbar" style="padding:5px 10px; border-bottom:1px solid">
-								<div class="showcase-toolbar-sort">
-									排序依
-									<select>
-									  <option value="上架日期">上架日期</option>
-									  <option value="價格">價格</option>
-									</select>
-								</div>
-							</div>
-							<div id="shopModalItemList" class="showcase-item-list" style="">
-								
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer" style="text-align:center">
-						<button type="button" class="btn btn-primary" style="margin:auto">關於本店</button>
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
 		
 		<!--Setting modal -->
 		<div id="settingModal" class="modal fade" tabindex="-1">
@@ -892,7 +856,35 @@
 				<div id="mainMap"></div>
 				<div id="mapBoxList"></div>
 			</div>
-			<div class="tab-pane fade" id="tracePanel"> <!-- Trace Panel -->
+			<div class="tab-pane fade" id="buyerPanel"> <!-- Buyer Panel -->
+				<div id="itemFavorList">
+					<h3 style="padding:10px; margin:0px">Tracing Item</h3>
+					<div class="list-toolbar" style="border-bottom:1px solid; border-top:1px solid; padding:5px">
+						<div class="list-toolbar-sort">
+							排序依
+							<select>
+								<option value="上架日期">上架日期</option>
+								<option value="價格">價格</option>
+							</select>
+						</div>
+					</div>
+					<div class="item-favor-list">
+					</div>
+				</div>
+				<div id="shopFavorList" style="display:none">
+					<h3 style="padding:10px; margin:0px">Tracing Shop</h3>
+					<div class="list-toolbar" style="border-bottom:1px solid; border-top:1px solid; padding:5px">
+						<div class="list-toolbar-sort">
+							排序依
+							<select>
+								<option value="上架日期">上架日期</option>
+								<option value="價格">價格</option>
+							</select>
+						</div>
+					</div>
+					<div class="shop-favor-list">
+					</div>
+				</div>
 			</div>
 			<div class="tab-pane fade" id="sellerPanel"> <!-- Seller Panel -->
 				<div class="container" style="position:relative;height:100%">
@@ -924,8 +916,8 @@
 								<button id="aboutMeModalBtn" type="button" class="btn btn-primary">檢視關於本店</button>
 							</div>
 							<div id="sellerShowCase" class="item-box-showcase">
-								<div class="showcase-toolbar" style="padding:5px 10px; border-bottom:1px solid; border-top:1px solid">
-									<div class="showcase-toolbar-sort">
+								<div class="list-toolbar" style="padding:5px 10px; border-bottom:1px solid; border-top:1px solid">
+									<div class="list-toolbar-sort">
 										商品排序依
 										<select>
 										  <option value="上架日期">上架日期</option>
@@ -1010,12 +1002,15 @@
 		<!--Load 2nd-level Views-->
 		<script src="js/view/item/ItemBoxSellerView.js"></script>
 		<script src="js/view/shop/ShopBoxListView.js"></script>
+		<script src="js/view/item/ItemFavorListView.js"></script>
+		<script src="js/view/shop/ShopFavorListView.js"></script>
 
 		<!--Load main-level Views-->
 		<script src="js/view/main/NavBarView.js"></script>
 		<script src="js/view/main/MapPanelView.js"></script>
 		<script src="js/view/main/UserPanelView.js"></script>
 		<script src="js/view/main/SellerPanelView.js"></script>
+		<script src="js/view/main/BuyerPanelView.js"></script>
 
 		<!--Load Modal Views-->
 		<script src="js/view/item/ItemEditModalView.js"></script>

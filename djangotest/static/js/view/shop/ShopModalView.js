@@ -69,8 +69,8 @@ app.ShopModalView = Backbone.View.extend({
 				</button>\
 			</div>\
 			<div id="shopModalShowcase" class="shop-modal-showcase">\
-				<div class="showcase-toolbar" style="padding:5px 10px; border-bottom:1px solid">\
-					<div class="showcase-toolbar-sort">\
+				<div class="list-toolbar" style="padding:5px 10px; border-bottom:1px solid">\
+					<div class="list-toolbar-sort">\
 						排序依\
 						<select>\
 							<option value="上架日期">上架日期</option>\
@@ -87,9 +87,9 @@ app.ShopModalView = Backbone.View.extend({
 	
 	renderItems: function(){
 		var $shopModalItemList = this.$("#shopModalItemList");
+		var that = this;
 		this.shop.items.each(function(item){
-			var itemBox = new app.ItemBoxView({model:item});
-			$shopModalItemList.append(itemBox.el);
+			that.renderItem(item);
 		});
 	},
 	

@@ -13,6 +13,7 @@ app.AppView = Backbone.View.extend({
 		this.sellerPanel = new app.SellerPanelView();
 		this.mapPanel = new app.MapPanelView();
 		this.userPanel = new app.UserPanelView();
+		this.buyerPanel = new app.BuyerPanelView();
 		
 		app.itemCategorys.fetch()
 		
