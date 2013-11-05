@@ -252,7 +252,7 @@ function hEvent(e){
 };
 
 $(function(){
-	new app.AppView();
+	app.app = new app.AppView();
 
 	window.onresize = function(event) {
 		if(window.innerWidth>window.innerHeight){

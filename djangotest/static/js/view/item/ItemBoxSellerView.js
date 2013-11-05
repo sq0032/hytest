@@ -5,27 +5,14 @@ app.SellerItemBoxView = Backbone.View.extend({
 	events: {
 		"click .item-delete":"deleteItem",
 		"click .chatroom-btn":"openChatroom",
-		"click .item-box":"openItemModal"
 	},
 	initialize: function() {
 		this.item = this.model;
 		
-		this.itemBox = new app.ItemBoxView({model:this.item});
 		
 		this.listenTo(this.item, "destroy", this.remove);
 		this.listenTo(this.item.chats, "reset", this.render);
-		
-		this.render();
-	},
-	openItemModal: function(){
-		var item = new app.Item();
-		item.set('id',this.item.get('id'));
-		item.fetch().done( function(){
-			var itemModal = new app.ItemModalView({model:item});
-			itemModal.open();
-		}).fail(function(){
-			alert('網路發生錯誤');
-		});
+
 	},
 	deleteItem: function(){
 		var that = this;
@@ -85,8 +72,10 @@ app.SellerItemBoxView = Backbone.View.extend({
 			));
 		});
 		
+		var itemBox = new app.ItemBoxView({model:this.item});
+		
 		var removeBtn = '<button class="item-delete glyphicon glyphicon-remove pull-right" style="border:none; background-color:white; color:red"></button>';
-		this.$el.append(removeBtn).append(this.itemBox.el).append($chatList);
+		this.$el.append(removeBtn).append(itemBox.el).append($chatList);
 		return this;
 	}
 });
