@@ -209,7 +209,7 @@ app.ItemModalView = Backbone.View.extend({
 	like: function(){
 		var that = this;
 		
-		$.get( 'item/'+that.item.get('id')+'/like/')
+		$.post( 'items/'+that.item.get('id')+'/like/')
 		.done(function(){
 			if(that.item.get('favorite')==true){
 				that.item.set('favorite', false);

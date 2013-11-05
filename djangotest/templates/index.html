@@ -177,18 +177,21 @@
 		/*		 | item-box		*/
 		/*						*/
 		/************************/
+		.item-favor-list .item-box-price:before,
 		.shop-modal-showcase .item-box-price:before,
 		.seller-item-box .item-box-price:before{
 			content: "價格:";
 			float:	left;
 		}
 		
+		.item-favor-list .item-box-price:after,
 		.shop-modal-showcase .item-box-price:after,
 		.seller-item-box .item-box-price:after{
 			content: " 元";
 			
 		}
 		
+		.item-favor-list .item-box-attrs span,
 		.shop-modal-showcase .item-box-attrs span,
 		.seller-item-box .item-box-attrs span{
 			border-radius:		5px; 
@@ -197,6 +200,7 @@
 			width:				80px;
 		}
 
+		.item-favor-list .item-box-description,
 		.shop-modal-showcase .item-box-description,
 		.seller-item-box .item-box-description{
 			position:		absolute; 
@@ -207,15 +211,19 @@
 			left:			50%				
 		}
 		
+		.item-favor-list .item-box-description .item-box-vertical,
 		.shop-modal-showcase .item-box-description .item-box-vertical,
 		.seller-item-box .item-box-description .item-box-vertical{
 			display:	none;
 		}
+		
+		.item-favor-list .item-box-description .item-box-horizontal,
 		.shop-modal-showcase .item-box-description .item-box-horizontal,
 		.seller-item-box .item-box-description .item-box-horizontal{
 			display:	block;
 		}
 		
+		.item-favor-list .item-box-description:before,
 		.shop-modal-showcase .item-box-description:before,
 		.seller-item-box .item-box-description:before{
 			font-weight:	bold;
@@ -986,6 +994,7 @@
 		<script src="js/model/Chat.js"></script>
 		<script src="js/model/Reply.js"></script>
 		<script src="js/model/Shop.js"></script>
+		<script src="js/model/Favorite.js"></script>
 
 		<!--Load Router-->
 		<script src="js/router.js"></script>
