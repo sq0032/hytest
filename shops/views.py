@@ -81,14 +81,23 @@ class ShopsDetail(APIView):
 			return Response(serializer.data)
 		else:
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-		
-def likeShop(request, shop_id):
-	shop = Shop.objects.get(id=shop_id)
-	if shop.follower.all().filter(username = request.user.username).exists():
-		shop.follower.remove(request.user)
-		return HttpResponse('remove')
-	else:
-		shop.follower.add(request.user)
-		return HttpResponse('added')
 
-	return HttpResponse()
+class ShopsFavorList(APIView):
+	def post(self, request, shop_id):
+		shop = Shop.objects.get(id=shop_id)
+		if shop.follower.all().filter(username = request.user.username).exists():
+			shop.follower.remove(request.user)
+			return Response('remove')
+		else:
+			shop.follower.add(request.user)
+			return Response('added')
+	
+		return Response()
+
+	def get(self, request, shop_id):
+		shop = Shop.objects.filter(follower = request.user)
+		serializer = ShopSerializer(shop, many=True)
+		print(serializer.data)
+		return Response(serializer.data)
+	
+	

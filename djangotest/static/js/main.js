@@ -5,6 +5,7 @@ app.loginUser = new app.LoginUser();
 app.itemCategorys = new app.ItemCategorys();
 app.myShop = new app.Shop();
 console.log(app.myShop);
+app.myFavorite = new app.Favorite({'id':0});
 new app.myRouter();
 Backbone.history.start();
 

@@ -101,7 +101,7 @@ app.ShopModalView = Backbone.View.extend({
 	like: function(){
 		var that = this;
 		
-		$.get( 'shops/'+that.shop.get('id')+'/like/')
+		$.post( 'shops/'+that.shop.get('id')+'/like/')
 		.done(function(){
 			if(that.shop.get('favorite')==true){
 				that.shop.set('favorite', false);
