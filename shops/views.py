@@ -25,8 +25,8 @@ class JSONResponse(HttpResponse):
 def shopItems(request,shop_id):
 	user = request.user
 	shop = Shop.objects.get(id=shop_id)
-	if shop.owner.id != user.id:
-		return Response(status=status.HTTP_401_UNAUTHORIZED)
+	#if shop.owner.id != user.id:
+	#	return Response(status=status.HTTP_401_UNAUTHORIZED)
 	serializer = ItemSerializer(shop.items.filter(state=Item.ON),user=request.user,many=True)
 	return Response(serializer.data)
 
