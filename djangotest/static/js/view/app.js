@@ -13,6 +13,7 @@ app.AppView = Backbone.View.extend({
 		this.sellerPanel = new app.SellerPanelView();
 		this.mapPanel = new app.MapPanelView();
 		this.userPanel = new app.UserPanelView();
+		this.buyerPanel = new app.BuyerPanelView();
 		
 		app.itemCategorys.fetch()
 		
@@ -38,10 +39,14 @@ app.AppView = Backbone.View.extend({
 			return app.myShop.fetch();
 		}).pipe(function(){
 			return app.myShop.items.fetch({reset:true});
+		}).pipe(function(){
+			return app.myFavorite.shops.fetch({reset:true});
+		}).pipe(function(){
+			return app.myFavorite.items.fetch({reset:true});
 		}).done(function(){
 			console.log('done');
 		}).fail(function(){
-			console.log('fail');
+			alert('初始階段資料讀取錯誤');
 		});
 	}
 });

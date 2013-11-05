@@ -11,5 +11,5 @@ urlpatterns = patterns('',
 	url(r'^items/(?P<item_id>[0-9]+)/chat/$', views.getItemConversationList),
 	
 	url(r'^item/(?P<item_id>[0-9]+)/getItemTest/$', views.getItemTest),
-	url(r'^item/(?P<item_id>[0-9]+)/like/$', views.likeItem),
+	url(r'^items/(?P<item_id>[0-9]+)/like/$', views.ItemsFavorList.as_view()),
 )
