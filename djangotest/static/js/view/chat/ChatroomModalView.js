@@ -40,7 +40,6 @@ app.ChatroomModalView = Backbone.View.extend({
 	
 	scrollDown:function(){
 		var n = this.$(".msglist")[0].scrollHeight;
-		alert(n);
 		this.$('.modal-body').scrollTop(n);
 		//$('.msglist').scrollTop(8000);	//scroll bar位置還要修改 #BW15B		
 	},
