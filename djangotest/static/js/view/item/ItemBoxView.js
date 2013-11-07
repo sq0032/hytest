@@ -3,9 +3,7 @@ var app = app || {};
 app.ItemBoxView = Backbone.View.extend({
 	className: "item-box",
 	events: {
-		"click .item-box":"openItemModal",
 		"click .media":"openItemModal",
-		"click .item-box-attrs":"openItemModal"
 	},
 	initialize: function() {
 		this.item = this.model;

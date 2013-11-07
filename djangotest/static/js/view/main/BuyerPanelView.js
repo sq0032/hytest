@@ -3,7 +3,7 @@ var app = app || {};
 app.BuyerPanelView = Backbone.View.extend({
 	el:"#buyerPanel",
 	events:{
-		"click button":"switchList",
+		"click #buyerPanelSwitch":"switchList",
 	},
 	initialize:function(){
 		this.itemFavorList = new app.ItemFavorListView();
@@ -12,7 +12,7 @@ app.BuyerPanelView = Backbone.View.extend({
 	},
 	render:function(){
 		this.$el.append(
-		'<button style="position:absolute;\
+		'<button id="buyerPanelSwitch" style="position:absolute;\
 						top:0px;\
 						right:0px;\
 						margin:10px;\
@@ -22,7 +22,7 @@ app.BuyerPanelView = Backbone.View.extend({
 	switchList:function(){
 		var $itemList 	= this.$("#itemFavorList");
 		var $shopList 	= this.$("#shopFavorList");
-		var $switch 	= this.$("button");
+		var $switch 	= this.$("#buyerPanelSwitch");
 		
 		if($switch.text()=='商店清單'){
 			$switch.text('商品清單');
