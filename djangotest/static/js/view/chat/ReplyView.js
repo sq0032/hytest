@@ -22,7 +22,7 @@ app.ReplyView = Backbone.View.extend({
 		this.$el.html(
 			div
 		+'		<div class="speaker">'+this.reply.get('speaker')+'</div>'
-		+'		<div class="">'+this.reply.get('reply')+'</div>'
+		+'		<p class="">'+this.reply.get('reply')+'</p>'
 		+'		<div class="" style="width:100%">'
 		+'			<div class="pull-right time"></div>'
 		+'		</div>'

@@ -5,7 +5,6 @@ app.BuyerItemBoxView = Backbone.View.extend({
 	events: {
 		"click .item-delete":"deleteItem",
 		"click .chat-box":"openChatroom",
-		"click .item-box":"openItemModal"
 	},
 	initialize: function() {
 		this.item = this.model;
@@ -14,16 +13,6 @@ app.BuyerItemBoxView = Backbone.View.extend({
 		this.listenTo(this.item.chats, "reset", this.render);
 		
 		this.render();
-	},
-	openItemModal: function(){
-		var item = new app.Item();
-		item.set('id',this.item.get('id'));
-		item.fetch().done( function(){
-			var itemModal = new app.ItemModalView({model:item});
-			itemModal.open();
-		}).fail(function(){
-			alert('網路發生錯誤');
-		});
 	},
 	deleteItem: function(){
 		var that = this;

@@ -47,13 +47,15 @@ app.ItemModalView = Backbone.View.extend({
 		if(this.item.get('favorite')==true){
 			this.$('#item-modal-board span')
 				.removeClass('glyphicon-star-empty')
-				.addClass('glyphicon-star');
+				.addClass('glyphicon-star')
+				.css('color','yellow');
 		}else{
 			this.$('#item-modal-board span')
 				.removeClass('glyphicon-star')
-				.addClass('glyphicon-star-empty');
+				.addClass('glyphicon-star-empty')
+				.css('color','gray');
 		}
-		
+
 		//input item price
 		this.price.text(this.item.get('price'));
 	
@@ -137,8 +139,8 @@ app.ItemModalView = Backbone.View.extend({
 		var $modalBody = $(
 			'<div id="item-modal-board" style="position:relative; border-bottom:1px solid; padding:10px;">\
 				<h4 id="item-modal-name" style="margin-right:50px"></h4>\
-				<button type="submit" style="position:absolute; right:0px; top:0px; margin:10px">\
-					<span class="glyphicon glyphicon-star-empty" style="font-size:2em;"></span>\
+				<button type="submit" class="btn btn-default" style="position:absolute; right:0px; top:0px; margin:10px">\
+					<span class="glyphicon glyphicon-star-empty" style="font-size:1.5em;"></span>\
 				</button>\
 			</div>\
 			<div id="item-modal-photos" class="item-modal-container" style="white-space:nowrap; padding:5px; border:1px solid; overflow:auto">\
@@ -215,12 +217,14 @@ app.ItemModalView = Backbone.View.extend({
 				that.item.set('favorite', false);
 				that.$('#item-modal-board span')
 					.removeClass('glyphicon-star')
-					.addClass('glyphicon-star-empty');
+					.addClass('glyphicon-star-empty')
+					.css('color','gray');
 			}else{
 				that.item.set('favorite', true);
 				that.$('#item-modal-board span')
 					.removeClass('glyphicon-star-empty')
-					.addClass('glyphicon-star');
+					.addClass('glyphicon-star')
+					.css('color','yellow');
 			}
 		}).fail(function(){
 			alert('連線錯誤 請稍後再試');
