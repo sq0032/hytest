@@ -196,11 +196,10 @@ function msgbox(message){
 var globalEvents = {
 	newmsg:function(data){
 		var reply = data;
+
 		app.myShop.items.each(function(item){
 			console.log(item.get('name'));
 			item.chats.each(function(chat){
-			//console.log("chat.get('id'): "+chat.get('id'));
-			//console.log("reply.chat: "+reply.chat);
 				if(chat.get('id') == reply.chat){
 					if(chat.replys.length==0){
 						$("img[data-chat-id="+chat.get('id')+"]").addClass('newmsg');
@@ -212,17 +211,25 @@ var globalEvents = {
 							return;
 						});
 						reply = new app.Reply(reply);
-						//reply.trigger('seen');
-						//reply.once('seen',funciton(){
-							//remove event
-						//	event.destroy();
-						//});
 						chat.replys.add(reply);
 					}
 				}
 			});
 		});
-		//console.log('receive a new messgae')
+		
+		app.myFavorite.items.each(function(item){
+			item.chats.each(function(chat){
+				if(chat.get('id')==reply.chat){
+					if(chat.replys.length==0){
+						alert('你有新訊息');
+					}else{
+						reply = new app.Reply(reply);
+						chat.replys.add(reply);
+					}
+				}
+			});
+		});
+
 	},
 	//sendMessage:function(data){
 	//	myShop.items.each(function(item){

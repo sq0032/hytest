@@ -107,11 +107,24 @@ def getItemConversationList(request, item_id):
 	
 	if chat.exists()==False:
 		print('has no chat')
-		Response()
+		return Response()
 	
-	print('print chat')
+	print(chat[0].buyer)
 	print(chat[0])
-	serializer = ChatSerializer(chat, many=True)
+	
+	if chat[0].seller == request.user:
+		serializer = ChatSerializer(chat, many=True)
+	elif chat.filter(buyer = request.user).exists() == True:
+		chat = chat.filter(buyer = request.user)
+		serializer = ChatSerializer(chat)
+	else:
+		return Response()
+		
+
+#	print('print chat')
+#	print(request.user)
+#	print(chat)
+	
 	return Response(serializer.data)
 
 class ItemsFavorList(APIView):

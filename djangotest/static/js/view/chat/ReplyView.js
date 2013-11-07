@@ -12,7 +12,7 @@ app.ReplyView = Backbone.View.extend({
 		'click .btn-xs':'resend'
 	},
 	renderReply:function(){
-		if(this.reply.get('speaker')==this.chat.get('seller')){
+		if(this.reply.get('speaker')==app.loginUser.get('name')){
 			var div = '	<div class="pull-right msgbox msg-me">'
 		}
 		else{
