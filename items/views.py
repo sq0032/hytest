@@ -104,15 +104,33 @@ def getItemCategorys(request):
 @api_view(['GET'])
 def getItemConversationList(request, item_id):
 	chat = Chat.objects.filter(item__rid=item_id)
+	
+	if chat.exists()==False:
+		print('has no chat')
+		Response()
+	
+	print('print chat')
+	print(chat[0])
 	serializer = ChatSerializer(chat, many=True)
 	return Response(serializer.data)
 
 class ItemsFavorList(APIView):
 	def post(self, request, item_id):
 		item = Item.objects.get(id=item_id)
+		if item.owner==request.user:
+			print('is owner')
+			return Response()
+		
+		if Chat.objects.filter(item = item).filter(buyer = request.user).exists() == False:
+			print('has no chat')
+			chat = Chat(buyer = request.user,
+						seller = item.owner,
+						item = item)
+			chat.save();
+		
 		if item.follower.all().filter(username = request.user.username).exists():
 			item.follower.remove(request.user)
-			return HttpResponse('remove')
+			return HttpResponse('removed')
 		else:
 			item.follower.add(request.user)
 			return HttpResponse('added')
