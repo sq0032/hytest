@@ -4,7 +4,7 @@ app.SellerItemBoxView = Backbone.View.extend({
 	className: "seller-item-box",
 	events: {
 		"click .item-delete":"deleteItem",
-		"click .chatroom-btn":"openChatroom",
+		"click .chat-box":"openChatroom",
 	},
 	initialize: function() {
 		this.item = this.model;
@@ -22,14 +22,14 @@ app.SellerItemBoxView = Backbone.View.extend({
 		});
 	},
 	openChatroom:function(event){
-		var $btn = $(event.currentTarget);
-		var chatID = $btn.attr('data-chat-id');
+		var $chatbox = $(event.currentTarget);
+		var chatID = $chatbox.attr('data-chat-id');
 		var chat = this.item.chats.find(function(chat){
 			return (chat.get('id') == chatID);
 		});
 		var chatroom = new app.ChatroomModalView({model:chat});
 		chatroom.open();
-		$btn.next().removeClass('newmsg');
+		$chatbox.next().removeClass('newmsg');
 	},
 	render: function(){
 		var that = this;
@@ -63,11 +63,10 @@ app.SellerItemBoxView = Backbone.View.extend({
 			if(seen == false){chats_seen = false}
 			console.log('chat '+id+' seller_seen='+seen);
 			$chatList.find(".chat-list").append($(
-				'<div>\
+				'<div class="chat-box" data-chat-id='+id+'>\
 					<span class="chats-order">'+(index+1)+'</span>\
 					<span class="chat-to">'+buyer+'</span>\
-					<button class="chatroom-btn" data-chat-id='+id+'></button>\
-					<img class="'+(seen?'':'newmsg')+'" data-chat-id='+id+' src='+notification_img+'>\
+					<span class="badge" style="float:right">new</span>\
 				</div>'
 			));
 		});

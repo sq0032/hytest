@@ -16,7 +16,8 @@ app.ItemFavorListView = Backbone.View.extend({
 		});
 	},
 	renderItem:function(item){
-		var itemBox = new app.ItemBoxView({model:item});
+		item.chats.fetch({reset:true});
+		var itemBox = new app.BuyerItemBoxView({model:item});
 		this.$(".item-favor-list").append(itemBox.el);
 	}
 });
