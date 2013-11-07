@@ -33,7 +33,12 @@ app.BuyerItemBoxView = Backbone.View.extend({
 		});
 	},
 	openChatroom:function(event){
-		alert('開啟對話(未完成)');
+		var that = this;
+		this.item.chats.each(function(chat){
+			var chatroom = new app.ChatroomModalView({model:chat});
+			chatroom.open();
+		});
+		//alert(this.item.chats.get())
 	
 	/*
 		var $chatbox = $(event.currentTarget);

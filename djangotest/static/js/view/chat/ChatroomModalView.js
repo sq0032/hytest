@@ -57,10 +57,14 @@ app.ChatroomModalView = Backbone.View.extend({
 	},
 	sendReply:function(){
 		if($(".modal-footer>input").val()){
+			var speaker = app.loginUser.get('name');
+			var receiver = ((this.chat.get('seller')==speaker)?
+							this.chat.get('buyer'):this.chat.get('seller'));
+			
 			var data={
 				reply:$(".modal-footer>input").val(),
-				speaker : this.chat.get('seller'),
-				receiver : this.chat.get('buyer'),
+				speaker : speaker,
+				receiver : receiver,
 			};
 			
 			var reply = new app.Reply(data);
