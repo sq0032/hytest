@@ -88,7 +88,7 @@ app.ItemEditModalView = Backbone.View.extend({
 		var $target = $(event.target);
 		var categoryID = parseInt($target.val());
 		
-		if(itemCategorys.getByID(categoryID).get('child').length == 0){
+		if(app.itemCategorys.getByID(categoryID).get('child').length == 0){
 			this.category.val(categoryID);
 			return;
 		}
@@ -97,7 +97,7 @@ app.ItemEditModalView = Backbone.View.extend({
 		this.category.val(null);
 		
 		var $select = $('<select>').attr('size','5').addClass('form-control');
-		_.each(itemCategorys.getByParentID(categoryID),function(category){
+		_.each(app.itemCategorys.getByParentID(categoryID),function(category){
 			$('<option>').attr('value',category.get('id')).html(category.get('name')).appendTo($select);
 		});
 		$('<div>').addClass("col-sm-4").css('margin','10px 0 0 0').append($select).appendTo(this.category);
@@ -118,7 +118,7 @@ app.ItemEditModalView = Backbone.View.extend({
 			description:description,
 			attrs:attrs,
 			category:category,
-			shops:[myShop.get('id')]
+			shops:[app.myShop.get('id')]
 		});
 		
 		this.item.save().done(function(){
@@ -154,7 +154,7 @@ app.ItemEditModalView = Backbone.View.extend({
 		
 		//產生category選單
 		var $select = $('<select>').attr('size','5').addClass('form-control');
-		_.each(itemCategorys.getByParentID(null),function(category){
+		_.each(app.itemCategorys.getByParentID(null),function(category){
 			$('<option>').attr('value',category.get('id')).html(category.get('name')).appendTo($select);
 		});
 		$('<div>').addClass("col-sm-4").css('margin','10px 0 0 0').append($select).appendTo(this.category);
