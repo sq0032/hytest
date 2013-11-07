@@ -8,11 +8,10 @@ app.SellerItemBoxView = Backbone.View.extend({
 	},
 	initialize: function() {
 		this.item = this.model;
-		
-		
 		this.listenTo(this.item, "destroy", this.remove);
 		this.listenTo(this.item.chats, "reset", this.render);
-
+		
+		this.render();
 	},
 	deleteItem: function(){
 		var that = this;
@@ -72,7 +71,6 @@ app.SellerItemBoxView = Backbone.View.extend({
 		});
 		
 		var itemBox = new app.ItemBoxView({model:this.item});
-		
 		var removeBtn = '<button class="item-delete glyphicon glyphicon-remove pull-right" style="border:none; background-color:white; color:red"></button>';
 		this.$el.append(removeBtn).append(itemBox.el).append($chatList);
 		return this;
