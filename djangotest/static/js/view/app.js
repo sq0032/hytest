@@ -46,7 +46,7 @@ app.AppView = Backbone.View.extend({
 		}).done(function(){
 			console.log('done');
 		}).fail(function(){
-			alert('初始階段資料讀取錯誤');
+			console.log('初始階段資料讀取錯誤');
 		});
 	}
 });

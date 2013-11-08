@@ -7,7 +7,6 @@ app.SellerPanelView = Backbone.View.extend({
 		"click #shopModalBtn": "newShopModal"
 	},
 	newEditItemModal:function(){
-		alert('open Edit Modal');
 		this.itemEditModal.open();
 		
 	},
@@ -35,7 +34,6 @@ app.SellerPanelView = Backbone.View.extend({
 		app.myShop.items.each(function(item){
 			item.chats.fetch({reset:true});
 			if(item.get('state') != 'on'){return;}
-						alert(item.get('id'));
 			var itemBox = new app.SellerItemBoxView({model:item})
 			that.$sellerItemsList.append(itemBox.el);
 		});
