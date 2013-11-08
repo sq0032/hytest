@@ -18,6 +18,7 @@ from rest_framework.decorators import api_view
 from accounts.serializers import *
 from accounts.models import *
 from shops.models import Shop
+from items.models import *
 from django.contrib.sessions.models import Session
 
 #圖形驗證碼
@@ -335,7 +336,7 @@ def msgEvent(event):
 	return seri.data
 	
 import hashlib
-def users(request):
+def createUsers(request):
 	i = 0
 	while(i<100):
 		if i<10:
@@ -384,6 +385,42 @@ def users(request):
 						address		= address)
 			print shop.name
 			shop.save()
+		
+		#Create 1~5 items
+		itemNum = random.randint(1,5)
+		j=0
+		while(j<itemNum):
+			itemName = user.username+'item #'+str(j)
+			itemPrice = random.randint(100,9999)
+			
+			cateLen = Category.objects.all().count()
+			itemCategory = Category.objects.get(id=random.randrange(1,cateLen))
+			
+			itemDescri = user.username+'的第'+str(j)+'個商品'
+			
+			item = Item(
+					rid = ''.join(random.choice("0123456789abcdef") for i in range(40)),
+					owner = user,
+					name = itemName,
+					price = itemPrice,
+					category = itemCategory,
+					description = itemDescri)
+			
+			item.save()
+			
+			#set attributes
+			attr1 = random.randint(1,3)
+			if attr1!=3:
+				item.attrs.add(Attribute.objects.get(id=attr1))
+								
+			attr2 = random.randint(3,7)
+			if attr2!=7:
+				item.attrs.add(Attribute.objects.get(id=attr2))
+			
+			shop.items.add(item)
+			
+			print(item)
+			j+=1
 
 	return HttpResponse()
 
