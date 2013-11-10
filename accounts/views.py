@@ -305,6 +305,7 @@ def events(request):
 
 	#Query for new events
 	has_event = False
+	i=0
 	while has_event != True:
 		print('event')
 		time.sleep(5)
@@ -312,6 +313,11 @@ def events(request):
 		models = Event.objects.filter(user__username=request.user.username, datetime__range=[begin, end])
 		if models:
 			has_event = True
+		i+=1
+		print(i)
+		if i==60:
+			has_event = True
+			
 
 	#Retrieve event data as json
 	events = {"events":[],"time":end}
