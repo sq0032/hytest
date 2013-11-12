@@ -13,9 +13,9 @@ app.ItemModalView = Backbone.View.extend({
 	},
 
 	initialize: function(){
-		this.item 			= this.model;
+		this.item = this.model;
 		//this.item.fetch();
-		this.shop			= new app.Shop();
+		this.shop = new app.Shop();
 		this.shop.set('id',this.item.get('shops')[0]);
 		
 		this.listenTo(this.shop, 'sync', this.setMap);
@@ -56,6 +56,28 @@ app.ItemModalView = Backbone.View.extend({
 				.css('color','gray');
 		}
 
+		//set images
+		var photoIndex = this.item.get('images');
+		console.log(photoIndex.length);
+		if (photoIndex.length==0){
+			var path = "img/no_image.gif";
+			this.photos.append(
+				'<span style="">\
+					<img src="'+path+'" width="100%">\
+				</span>')
+		}else{
+			var that = this;
+			_.each(photoIndex,function(index){
+				var rid = that.item.get('rid');
+				var path = rid+'-'+index+'.png';
+				console.log(path);
+				that.photos.append(
+				'<span style="">\
+					<img src="image/items/'+path+'" width="100%">\
+				</span>')
+			});
+		}
+		
 		//input item price
 		this.price.text(this.item.get('price'));
 	
@@ -144,9 +166,6 @@ app.ItemModalView = Backbone.View.extend({
 				</button>\
 			</div>\
 			<div id="item-modal-photos" class="item-modal-container" style="white-space:nowrap; padding:5px; border:1px solid; overflow:auto">\
-				<span style=""><img src="img/first-slide.png" width="100%"></span>\
-				<span style=""><img src="img/second-slide.png" width="100%"></span>\
-				<span style=""><img src="img/third-slide.png" width="100%"></span>\
 			</div>\
 			<div class="row">\
 				<div class="col-xs-12 col-sm-6">\
@@ -165,11 +184,11 @@ app.ItemModalView = Backbone.View.extend({
 					</div>\
 				</div>\
 			</div>\
-			<div class="item-modal-container" style="margin:10px; text-align:center">\
+			<div class="item-modal-container" style="margin:40px; text-align:center">\
 				<h4>商品描述</h4>\
 				<p id="item-modal-description" style="text-align:left"></p>\
 			</div>\
-			<div class="item-modal-container" style="margin:10px; text-align:center; height:250px;">\
+			<div class="item-modal-container" style="margin:40px; text-align:center; height:250px;">\
 				<h4>位置</h4>\
 				<div id="item-modal-map" style="width:100%; height:250px">\
 					<!--Googole Map-->\

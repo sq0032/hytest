@@ -307,14 +307,13 @@ def events(request):
 	has_event = False
 	i=0
 	while has_event != True:
-		print('event')
 		time.sleep(5)
 		end = timezone.now()
 		models = Event.objects.filter(user__username=request.user.username, datetime__range=[begin, end])
 		if models:
 			has_event = True
 		i+=1
-		print(i)
+		print(request.user.username+' events query #'+str(i))
 		if i==60:
 			has_event = True
 			

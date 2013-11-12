@@ -3,6 +3,7 @@ from items.models import Item, Category, Attribute
 from rest_framework import serializers
 from rest_framework.serializers import PrimaryKeyRelatedField
 from rest_framework.serializers import RelatedField
+from rest_framework.serializers import SlugRelatedField
 
 class CategorySerializer(serializers.ModelSerializer):
 	child = PrimaryKeyRelatedField(many=True, read_only=True)
@@ -18,7 +19,7 @@ class AttributeSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
 	#category = CategorySerializer()
 	#attrs = AttributeSerializer(many=True)
-	images = PrimaryKeyRelatedField(many=True, read_only=True)
+	images = SlugRelatedField(many=True, read_only=True, slug_field='index')
 	favorite = serializers.SerializerMethodField('is_favorite')
 	
 	def is_favorite(self, obj):
