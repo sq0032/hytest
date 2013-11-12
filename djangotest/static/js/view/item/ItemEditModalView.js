@@ -26,13 +26,15 @@ app.ItemEditModalView = Backbone.View.extend({
 		
 		//uploadfile
 		this.files = {};
-		this.itemImages = this.$("#newItemImages");
+		this.itemImages = this.$("#itemImages");
 		this.itemImages.find('input:file').fileupload({
 			autoUpload: false,
 			singleFileUploads:true,
 			previewMaxWidth: 100,
 			previewMaxHeight: 75,
 		}).on('fileuploadadd',function(e, data){
+			console.log('fileuploadadd');
+			console.log(data);
 			var index = $(this).attr('name');
 			that.files[index] = data;
 			console.log(that.files);
@@ -122,24 +124,28 @@ app.ItemEditModalView = Backbone.View.extend({
 		});
 		
 		this.item.save().done(function(){
+			console.log('商品新增成功');
 			that.$el.modal('hide');
-			/*
-			var item_id = newItem.get('id');
-			var dfs = []
+			var item_id = that.item.get('id');
+			console.log('item_id:'+item_id);
+			var dfs = [];
 			for(var i in that.files){
-				that.files[i].url = 'shops/upload/items/'+item_id+'/image/'+i;
+				that.files[i].url = 'upload/items/'+item_id+'/image/'+i;
 				console.log(that.files[i]);
 				dfs.push(that.files[i].submit())
 			}
+			
+			console.log('output dfs');
 			console.log(dfs);
 			that.files = {};
 			that.$el.modal('hide');
-			newItem.set({'name':newItem.get('name')+"(上傳圖片中)"});
-			myItems.add(newItem);
+			that.item.set({'name':that.item.get('name')+"(上傳圖片中)"});
+			app.myShop.items.add(that.item);
 			$.when.apply($, dfs).done(function(){
-				myItems.fetch();
+				app.myShop.items.fetch();
 			});
-			*/
+		}).fail(function(){
+			console.log('商品新增失敗');
 		});
 	},
 	clearField: function(){

@@ -51,6 +51,7 @@ def uploadItemImage(request,item_id,index):
 	item = Item.objects.get(id=item_id)
 	for index in request.FILES:
 		print index
+		#save the first image as a thumbnail
 		if index == '0':
 			item.pic = request.FILES[index]
 			item.save()

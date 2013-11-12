@@ -27,7 +27,7 @@ app.BuyerItemBoxView = Backbone.View.extend({
 			var chatroom = new app.ChatroomModalView({model:chat});
 			chatroom.open();
 		});
-		//alert(this.item.chats.get())
+		alert(this.item.chats.get('id'));
 	
 	/*
 		var $chatbox = $(event.currentTarget);
