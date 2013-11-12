@@ -102,9 +102,10 @@ def getItemCategorys(request):
 	return Response(serializer.data)
 
 #權限未完成
+#取得聊天室清單
 @api_view(['GET'])
 def getItemConversationList(request, item_id):
-	chat = Chat.objects.filter(item__rid=item_id)
+	chat = Chat.objects.filter(item__id=item_id)
 	
 	if chat.exists()==False:
 		print('has no chat')
