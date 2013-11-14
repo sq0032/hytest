@@ -70,7 +70,7 @@ app.ItemModalView = Backbone.View.extend({
 			_.each(photoPath,function(path){
 				var rid = that.item.get('rid');
 				//var path = rid+'-'+path+'.jpg';
-				console.log(path);
+				//console.log(path);
 				that.photos.append(
 				'<span style="">\
 					<img src="'+path+'" width="100%">\
@@ -276,7 +276,7 @@ app.ItemModalView = Backbone.View.extend({
 	
 	
 	shown: function(){
-		console.log('google map resize');
+		//console.log('google map resize');
 		google.maps.event.trigger(this.map, "resize");
 		this.map.setCenter(this.marker.getPosition());
 		this.infowindow.open(this.map, this.marker);

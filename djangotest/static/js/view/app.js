@@ -15,8 +15,14 @@ app.AppView = Backbone.View.extend({
 		this.userPanel = new app.UserPanelView();
 		this.buyerPanel = new app.BuyerPanelView();
 		
-		app.itemCategorys.fetch()
+		app.itemCategorys.fetch();
+		this.fetchData();
 		
+		this.listenTo(app.loginUser, 'login', this.fetchData);
+		
+
+	},
+	fetchData:function(){
 		//e = {events:[{},{}],time:time};
 		var e = {events:[]};
 		app.loginUser.fetch().pipe(function(){
@@ -24,12 +30,12 @@ app.AppView = Backbone.View.extend({
 			if(app.loginUser.isNew()){
 				dfd.reject();
 			}else if(app.loginUser.get('shops').length == 0){
-				app.loginUser.trigger('login');
+				app.loginUser.trigger('getNav');
 				dfd.reject();
 			}else{
 			
 				hEvent(e);
-				app.loginUser.trigger('login');
+				app.loginUser.trigger('getNav');
 				dfd.resolve();
 			}
 			return dfd;

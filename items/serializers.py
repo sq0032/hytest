@@ -20,7 +20,7 @@ class ItemSerializer(serializers.ModelSerializer):
 	#category = CategorySerializer()
 	#attrs = AttributeSerializer(many=True)
 	#images = SlugRelatedField(many=True, read_only=True, slug_field='index')
-	images = RelatedField(many=True, read_only=True)
+	images = RelatedField(many=True, read_only=True)	
 	#thumbnail = RelatedField()
 	thumbnail = RelatedField(many=True, read_only=True)
 	favorite = serializers.SerializerMethodField('is_favorite')
