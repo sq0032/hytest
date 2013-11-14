@@ -57,9 +57,9 @@ app.ItemModalView = Backbone.View.extend({
 		}
 
 		//set images
-		var photoIndex = this.item.get('images');
-		console.log(photoIndex.length);
-		if (photoIndex.length==0){
+		var photoPath = this.item.get('images');
+		console.log(photoPath.length);
+		if (photoPath.length==0){
 			var path = "img/no_image.gif";
 			this.photos.append(
 				'<span style="">\
@@ -67,13 +67,13 @@ app.ItemModalView = Backbone.View.extend({
 				</span>')
 		}else{
 			var that = this;
-			_.each(photoIndex,function(index){
+			_.each(photoPath,function(path){
 				var rid = that.item.get('rid');
-				var path = rid+'-'+index+'.png';
+				//var path = rid+'-'+path+'.jpg';
 				console.log(path);
 				that.photos.append(
 				'<span style="">\
-					<img src="image/items/'+path+'" width="100%">\
+					<img src="'+path+'" width="100%">\
 				</span>')
 			});
 		}

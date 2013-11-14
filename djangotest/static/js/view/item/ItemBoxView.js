@@ -18,7 +18,11 @@ app.ItemBoxView = Backbone.View.extend({
 		var description = this.item.get('description');
 		var attrs = this.item.get('attrs');
 		var categoryID = this.item.get('category');
-		var img = './img/goods.jpg';
+		if(this.item.get('thumbnail').length!=0){
+			var img = this.item.get('thumbnail');
+		}else{
+			var img = "img/no_image.gif";
+		}
 		//var img = '../media/image/items/'+this.item.get('rid')+'-s.png';
 		this.$el.html(
 			'<div class="media">\

@@ -21,9 +21,12 @@ from items.models import Attribute
 from items.serializers import ItemSerializer
 from items.models import Item
 from items.models import ItemImage
+from items.models import Thumbnail
 
 from chats.models import Chat
 from chats.serializer import ChatSerializer
+
+from PIL import Image
 
 class JSONResponse(HttpResponse):
 	def __init__(self, data, **kwargs):
@@ -52,11 +55,12 @@ def uploadItemImage(request,item_id,index):
 	for index in request.FILES:
 		print index
 		#save the first image as a thumbnail
-		if index == '0':
-			item.pic = request.FILES[index]
-			item.save()
 		image = ItemImage(item=item,index=index,image=request.FILES[index])
 		image.save()
+		
+		if index == '0':
+			thumbnail = Thumbnail(name = 'test', item = item, thumbnail=request.FILES[index])
+			thumbnail.save()		
 	return JSONResponse({'status':'OK'},status=status.HTTP_201_CREATED)
 
 
@@ -155,12 +159,25 @@ class ItemsFavorList(APIView):
 		item = Item.objects.filter(follower = request.user)
 		serializer = ItemSerializer(item, many=True)
 		return Response(serializer.data)
-	
-	
+
+
 @api_view(['GET'])
 def getItemTest(request, item_id):
-	item = Item.objects.all()
-	serializer = ItemSerializer(item,user=request.user)
-	return Response(serializer.data)
+	item = Item.objects.get(id=item_id)
+	print(item)
+	print('print item.pic')
+	print(str(item.pic))
+	img = Image.open(item.pic)
+#	print('print img size')
+	img = cropped_thumbnail(img, (100,100))
+	
+	#img.show()
+#	img.save(MEDIA_ROOT+str(item.pic),'PNG')
+#	img.save('D:/test/sdf.png')
+#	print(type(img))
+	#item.pic = img
+	#item.save()
+	return HttpResponse(123)
+	#return Response(serializer.data)
 
 
