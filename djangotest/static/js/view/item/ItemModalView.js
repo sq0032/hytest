@@ -69,7 +69,7 @@ app.ItemModalView = Backbone.View.extend({
 			var that = this;
 			_.each(photoIndex,function(index){
 				var rid = that.item.get('rid');
-				var path = rid+'-'+index+'.png';
+				var path = rid+'-'+index+'.jpg';
 				console.log(path);
 				that.photos.append(
 				'<span style="">\
