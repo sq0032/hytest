@@ -55,12 +55,12 @@ def uploadItemImage(request,item_id,index):
 	for index in request.FILES:
 		print index
 		#save the first image as a thumbnail
-		if index == '0':
-			thumbnail = Thumbnail(name = 'test', item = item, thumbnail = request.FILES[index])
-			thumbnail.save()
-			
 		image = ItemImage(item=item,index=index,image=request.FILES[index])
 		image.save()
+		
+		if index == '0':
+			thumbnail = Thumbnail(name = 'test', item = item, thumbnail=request.FILES[index])
+			thumbnail.save()		
 	return JSONResponse({'status':'OK'},status=status.HTTP_201_CREATED)
 
 
