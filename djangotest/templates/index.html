@@ -248,7 +248,15 @@
 		}
 		
 		.chat-list span.newmsg{
-			content:new;
+			display:new;
+		}
+		
+		.badge.seen{
+			display: none;
+		}
+		
+		.badge.unseen{
+			display: inline;
 		}
 		
 		.seller-item-box .chats-order{
@@ -893,8 +901,8 @@
 							
 							</div>
 							<div class="sellerShopBtn" style="margin:5px; text-align:center">
-								<button id="shopModalBtn" type="button" class="btn btn-primary">檢視商店內容</button>
-								<button id="aboutMeModalBtn" type="button" class="btn btn-primary">檢視關於本店</button>
+								<button id="shopModalBtn" type="button" class="btn btn-default">檢視商店內容</button>
+								<button id="aboutMeModalBtn" type="button" class="btn btn-default">檢視關於本店</button>
 							</div>
 							<div id="sellerShowCase" class="item-box-showcase">
 								<div class="list-toolbar" style="padding:5px 10px; border-bottom:1px solid; border-top:1px solid">

@@ -88,7 +88,8 @@ class ItemsDetail(APIView):
 		try:
 			item = Item.objects.get(id=id)
 			if item.owner.id != user.id:
-				return Response(status=status.HTTP_401_UNAUTHORIZED)
+				item.follower.remove(request.user)
+				return Response('removed')
 		except Item.DoesNotExist:
 			return Response(status=status.HTTP_404_NOT_FOUND)
 		item.state = Item.DEL
@@ -161,6 +162,11 @@ class ItemsFavorList(APIView):
 		serializer = ItemSerializer(item, user=request.user, many=True)
 		return Response(serializer.data)
 
+	def delete(self, request, item_id):
+		item = Item.objects.filter(follower = request.user)
+		item.follower.remove(request.user)
+		print('remove item')
+		return HttpResponse('removed')
 
 @api_view(['GET'])
 def getItemTest(request, item_id):

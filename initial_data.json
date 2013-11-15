@@ -3443,7 +3443,15 @@
     "pk": 3, 
     "model": "accounts.eventtype", 
     "fields": {
+        "type": "newchat"
+    }
+},
+{
+    "pk": 4, 
+    "model": "accounts.eventtype", 
+    "fields": {
         "type": "test"
     }
-}
+},
+
 ]

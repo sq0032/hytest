@@ -42,35 +42,28 @@ app.BuyerItemBoxView = Backbone.View.extend({
 	},
 	render: function(){
 		var that = this;
-		var seen = true;
-		var id = 0;
 		this.$el.empty();
-		var notification_img = "./img/notification.png";
+		
 		var $chatList = $(
 			'<div class="chat-list">\
-				<div class="chat-box">\
-					<span class="chat-to">'+'seller'+'</span>\
-					<span class="badge" style="float:right">new</span>\
-				</div>\
 			</div>'
 		);
 		
-
-		/*
-		var seller = chat.get('seller');
-		var id = chat.get('id');
-		var seen = chat.get('buyer_seen');
-		if(seen == false){chats_seen = false}
-		console.log('chat '+id+' buyer_seen='+seen);
-		$chatList.find(".chat-list").append($(
-			'<div>\
-				<span class="chat-to">'+seller+'</span>\
-				<button class="chatroom-btn" data-chat-id='+id+'></button>\
-				<img class="'+(seen?'':'newmsg')+'" data-chat-id='+id+' src='+notification_img+'>\
-			</div>'
-		));
-		*/
 		
+		this.item.chats.each(function(chat){
+			//alert('item chats');
+			var seller = chat.get('seller')
+			var seen = chat.get('buyer_seen');
+			var id = chat.get('id');
+			//var notification_img = "./img/notification.png";
+			$chatList.append($(
+				'<div class="chat-box" data-chat-id='+id+'>\
+					<span class="chat-to">'+seller+'</span>\
+					<span class="badge '+(seen?'seen':'unseen')+'" style="float:right">new</span>\
+				</div>'
+			));
+		});
+
 		var itemBox = new app.ItemBoxView({model:this.item});
 		var removeBtn = '<button class="item-delete glyphicon glyphicon-remove pull-right" style="border:none; background-color:white; color:red"></button>';
 		this.$el.append(removeBtn).append(itemBox.el).append($chatList);

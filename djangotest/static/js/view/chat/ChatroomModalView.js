@@ -65,6 +65,7 @@ app.ChatroomModalView = Backbone.View.extend({
 		this.scrollDown();
 	},
 	sendReply:function(){
+		alert($(".modal-footer>input").val());
 		if($(".modal-footer>input").val()){
 			var speaker = app.loginUser.get('name');
 			var receiver = ((this.chat.get('seller')==speaker)?
