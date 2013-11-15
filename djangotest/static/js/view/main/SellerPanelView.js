@@ -40,11 +40,11 @@ app.SellerPanelView = Backbone.View.extend({
 		});
 	},
 	addItem:function(item){
-		console.log('add item');
-		console.log(item.get('name'));
+		//console.log('add item');
+		//console.log(item.get('name'));
 		
 		item.chats.fetch({reset:true});
-		console.log(item.get('state'));
+		//console.log(item.get('state'));
 		if(item.get('state')!='on'){return;}
 		var itemBox = new app.SellerItemBoxView({model:item});
 		this.$sellerItemsList.append(itemBox.el);

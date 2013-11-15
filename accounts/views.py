@@ -317,7 +317,7 @@ def events(request):
 		if i==60:
 			has_event = True
 			
-
+	print(models)
 	#Retrieve event data as json
 	events = {"events":[],"time":end}
 	count = 0
@@ -325,19 +325,29 @@ def events(request):
 		seri = EventSerializer(event)
 		type = seri.data['event']
 		if type == 'newmsg':
-			data = msgEvent(event)
-			events['events'].append({"type":type, "data":data})
+			data = msgEvent(event)	
+		elif type == 'newchat':
+			data = chatEvent(event)
+		events['events'].append({"type":type, "data":data})	
+	
 	
 	events = JSONRenderer().render(events)
-	
+	print(events)
 	return HttpResponse(events, mimetype="application/json")
 
 
-from chats.models import Reply
+from chats.models import Reply, Chat
 from chats.serializer import ReplySerializer
 def msgEvent(event):
 	reply = Reply.objects.get(id = event.data_id)
 	seri = ReplySerializer(reply)
+	return seri.data
+
+from items.serializers import ItemSerializer
+def chatEvent(event):
+	chat = Chat.objects.get(id = event.data_id)
+	item = Item.objects.get(item_chat = chat)
+	seri = ItemSerializer(item)
 	return seri.data
 	
 import hashlib

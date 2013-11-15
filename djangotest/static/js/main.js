@@ -202,8 +202,19 @@ var globalEvents = {
 			item.chats.each(function(chat){
 				if(chat.get('id') == reply.chat){
 					if(chat.replys.length==0){
-						$("img[data-chat-id="+chat.get('id')+"]").addClass('newmsg');
-						$("img[data-item-id="+item.get('id')+"]").addClass('newmsg');
+						var $chatBox = $("div[data-chat-id='"+chat.get('id')+"'] .badge");
+						if($chatBox.hasClass('seen')){
+							//change chat-box notification
+							$chatBox.removeClass('seen').addClass('unseen');
+							
+							//change chat-list notification
+							$chatList = $("div[id='chats"+item.get('id')+"'] .panel-title .badge");
+							count = parseInt($chatList.text());
+							if(isNaN(count)){count=0;}
+							$chatList.removeClass('seen').addClass('unseen').text(count+1);
+						}
+						
+						alert(chat.get('buyer')+'向你詢問'+chat.get('item'));
 					}
 					else{
 						chat.replys.each(function(existReply){
@@ -221,7 +232,8 @@ var globalEvents = {
 			item.chats.each(function(chat){
 				if(chat.get('id')==reply.chat){
 					if(chat.replys.length==0){
-						alert('你有新訊息');
+						$("div[data-chat-id="+chat.get('id')+"] .badge").addClass('unseen');
+						alert(chat.get('seller')+'向你詢問'+chat.get('item'));
 					}else{
 						reply = new app.Reply(reply);
 						chat.replys.add(reply);
@@ -229,7 +241,11 @@ var globalEvents = {
 				}
 			});
 		});
-
+	},
+	newchat:function(data){
+		var item = app.myShop.items.get(data);
+		item.chats.fetch({reset:true});
+		//alert(data.id);
 	},
 	//sendMessage:function(data){
 	//	myShop.items.each(function(item){
