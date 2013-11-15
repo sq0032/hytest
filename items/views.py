@@ -152,12 +152,13 @@ class ItemsFavorList(APIView):
 			return HttpResponse('removed')
 		else:
 			item.follower.add(request.user)
-			return HttpResponse('added')
+			serializer = ItemSerializer(item, user=request.user)
+			return Response(serializer.data)
 		return Response()
 	
 	def get(self, request, item_id):	
 		item = Item.objects.filter(follower = request.user)
-		serializer = ItemSerializer(item, many=True)
+		serializer = ItemSerializer(item, user=request.user, many=True)
 		return Response(serializer.data)
 
 

@@ -231,7 +231,7 @@ app.ItemModalView = Backbone.View.extend({
 		var that = this;
 		
 		$.post( 'items/'+that.item.get('id')+'/like/')
-		.done(function(){
+		.done(function(item){
 			if(that.item.get('favorite')==true){
 				that.item.set('favorite', false);
 				that.$('#item-modal-board span')
@@ -244,6 +244,7 @@ app.ItemModalView = Backbone.View.extend({
 					.removeClass('glyphicon-star-empty')
 					.addClass('glyphicon-star')
 					.css('color','yellow');
+				app.myFavorite.items.add(item);
 			}
 		}).fail(function(){
 			alert('連線錯誤 請稍後再試');

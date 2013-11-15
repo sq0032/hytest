@@ -27,11 +27,13 @@ app.ShopModalView = Backbone.View.extend({
 		if(this.shop.get('favorite')==true){
 			this.$('.shop-modal-board span')
 				.removeClass('glyphicon-star-empty')
-				.addClass('glyphicon-star');
+				.addClass('glyphicon-star')
+				.css('color','yellow');
 		}else{
 			this.$('.shop-modal-board span')
 				.removeClass('glyphicon-star')
-				.addClass('glyphicon-star-empty');
+				.addClass('glyphicon-star-empty')
+				.css('color','gray');
 		}
 
 		//listenTo items reset
@@ -102,17 +104,20 @@ app.ShopModalView = Backbone.View.extend({
 		var that = this;
 		
 		$.post( 'shops/'+that.shop.get('id')+'/like/')
-		.done(function(){
+		.done(function(shop){
 			if(that.shop.get('favorite')==true){
 				that.shop.set('favorite', false);
 				that.$('.shop-modal-board span')
 					.removeClass('glyphicon-star')
-					.addClass('glyphicon-star-empty');
+					.addClass('glyphicon-star-empty')
+					.css('color','gray');
 			}else{
 				that.shop.set('favorite', true);
 				that.$('.shop-modal-board span')
 					.removeClass('glyphicon-star-empty')
-					.addClass('glyphicon-star');
+					.addClass('glyphicon-star')
+					.css('color','yellow');
+					app.myFavorite.shops.add(shop);
 			}
 		}).fail(function(){
 			alert('連線錯誤 請稍後再試');
