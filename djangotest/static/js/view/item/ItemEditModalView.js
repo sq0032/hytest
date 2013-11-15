@@ -33,11 +33,11 @@ app.ItemEditModalView = Backbone.View.extend({
 			previewMaxWidth: 100,
 			previewMaxHeight: 75,
 		}).on('fileuploadadd',function(e, data){
-			console.log('fileuploadadd');
-			console.log(data);
+			//console.log('fileuploadadd');
+			//console.log(data);
 			var index = $(this).attr('name');
 			that.files[index] = data;
-			console.log(that.files);
+			//console.log(that.files);
 		}).on('fileuploadprocessalways',function(e,data){
 			var index = data.index,
 				file = data.files[index];
@@ -63,7 +63,7 @@ app.ItemEditModalView = Backbone.View.extend({
 	},
 	checkKeyNumber: function(event){
 		 // Allow: backspace, delete, tab, escape, and enter
-		 console.log(event.keyCode);
+		 //console.log(event.keyCode);
 		if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 || 
 			 // Allow: Ctrl+A
 			(event.keyCode == 65 && event.ctrlKey === true) || 
@@ -124,19 +124,19 @@ app.ItemEditModalView = Backbone.View.extend({
 		});
 		
 		this.item.save().done(function(){
-			console.log('商品新增成功');
+			//console.log('商品新增成功');
 			that.$el.modal('hide');
 			var item_id = that.item.get('id');
-			console.log('item_id:'+item_id);
+			//console.log('item_id:'+item_id);
 			var dfs = [];
 			for(var i in that.files){
 				that.files[i].url = 'upload/items/'+item_id+'/image/'+i;
-				console.log(that.files[i]);
+				//console.log(that.files[i]);
 				dfs.push(that.files[i].submit())
 			}
 			
-			console.log('output dfs');
-			console.log(dfs);
+			//console.log('output dfs');
+			//console.log(dfs);
 			that.files = {};
 			that.$el.modal('hide');
 			that.item.set({'name':that.item.get('name')+"(上傳圖片中)"});
@@ -145,7 +145,7 @@ app.ItemEditModalView = Backbone.View.extend({
 				app.myShop.items.fetch();
 			});
 		}).fail(function(){
-			console.log('商品新增失敗');
+			//console.log('商品新增失敗');
 		});
 	},
 	clearField: function(){

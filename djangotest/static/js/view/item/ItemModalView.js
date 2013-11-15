@@ -57,9 +57,9 @@ app.ItemModalView = Backbone.View.extend({
 		}
 
 		//set images
-		var photoIndex = this.item.get('images');
-		console.log(photoIndex.length);
-		if (photoIndex.length==0){
+		var photoPath = this.item.get('images');
+		console.log(photoPath.length);
+		if (photoPath.length==0){
 			var path = "img/no_image.gif";
 			this.photos.append(
 				'<span style="">\
@@ -67,13 +67,13 @@ app.ItemModalView = Backbone.View.extend({
 				</span>')
 		}else{
 			var that = this;
-			_.each(photoIndex,function(index){
+			_.each(photoPath,function(path){
 				var rid = that.item.get('rid');
-				var path = rid+'-'+index+'.png';
-				console.log(path);
+				//var path = rid+'-'+path+'.jpg';
+				//console.log(path);
 				that.photos.append(
 				'<span style="">\
-					<img src="image/items/'+path+'" width="100%">\
+					<img src="'+path+'" width="100%">\
 				</span>')
 			});
 		}
@@ -231,7 +231,7 @@ app.ItemModalView = Backbone.View.extend({
 		var that = this;
 		
 		$.post( 'items/'+that.item.get('id')+'/like/')
-		.done(function(){
+		.done(function(item){
 			if(that.item.get('favorite')==true){
 				that.item.set('favorite', false);
 				that.$('#item-modal-board span')
@@ -244,6 +244,7 @@ app.ItemModalView = Backbone.View.extend({
 					.removeClass('glyphicon-star-empty')
 					.addClass('glyphicon-star')
 					.css('color','yellow');
+				app.myFavorite.items.add(item);
 			}
 		}).fail(function(){
 			alert('連線錯誤 請稍後再試');
@@ -276,7 +277,7 @@ app.ItemModalView = Backbone.View.extend({
 	
 	
 	shown: function(){
-		console.log('google map resize');
+		//console.log('google map resize');
 		google.maps.event.trigger(this.map, "resize");
 		this.map.setCenter(this.marker.getPosition());
 		this.infowindow.open(this.map, this.marker);

@@ -7,6 +7,7 @@ app.ItemFavorListView = Backbone.View.extend({
 		//this.$el.html('ItemList');
 		
 		this.listenTo(app.myFavorite.items,'reset',this.renderItems);
+		this.listenTo(app.myFavorite.items,'add', this.renderItem);
 	},
 	renderItems:function(items){
 		var $itemlist = this.$(".item-favor-list");
