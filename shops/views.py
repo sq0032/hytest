@@ -61,7 +61,7 @@ class ShopsDetail(APIView):
 			shop = Shop.objects.get(id=id)
 		except Shop.DoesNotExist:
 			return Response(status=status.HTTP_404_NOT_FOUND)
-		serializer = ShopSerializer(shop)
+		serializer = ShopSerializer(shop, user=request.user)
 		print serializer.data
 		return Response(serializer.data, status=status.HTTP_200_OK)
 	#修改商店資訊
@@ -90,13 +90,14 @@ class ShopsFavorList(APIView):
 			return Response('remove')
 		else:
 			shop.follower.add(request.user)
-			return Response('added')
+			serializer = ShopSerializer(shop, user=request.user)
+			return Response(serializer.data)
 	
 		return Response()
 
 	def get(self, request, shop_id):
 		shop = Shop.objects.filter(follower = request.user)
-		serializer = ShopSerializer(shop, many=True)
+		serializer = ShopSerializer(shop, user=request.user, many=True)
 		print(serializer.data)
 		return Response(serializer.data)
 	

@@ -36,7 +36,7 @@ app.SellerItemBoxView = Backbone.View.extend({
 		this.$el.empty();
 		var num = this.item.chats.length;
 		var item_id = this.item.get('id');
-		var notification_img = "./img/notification.png";
+		//var notification_img = "./img/notification.png";
 		var $chatList = $(
 			'<div class="panel-group" id="chats'+item_id+'">\
 				<div class="panel panel-default">\
@@ -44,7 +44,6 @@ app.SellerItemBoxView = Backbone.View.extend({
 						<h4 class="panel-title">\
 							<span class="glyphicon glyphicon-collapse-down"></span>\
 							<a class="accordion-toggle" data-toggle="collapse" href="#item'+item_id+'">有 '+num+' 人找你</a>\
-							<img class="pull-right" data-item-id="'+item_id+'" src='+notification_img+'>\
 						</h4>\
 					</div>\
 					<div id="item'+item_id+'" class="panel-collapse collapse in">\

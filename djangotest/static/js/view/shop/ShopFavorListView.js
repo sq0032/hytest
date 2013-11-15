@@ -5,7 +5,8 @@ app.ShopFavorListView = Backbone.View.extend({
 	initialize:function(){
 		//this.$el.html('ShopList');
 		
-		this.listenTo(app.myFavorite.shops,'reset',this.renderShops)
+		this.listenTo(app.myFavorite.shops,'reset',this.renderShops);
+		this.listenTo(app.myFavorite.shops,'add',this.renderShop);
 	},
 	renderShops:function(shops){
 		var that = this;
