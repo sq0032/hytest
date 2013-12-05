@@ -30,7 +30,7 @@ app.ChatroomModalView = Backbone.View.extend({
 						</ul>\
 					</div>\
 					<div class="modal-footer" style="margin-top:0px">\
-						<input type="text" class="form-control pull-left" placeholder="Enter message">\
+						<input type="text" class="form-control pull-left reply-submit-btn" placeholder="Enter message">\
 						<button type="button" class="btn btn-default">送出</button>\
 					</div>\
 				</div>\
@@ -65,14 +65,14 @@ app.ChatroomModalView = Backbone.View.extend({
 		this.scrollDown();
 	},
 	sendReply:function(){
-		alert($(".modal-footer>input").val());
-		if($(".modal-footer>input").val()){
+		//alert($(".modal-footer>input").val());
+		if($(".modal-footer .reply-submit-btn").val()){
 			var speaker = app.loginUser.get('name');
 			var receiver = ((this.chat.get('seller')==speaker)?
 							this.chat.get('buyer'):this.chat.get('seller'));
 			
 			var data={
-				reply:$(".modal-footer>input").val(),
+				reply:$(".modal-footer .reply-submit-btn").val(),
 				speaker : speaker,
 				receiver : receiver,
 			};
@@ -81,7 +81,7 @@ app.ChatroomModalView = Backbone.View.extend({
 			reply.chat = this.chat;
 			reply.url = 'chats/'+this.chat.get('id');
 			this.chat.replys.add(reply);
-			$(".modal-footer>input").val('');
+			$(".modal-footer .reply-submit-btn").val('');
 		}
 		
 	},

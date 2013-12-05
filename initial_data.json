@@ -1,51 +1,739 @@
 [
 {
-    "pk": 1, 
-    "model": "items.category", 
-    "fields": {
-        "name": "3C\u7522\u54c1\u53ca\u5bb6\u96fb", 
-        "parent": null
-    }
+	"pk":1,
+	"model": "items.category",
+	"fields": {
+		"name": "\u670d\u88dd\u985e",
+		"parent": null
+	}
 },
 {
-    "pk": 2, 
-    "model": "items.category", 
-    "fields": {
-        "name": "\u65e5\u5e38\u7528\u54c1", 
-        "parent": null
-    }
+	"pk":2,
+	"model": "items.category",
+	"fields": {
+		"name": "\u7537\u88dd",
+		"parent": 1
+	}
 },
 {
-    "pk": 3, 
-    "model": "items.category", 
-    "fields": {
-        "name": "\u6905\u5b50", 
-        "parent": 2
-    }
+	"pk":3,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5973\u88dd",
+		"parent": 1
+	}
 },
 {
-    "pk": 4, 
-    "model": "items.category", 
-    "fields": {
-        "name": "\u76f8\u6a5f", 
-        "parent": 1
-    }
+	"pk":4,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5167\u8863",
+		"parent": 1
+	}
 },
 {
-    "pk": 5, 
-    "model": "items.category", 
-    "fields": {
-        "name": "\u5851\u81a0\u6905", 
-        "parent": 3
-    }
+	"pk":5,
+	"model": "items.category",
+	"fields": {
+		"name": "\u978b\u5b50",
+		"parent": 1
+	}
 },
 {
-    "pk": 6, 
-    "model": "items.category", 
-    "fields": {
-        "name": "\u6728\u982d\u6905", 
-        "parent": 3
-    }
+	"pk":6,
+	"model": "items.category",
+	"fields": {
+		"name": "\u7ae5\u88dd",
+		"parent": 1
+	}
+},
+{
+	"pk":7,
+	"model": "items.category",
+	"fields": {
+		"name": "\u896a\u5b50",
+		"parent": 1
+	}
+},
+{
+	"pk":8,
+	"model": "items.category",
+	"fields": {
+		"name": "\u8a2d\u8a08\u5e2b\u670d\u98fe",
+		"parent": 1
+	}
+},
+{
+	"pk":9,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5c45\u5bb6\u751f\u6d3b\u985e",
+		"parent": null
+	}
+},
+{
+	"pk":10,
+	"model": "items.category",
+	"fields": {
+		"name": "\u9910\u5177\u98df\u5668",
+		"parent": 9
+	}
+},
+{
+	"pk":11,
+	"model": "items.category",
+	"fields": {
+		"name": "\u70f9\u98ea\u70d8\u57f9\u7528\u54c1",
+		"parent": 9
+	}
+},
+{
+	"pk":12,
+	"model": "items.category",
+	"fields": {
+		"name": "\u6e05\u6f54\u7528\u54c1",
+		"parent": 9
+	}
+},
+{
+	"pk":13,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5bb6\u5177\u5bb6\u98fe",
+		"parent": 9
+	}
+},
+{
+	"pk":14,
+	"model": "items.category",
+	"fields": {
+		"name": "\u7a7a\u9593\u6536\u7d0d",
+		"parent": 9
+	}
+},
+{
+	"pk":15,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5e8a\u92ea\u5be2\u5177",
+		"parent": 9
+	}
+},
+{
+	"pk":16,
+	"model": "items.category",
+	"fields": {
+		"name": "\u4f11\u9592\u751f\u6d3b\u7528\u54c1",
+		"parent": 9
+	}
+},
+{
+	"pk":17,
+	"model": "items.category",
+	"fields": {
+		"name": "\u73a9\u5177/\u684c\u904a",
+		"parent": 9
+	}
+},
+{
+	"pk":18,
+	"model": "items.category",
+	"fields": {
+		"name": "\u6a02\u5668",
+		"parent": 9
+	}
+},
+{
+	"pk":19,
+	"model": "items.category",
+	"fields": {
+		"name": "\u52d5\u6f2b/\u516c\u4ed4/\u6d77\u5831",
+		"parent": 9
+	}
+},
+{
+	"pk":20,
+	"model": "items.category",
+	"fields": {
+		"name": "18\u7981\u60c5\u8da3",
+		"parent": 9
+	}
+},
+{
+	"pk":21,
+	"model": "items.category",
+	"fields": {
+		"name": "3C\u7522\u54c1\u985e",
+		"parent": null
+	}
+},
+{
+	"pk":22,
+	"model": "items.category",
+	"fields": {
+		"name": "\u96fb\u8166\u96f6\u7d44\u4ef6",
+		"parent": 21
+	}
+},
+{
+	"pk":23,
+	"model": "items.category",
+	"fields": {
+		"name": "\u7b46\u8a18\u578b\u96fb\u8166",
+		"parent": 21
+	}
+},
+{
+	"pk":24,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5957\u88dd\u96fb\u8166",
+		"parent": 21
+	}
+},
+{
+	"pk":25,
+	"model": "items.category",
+	"fields": {
+		"name": "\u624b\u6a5f",
+		"parent": 21
+	}
+},
+{
+	"pk":26,
+	"model": "items.category",
+	"fields": {
+		"name": "\u76f8\u6a5f",
+		"parent": 21
+	}
+},
+{
+	"pk":27,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5e73\u677f\u96fb\u8166",
+		"parent": 21
+	}
+},
+{
+	"pk":28,
+	"model": "items.category",
+	"fields": {
+		"name": "\u96a8\u8eab\u789f",
+		"parent": 21
+	}
+},
+{
+	"pk":29,
+	"model": "items.category",
+	"fields": {
+		"name": "\u8a18\u61b6\u5361",
+		"parent": 21
+	}
+},
+{
+	"pk":30,
+	"model": "items.category",
+	"fields": {
+		"name": "APPLE",
+		"parent": 21
+	}
+},
+{
+	"pk":31,
+	"model": "items.category",
+	"fields": {
+		"name": "APPLE\u914d\u4ef6",
+		"parent": 21
+	}
+},
+{
+	"pk":32,
+	"model": "items.category",
+	"fields": {
+		"name": "\u624b\u6a5f\u914d\u4ef6",
+		"parent": 21
+	}
+},
+{
+	"pk":33,
+	"model": "items.category",
+	"fields": {
+		"name": "\u8033\u6a5f",
+		"parent": 21
+	}
+},
+{
+	"pk":34,
+	"model": "items.category",
+	"fields": {
+		"name": "LCD\u986f\u793a\u5668/\u6295\u5f71\u6a5f",
+		"parent": 21
+	}
+},
+{
+	"pk":35,
+	"model": "items.category",
+	"fields": {
+		"name": "\u884c\u52d5\u96fb\u6e90",
+		"parent": 21
+	}
+},
+{
+	"pk":36,
+	"model": "items.category",
+	"fields": {
+		"name": "\u96fb\u8166\u5468\u908a",
+		"parent": 21
+	}
+},
+{
+	"pk":37,
+	"model": "items.category",
+	"fields": {
+		"name": "\u96fb\u8166\u8edf\u9ad4",
+		"parent": 21
+	}
+},
+{
+	"pk":38,
+	"model": "items.category",
+	"fields": {
+		"name": "\u9304\u97f3\u7b46",
+		"parent": 21
+	}
+},
+{
+	"pk":39,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5587\u53ed",
+		"parent": 21
+	}
+},
+{
+	"pk":40,
+	"model": "items.category",
+	"fields": {
+		"name": "\u96fb\u73a9\u4e3b\u6a5f",
+		"parent": 21
+	}
+},
+{
+	"pk":41,
+	"model": "items.category",
+	"fields": {
+		"name": "\u96fb\u73a9\u8edf\u9ad4",
+		"parent": 21
+	}
+},
+{
+	"pk":42,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5bb6\u96fb\u7528\u54c1\u985e",
+		"parent": null
+	}
+},
+{
+	"pk":43,
+	"model": "items.category",
+	"fields": {
+		"name": "\u96fb\u8996\u6a5f",
+		"parent": 42
+	}
+},
+{
+	"pk":44,
+	"model": "items.category",
+	"fields": {
+		"name": "DVD\u64ad\u653e\u5668",
+		"parent": 42
+	}
+},
+{
+	"pk":45,
+	"model": "items.category",
+	"fields": {
+		"name": "\u6de8\u6c34\u8a2d\u5099",
+		"parent": 42
+	}
+},
+{
+	"pk":46,
+	"model": "items.category",
+	"fields": {
+		"name": "\u751f\u6d3b\u5bb6\u96fb",
+		"parent": 42
+	}
+},
+{
+	"pk":47,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5438\u5875\u5668",
+		"parent": 42
+	}
+},
+{
+	"pk":48,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5eda\u623f\u5bb6\u96fb",
+		"parent": 42
+	}
+},
+{
+	"pk":49,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5065\u8eab\u5bb6\u96fb",
+		"parent": 42
+	}
+},
+{
+	"pk":50,
+	"model": "items.category",
+	"fields": {
+		"name": "\u6d17\u8863\u4e7e\u8863\u6a5f",
+		"parent": 42
+	}
+},
+{
+	"pk":51,
+	"model": "items.category",
+	"fields": {
+		"name": "\u97f3\u97ff\u5bb6\u5ead\u5287\u9662",
+		"parent": 42
+	}
+},
+{
+	"pk":52,
+	"model": "items.category",
+	"fields": {
+		"name": "\u901a\u8a0a\u5bb6\u96fb",
+		"parent": 42
+	}
+},
+{
+	"pk":53,
+	"model": "items.category",
+	"fields": {
+		"name": "\u8fa6\u516c\u96fb\u5668",
+		"parent": 42
+	}
+},
+{
+	"pk":54,
+	"model": "items.category",
+	"fields": {
+		"name": "\u9059\u63a7\u5668",
+		"parent": 42
+	}
+},
+{
+	"pk":55,
+	"model": "items.category",
+	"fields": {
+		"name": "\u7167\u660e\u8a2d\u5099",
+		"parent": 42
+	}
+},
+{
+	"pk":56,
+	"model": "items.category",
+	"fields": {
+		"name": "\u7dda\u6750",
+		"parent": 42
+	}
+},
+{
+	"pk":57,
+	"model": "items.category",
+	"fields": {
+		"name": "\u51b7\u6c23\u7a7a\u8abf",
+		"parent": 42
+	}
+},
+{
+	"pk":58,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5305\u5305\u985e",
+		"parent": null
+	}
+},
+{
+	"pk":59,
+	"model": "items.category",
+	"fields": {
+		"name": "\u6d41\u884c\u5973\u5305",
+		"parent": 58
+	}
+},
+{
+	"pk":60,
+	"model": "items.category",
+	"fields": {
+		"name": "\u540d\u724c\u7cbe\u54c1\u5973\u5305",
+		"parent": 58
+	}
+},
+{
+	"pk":61,
+	"model": "items.category",
+	"fields": {
+		"name": "\u7537\u58eb\u5305\u5305",
+		"parent": 58
+	}
+},
+{
+	"pk":62,
+	"model": "items.category",
+	"fields": {
+		"name": "\u96fb\u8166\u5305",
+		"parent": 58
+	}
+},
+{
+	"pk":63,
+	"model": "items.category",
+	"fields": {
+		"name": "\u516c\u4e8b\u5305",
+		"parent": 58
+	}
+},
+{
+	"pk":64,
+	"model": "items.category",
+	"fields": {
+		"name": "\u884c\u674e\u7bb1\u65c5\u884c\u888b",
+		"parent": 58
+	}
+},
+{
+	"pk":65,
+	"model": "items.category",
+	"fields": {
+		"name": "\u8cfc\u7269\u888b",
+		"parent": 58
+	}
+},
+{
+	"pk":66,
+	"model": "items.category",
+	"fields": {
+		"name": "\u904b\u52d5\u4f11\u9592\u5305",
+		"parent": 58
+	}
+},
+{
+	"pk":67,
+	"model": "items.category",
+	"fields": {
+		"name": "\u8a2d\u8a08\u5e2b\u6b3e\u5305\u5305",
+		"parent": 58
+	}
+},
+{
+	"pk":68,
+	"model": "items.category",
+	"fields": {
+		"name": "\u539f\u5275\u81ea\u88fd\u5305",
+		"parent": 58
+	}
+},
+{
+	"pk":69,
+	"model": "items.category",
+	"fields": {
+		"name": "\u624b\u8868\u98fe\u54c1\u985e",
+		"parent": null
+	}
+},
+{
+	"pk":70,
+	"model": "items.category",
+	"fields": {
+		"name": "\u7537\u9336",
+		"parent": 69
+	}
+},
+{
+	"pk":71,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5973\u9336",
+		"parent": 69
+	}
+},
+{
+	"pk":72,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5176\u4ed6\u9336\u985e",
+		"parent": 69
+	}
+},
+{
+	"pk":73,
+	"model": "items.category",
+	"fields": {
+		"name": "\u6642\u9418",
+		"parent": 69
+	}
+},
+{
+	"pk":74,
+	"model": "items.category",
+	"fields": {
+		"name": "\u624b\u934a",
+		"parent": 69
+	}
+},
+{
+	"pk":75,
+	"model": "items.category",
+	"fields": {
+		"name": "\u8033\u74b0",
+		"parent": 69
+	}
+},
+{
+	"pk":76,
+	"model": "items.category",
+	"fields": {
+		"name": "\u6212\u6307",
+		"parent": 69
+	}
+},
+{
+	"pk":77,
+	"model": "items.category",
+	"fields": {
+		"name": "\u9805\u934a",
+		"parent": 69
+	}
+},
+{
+	"pk":78,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5176\u4ed6\u98fe\u54c1",
+		"parent": 69
+	}
+},
+{
+	"pk":79,
+	"model": "items.category",
+	"fields": {
+		"name": "\u9aee\u98fe",
+		"parent": 69
+	}
+},
+{
+	"pk":80,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5716\u66f8\u96dc\u8a8c\u985e",
+		"parent": null
+	}
+},
+{
+	"pk":81,
+	"model": "items.category",
+	"fields": {
+		"name": "\u4e2d\u6587\u66f8",
+		"parent": 80
+	}
+},
+{
+	"pk":82,
+	"model": "items.category",
+	"fields": {
+		"name": "\u82f1\u6587\u66f8",
+		"parent": 80
+	}
+},
+{
+	"pk":83,
+	"model": "items.category",
+	"fields": {
+		"name": "\u7c21\u9ad4\u4e2d\u6587\u66f8",
+		"parent": 80
+	}
+},
+{
+	"pk":84,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5176\u4ed6\u5916\u6587\u66f8",
+		"parent": 80
+	}
+},
+{
+	"pk":85,
+	"model": "items.category",
+	"fields": {
+		"name": "\u96dc\u8a8c",
+		"parent": 80
+	}
+},
+{
+	"pk":86,
+	"model": "items.category",
+	"fields": {
+		"name": "\u7968\u5238\u985e",
+		"parent": null
+	}
+},
+{
+	"pk":87,
+	"model": "items.category",
+	"fields": {
+		"name": "\u96fb\u5f71\u7968",
+		"parent": 86
+	}
+},
+{
+	"pk":88,
+	"model": "items.category",
+	"fields": {
+		"name": "\u6f14\u5531\u6703",
+		"parent": 86
+	}
+},
+{
+	"pk":89,
+	"model": "items.category",
+	"fields": {
+		"name": "\u9580\u7968",
+		"parent": 86
+	}
+},
+{
+	"pk":90,
+	"model": "items.category",
+	"fields": {
+		"name": "\u6298\u50f9\u5238",
+		"parent": 86
+	}
+},
+{
+	"pk":91,
+	"model": "items.category",
+	"fields": {
+		"name": "\u79ae\u5238",
+		"parent": 86
+	}
+},
+{
+	"pk":92,
+	"model": "items.category",
+	"fields": {
+		"name": "\u5176\u4ed6\u7968\u5238",
+		"parent": 86
+	}
 },
 {
     "pk": 1, 
@@ -3452,6 +4140,5 @@
     "fields": {
         "type": "test"
     }
-},
-
+}
 ]
